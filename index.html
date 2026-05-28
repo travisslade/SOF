@@ -6,7 +6,7 @@
     <title>Dance by Denise - Stadium of Fire 2026</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for beautiful icons -->
+    <!-- FontAwesome for premium icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Custom scrollbar hiding and fluid designs */
@@ -16,13 +16,6 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
-        }
-        /* Soft, high-contrast glow effects */
-        .glow-red {
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);
-        }
-        .glow-blue {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
         }
         /* Smooth page transition animations */
         .tab-content {
@@ -38,60 +31,81 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans h-full flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 font-sans h-full flex flex-col antialiased selection:bg-rose-500 selection:text-white">
 
     <!-- Top Premium Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
-        <div class="max-w-md mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-2.5">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-rose-500 to-blue-600 flex items-center justify-center text-white font-black text-xs tracking-wider shadow-md">
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 shadow-xs">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-blue-600 flex items-center justify-center text-white font-black text-sm tracking-wider shadow-sm">
                     DBD
                 </div>
                 <div>
-                    <h1 class="text-sm font-black tracking-tight uppercase text-white">Dance By Denise</h1>
-                    <p class="text-[10px] text-slate-400 font-medium">Main/Senior Parent Hub</p>
+                    <h1 class="text-sm md:text-base font-black tracking-tight uppercase text-slate-900 leading-none">Dance By Denise</h1>
+                    <p class="text-[10px] md:text-xs text-slate-500 font-semibold mt-0.5">Stadium of Fire 2026 Parent Hub</p>
                 </div>
             </div>
+
+            <!-- Desktop Horizontal Navigation Menu -->
+            <div class="hidden md:flex items-center space-x-1">
+                <button onclick="switchTab('overview')" id="desk-nav-overview" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all bg-rose-50 text-rose-600">
+                    <i class="fa-solid fa-house mr-1.5"></i>Overview
+                </button>
+                <button onclick="switchTab('schedule')" id="desk-nav-schedule" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-calendar-days mr-1.5"></i>Schedules
+                </button>
+                <button onclick="switchTab('costumes')" id="desk-nav-costumes" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-shirt mr-1.5"></i>Costumes
+                </button>
+                <button onclick="switchTab('logistics')" id="desk-nav-logistics" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-truck-ramp-box mr-1.5"></i>Logistics
+                </button>
+                <button onclick="switchTab('checklist')" id="desk-nav-checklist" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100 relative">
+                    <div class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 hidden" id="checklist-dot-desk"></div>
+                    <i class="fa-solid fa-list-check mr-1.5"></i>Checklist
+                </button>
+            </div>
+
             <!-- Quick Search Button -->
-            <button onclick="toggleSearchModal(true)" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500">
+            <button onclick="toggleSearchModal(true)" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500">
                 <i class="fa-solid fa-magnifying-glass text-xs"></i>
             </button>
         </div>
     </header>
 
-    <!-- Main Content Area (With scrollable padding for bottom-nav bar) -->
-    <main class="flex-1 overflow-y-auto pb-24 px-4 pt-4 max-w-md mx-auto w-full space-y-4">
+    <!-- Main Content Area (Spacious on Desktop, centered and sleek on Mobile) -->
+    <main class="flex-1 overflow-y-auto pb-24 md:pb-8 px-4 pt-4 max-w-6xl mx-auto w-full space-y-4">
 
         <!-- Banner Countdown Card -->
-        <div id="countdown-card" class="bg-gradient-to-r from-slate-900 to-slate-850 border border-slate-800 rounded-2xl p-4 shadow-xl relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-24 h-24 bg-rose-500/10 rounded-full blur-xl"></div>
-            <div class="absolute -left-10 -bottom-10 w-24 h-24 bg-blue-500/10 rounded-full blur-xl"></div>
+        <div id="countdown-card" class="bg-gradient-to-r from-blue-50 to-rose-50 border border-slate-200 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-24 h-24 bg-rose-500/5 rounded-full blur-xl"></div>
+            <div class="absolute -left-10 -bottom-10 w-24 h-24 bg-blue-500/5 rounded-full blur-xl"></div>
             
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] uppercase tracking-widest font-extrabold text-rose-500 bg-rose-500/10 px-2.5 py-1 rounded-full">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
                     Countdown to Provo
                 </span>
-                <span class="text-xs font-semibold text-slate-400 flex items-center gap-1">
-                    <i class="fa-solid fa-calendar text-[10px] text-blue-400"></i> July 2, 2026
+                <span class="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
+                    <i class="fa-solid fa-calendar text-[10px] text-blue-600"></i> July 2, 2026
                 </span>
             </div>
             
-            <div class="grid grid-cols-4 gap-2 text-center my-1">
-                <div class="bg-slate-950/60 p-2 rounded-xl border border-slate-800/50">
-                    <span id="days" class="block text-xl font-black text-white">00</span>
-                    <span class="text-[9px] uppercase tracking-wider text-slate-500">Days</span>
+            <div class="grid grid-cols-4 gap-2 md:gap-4 text-center my-1 max-w-lg">
+                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
+                    <span id="days" class="block text-xl md:text-2xl font-black text-slate-800">00</span>
+                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Days</span>
                 </div>
-                <div class="bg-slate-950/60 p-2 rounded-xl border border-slate-800/50">
-                    <span id="hours" class="block text-xl font-black text-white">00</span>
-                    <span class="text-[9px] uppercase tracking-wider text-slate-500">Hrs</span>
+                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
+                    <span id="hours" class="block text-xl md:text-2xl font-black text-slate-800">00</span>
+                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Hrs</span>
                 </div>
-                <div class="bg-slate-950/60 p-2 rounded-xl border border-slate-800/50">
-                    <span id="mins" class="block text-xl font-black text-white">00</span>
-                    <span class="text-[9px] uppercase tracking-wider text-slate-500">Mins</span>
+                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
+                    <span id="mins" class="block text-xl md:text-2xl font-black text-slate-800">00</span>
+                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Mins</span>
                 </div>
-                <div class="bg-slate-950/60 p-2 rounded-xl border border-slate-800/50">
-                    <span id="secs" class="block text-xl font-black text-rose-400">00</span>
-                    <span class="text-[9px] uppercase tracking-wider text-slate-500">Secs</span>
+                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
+                    <span id="secs" class="block text-xl md:text-2xl font-black text-rose-600 animate-pulse">00</span>
+                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Secs</span>
                 </div>
             </div>
         </div>
@@ -99,92 +113,108 @@
         <!-- ==================== TAB 1: OVERVIEW ==================== -->
         <div id="tab-overview" class="tab-content active space-y-4">
             
-            <!-- Quick Stats -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+            <!-- Quick Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center space-x-3 shadow-xs">
+                    <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 shrink-0">
                         <i class="fa-solid fa-users text-lg"></i>
                     </div>
                     <div>
-                        <span class="block text-xs text-slate-400 font-medium">Performers</span>
-                        <span class="text-xs font-bold text-white">Main/Senior Group</span>
+                        <span class="block text-xs text-slate-500 font-medium">Performers</span>
+                        <span class="text-xs md:text-sm font-black text-slate-800">Main/Senior Group</span>
                     </div>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400">
+                <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center space-x-3 shadow-xs">
+                    <div class="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-500 shrink-0">
                         <i class="fa-solid fa-star text-lg"></i>
                     </div>
                     <div>
-                        <span class="block text-xs text-slate-400 font-medium">Headliner</span>
-                        <span class="text-xs font-bold text-white">Brad Paisley</span>
+                        <span class="block text-xs text-slate-500 font-medium">Headliner</span>
+                        <span class="text-xs md:text-sm font-black text-slate-800">Brad Paisley</span>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center space-x-3 shadow-xs md:col-span-1 col-span-1">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600 shrink-0">
+                        <i class="fa-solid fa-stadium text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 font-medium">Primary Stadium</span>
+                        <span class="text-xs md:text-sm font-black text-slate-800">LaVell Edwards</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Interactive Field Placement Visualization Map -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-sm font-black text-white uppercase tracking-tight flex items-center justify-between">
-                    <span class="flex items-center gap-2">
-                        <span class="w-1 h-4 bg-emerald-500 rounded-full"></span> Field Placement Map
-                    </span>
-                    <span class="text-[9px] bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded-full font-bold">Facing West</span>
-                </h3>
+            <!-- Layout split on desktop for Overview Content -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <!-- SVG Stadium Layout -->
-                <div class="bg-slate-950 rounded-xl p-2.5 border border-slate-800/60 flex flex-col items-center">
-                    <svg viewBox="0 0 320 180" class="w-full max-w-xs">
-                        <!-- Stadium Outer Rim -->
-                        <rect x="10" y="10" width="300" height="160" rx="40" fill="none" stroke="#334155" stroke-width="4" stroke-dasharray="2,2" />
-                        
-                        <!-- West Bleachers (Main Area) -->
-                        <path d="M 15,40 Q 5,90 15,140" fill="none" stroke="#ef4444" stroke-width="6" />
-                        <text x="24" y="93" fill="#ef4444" font-size="8" font-weight="bold" font-family="sans-serif">West Bleachers</text>
-                        <text x="24" y="103" fill="#94a3b8" font-size="6" font-family="sans-serif">(Parents Sit Here)</text>
+                <!-- Interactive Field Placement Visualization Map -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight flex items-center justify-between">
+                        <span class="flex items-center gap-2">
+                            <span class="w-1 h-4 bg-emerald-500 rounded-full"></span> Field Placement Map
+                        </span>
+                        <span class="text-[9px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">Facing West</span>
+                    </h3>
+                    
+                    <!-- SVG Stadium Layout -->
+                    <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 flex flex-col items-center">
+                        <svg viewBox="0 0 320 180" class="w-full max-w-sm">
+                            <!-- Stadium Outer Rim -->
+                            <rect x="10" y="10" width="300" height="160" rx="40" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="3,3" />
+                            
+                            <!-- West Bleachers (Main Area) -->
+                            <path d="M 15,40 Q 5,90 15,140" fill="none" stroke="#ef4444" stroke-width="6" />
+                            <text x="24" y="93" fill="#ef4444" font-size="8" font-weight="bold" font-family="sans-serif">West Bleachers</text>
+                            <text x="24" y="103" fill="#475569" font-size="6.5" font-family="sans-serif">(Parents Sit Here)</text>
 
-                        <!-- East Bleachers -->
-                        <path d="M 305,40 Q 315,90 305,140" fill="none" stroke="#475569" stroke-width="6" />
-                        <text x="235" y="95" fill="#64748b" font-size="7" font-family="sans-serif">East Bleachers</text>
+                            <!-- East Bleachers -->
+                            <path d="M 305,40 Q 315,90 305,140" fill="none" stroke="#64748b" stroke-width="6" />
+                            <text x="235" y="95" fill="#64748b" font-size="7" font-family="sans-serif">East Bleachers</text>
 
-                        <!-- Football Field Outer -->
-                        <rect x="80" y="30" width="160" height="120" rx="4" fill="#14532d" stroke="#16a34a" stroke-width="2" />
-                        
-                        <!-- Field Lines -->
-                        <line x1="160" y1="30" x2="160" y2="150" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="2,2" />
-                        <rect x="110" y="30" width="100" height="120" fill="none" stroke="#16a34a" stroke-width="1" />
-                        
-                        <!-- Main/Senior Placement Zone (Glowing Highlight on West Side) -->
-                        <rect x="85" y="35" width="45" height="110" rx="4" fill="rgba(239, 68, 68, 0.25)" stroke="#f43f5e" stroke-width="1.5" />
-                        
-                        <!-- Facing Direction Arrow -->
-                        <path d="M 125,90 L 98,90" fill="none" stroke="#f43f5e" stroke-width="2" marker-end="url(#arrow)" />
-                        <polygon points="98,90 104,87 104,93" fill="#f43f5e" />
-                        
-                        <text x="140" y="70" fill="#ffffff" font-size="7" font-weight="bold" font-family="sans-serif">Dancers Position</text>
-                        <text x="140" y="80" fill="#f43f5e" font-size="6.5" font-weight="bold" font-family="sans-serif">WEST side of field</text>
-                        <text x="140" y="90" fill="#f43f5e" font-size="6.5" font-weight="bold" font-family="sans-serif">FACING WEST</text>
-                        <text x="140" y="105" fill="#94a3b8" font-size="6" font-family="sans-serif">(Opposite of prior years)</text>
-                    </svg>
-                </div>
-                
-                <p class="text-[11px] text-slate-400 leading-relaxed text-center">
-                    Dancers remain on the performance field for the <strong>entire show</strong>.
-                </p>
-            </div>
-
-            <!-- About the Show Card -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> About the Show
-                </h3>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    Celebrating the **250th anniversary of the signing of the Declaration of Independence**. This historic production features over 36 combined studios representing multiple states with around 360 total performers.
-                </p>
-                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/50 space-y-2">
-                    <div class="text-[10px] uppercase tracking-widest font-bold text-blue-400">Official Show Order:</div>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        Skydivers → SOF Dancers <strong class="text-rose-400">"250th Celebration Production Routine"</strong> → Color Guard → Freedom Honorees → Nitro Circus & SOF Dancers → Brad Paisley Concert → Drone Sky Show → Fireworks Spectacular.
+                            <!-- Football Field Outer -->
+                            <rect x="80" y="30" width="160" height="120" rx="4" fill="#15803d" stroke="#166534" stroke-width="2" />
+                            
+                            <!-- Field Lines -->
+                            <line x1="160" y1="30" x2="160" y2="150" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="2,2" />
+                            <rect x="110" y="30" width="100" height="120" fill="none" stroke="#4ade80" stroke-width="1" />
+                            
+                            <!-- Main/Senior Placement Zone (Glowing Highlight on West Side) -->
+                            <rect x="85" y="35" width="45" height="110" rx="4" fill="rgba(239, 68, 68, 0.25)" stroke="#f43f5e" stroke-width="2" />
+                            
+                            <!-- Facing Direction Arrow -->
+                            <path d="M 125,90 L 98,90" fill="none" stroke="#f43f5e" stroke-width="2" />
+                            <polygon points="98,90 104,87 104,93" fill="#f43f5e" />
+                            
+                            <text x="140" y="70" fill="#ffffff" font-size="7" font-weight="bold" font-family="sans-serif">Dancers Position</text>
+                            <text x="140" y="80" fill="#f43f5e" font-size="7" font-weight="bold" font-family="sans-serif">WEST side of field</text>
+                            <text x="140" y="90" fill="#f43f5e" font-size="7" font-weight="bold" font-family="sans-serif">FACING WEST</text>
+                            <text x="140" y="105" fill="#e2e8f0" font-size="6" font-family="sans-serif">(Opposite of prior years)</text>
+                        </svg>
+                    </div>
+                    
+                    <p class="text-[11px] text-slate-500 leading-relaxed text-center">
+                        Dancers remain on the performance field for the <strong>entire show</strong>.
                     </p>
                 </div>
+
+                <!-- About the Show Card -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2 mb-2">
+                            <span class="w-1 h-4 bg-rose-500 rounded-full"></span> About the Show
+                        </h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Celebrating the **250th anniversary of the signing of the Declaration of Independence**. This historic production features over 36 combined studios representing multiple states with around 360 total performers.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 mt-4">
+                        <div class="text-[10px] uppercase tracking-widest font-bold text-blue-600">Official Show Order:</div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Skydivers → SOF Dancers <strong class="text-rose-600">"250th Celebration Production Routine"</strong> → Color Guard → Freedom Honorees → Nitro Circus & SOF Dancers → Brad Paisley Concert → Drone Sky Show → Fireworks Spectacular.
+                        </p>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -192,183 +222,175 @@
         <!-- ==================== TAB 2: SCHEDULES ==================== -->
         <div id="tab-schedule" class="tab-content space-y-4">
             
-            <!-- Quick Location Switcher Buttons -->
-            <div class="flex bg-slate-900 p-1.5 rounded-xl border border-slate-800">
-                <button onclick="switchScheduleView('kearns')" id="btn-sch-kearns" class="flex-1 text-center py-2 text-xs font-black rounded-lg bg-rose-600 text-white transition-all">
-                    Kearns (Local)
-                </button>
-                <button onclick="switchScheduleView('provo')" id="btn-sch-provo" class="flex-1 text-center py-2 text-xs font-black rounded-lg text-slate-400 hover:text-slate-200 transition-all">
-                    Provo (Mandatory)
-                </button>
-            </div>
-
-            <!-- Rehearsal Group Filter Buttons (All Dancers vs Main/Senior Focus) -->
-            <div class="flex items-center justify-between bg-slate-900/40 p-1 rounded-lg border border-slate-850">
-                <span class="text-[10px] uppercase font-black tracking-wider text-slate-400 px-2">Filter View:</span>
-                <div class="flex gap-1">
-                    <button onclick="filterSchedule('all')" id="filter-all" class="text-[10px] font-bold px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition-colors">
+            <!-- Rehearsal Group Filter Buttons -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-white p-3 rounded-xl border border-slate-200 gap-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs uppercase font-black tracking-wider text-slate-400">Filter Calendar:</span>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="filterSchedule('all')" id="filter-all" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
                         Show All
                     </button>
-                    <button onclick="filterSchedule('main')" id="filter-main" class="text-[10px] font-black px-2.5 py-1 rounded bg-rose-600/20 text-rose-400 border border-rose-500/30 transition-colors">
+                    <button onclick="filterSchedule('main')" id="filter-main" class="text-xs font-black px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 transition-colors">
                         ★ Main/Senior Only
                     </button>
                 </div>
             </div>
 
-            <!-- Kearns Schedule -->
-            <div id="sch-kearns-view" class="space-y-3">
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-                    <div class="flex flex-col mb-3">
+            <!-- Double-Column Rehearsals on Desktop -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- Kearns Rehearsals Card -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                    <div class="flex flex-col mb-2">
                         <div class="flex items-center justify-between">
-                            <h4 class="text-xs font-black text-white uppercase tracking-wider">Kearns OPFC Rehearsals</h4>
-                            <span class="text-[9px] text-slate-400 font-bold flex items-center gap-1">
+                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">Kearns OPFC Rehearsals</h4>
+                            <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
                                 <i class="fa-solid fa-location-dot text-rose-500"></i> Local
                             </span>
                         </div>
-                        <p class="text-[10px] text-slate-400 mt-1">Oquirrh Park Fitness Center — 5624 Cougar Lane, Kearns UT</p>
+                        <p class="text-[11px] text-slate-500 mt-1 font-medium">Oquirrh Park Fitness Center — 5624 Cougar Lane, Kearns UT</p>
                     </div>
 
                     <!-- Map Link Button -->
-                    <a href="https://maps.google.com/?q=Oquirrh+Park+Fitness+Center+5624+Cougar+Lane+Kearns+UT" target="_blank" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold text-[10px] flex items-center justify-center gap-1.5 transition-colors mb-3">
+                    <a href="https://maps.google.com/?q=Oquirrh+Park+Fitness+Center+5624+Cougar+Lane+Kearns+UT" target="_blank" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-colors mb-4">
                         <i class="fa-solid fa-map-location-dot"></i> Open Kearns Location in Maps
                     </a>
                     
                     <div class="space-y-2.5">
                         <!-- May 27 Parent Meeting -->
-                        <div class="sch-item main-group bg-rose-950/20 border border-rose-500/30 p-2.5 rounded-xl">
+                        <div class="sch-item main-group bg-rose-50 border border-rose-200 p-3 rounded-xl">
                             <div class="flex items-center justify-between">
-                                <p class="text-xs font-black text-rose-400">★ Wed, May 27 @ 6:00 – 6:30 PM</p>
-                                <span class="text-[8px] bg-rose-500 text-white font-extrabold px-1 rounded">Tonight</span>
+                                <p class="text-xs font-black text-rose-600">★ Wed, May 27 @ 6:00 – 6:30 PM</p>
+                                <span class="text-[8px] bg-rose-500 text-white font-extrabold px-1.5 py-0.5 rounded tracking-wide uppercase">Tonight</span>
                             </div>
-                            <p class="text-[11px] font-bold text-slate-200">Parent Information Meeting</p>
-                            <p class="text-[10px] text-slate-400">Essential details regarding the production.</p>
+                            <p class="text-[11px] font-bold text-slate-800 mt-1">Parent Information Meeting</p>
+                            <p class="text-[10px] text-slate-500">Essential details regarding the production.</p>
                         </div>
 
                         <!-- May 27 First Rehearsal -->
-                        <div class="sch-item main-group bg-slate-950 border border-slate-850 p-2.5 rounded-xl">
-                            <p class="text-xs font-black text-white">★ Wed, May 27 @ 6:30 – 8:00 PM</p>
-                            <p class="text-[11px] font-semibold text-slate-300">First Rehearsal — Main & Junior Dancers</p>
+                        <div class="sch-item main-group bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                            <p class="text-xs font-black text-slate-700">★ Wed, May 27 @ 6:30 – 8:00 PM</p>
+                            <p class="text-[11px] font-semibold text-slate-800 mt-1">First Rehearsal — Main & Junior Dancers</p>
                         </div>
 
                         <!-- May 28 Rehearsal -->
-                        <div class="sch-item junior-group bg-slate-950/40 border border-slate-900 p-2.5 rounded-xl opacity-60">
-                            <p class="text-xs font-black text-slate-500">Thurs, May 28 @ 6:00 – 8:00 PM</p>
-                            <p class="text-[11px] text-slate-400">Junior Dancers Rehearsal</p>
+                        <div class="sch-item junior-group bg-slate-50/50 border border-slate-100 p-3 rounded-xl opacity-60">
+                            <p class="text-xs font-black text-slate-400">Thurs, May 28 @ 6:00 – 8:00 PM</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Junior Dancers Rehearsal</p>
                         </div>
 
                         <!-- June 8 Rehearsal -->
-                        <div class="sch-item junior-group bg-slate-950/40 border border-slate-900 p-2.5 rounded-xl opacity-60">
-                            <p class="text-xs font-black text-slate-500">Mon, June 8 @ 6:00 – 8:00 PM</p>
-                            <p class="text-[11px] text-slate-400">Junior Dancers Rehearsal</p>
+                        <div class="sch-item junior-group bg-slate-50/50 border border-slate-100 p-3 rounded-xl opacity-60">
+                            <p class="text-xs font-black text-slate-400">Mon, June 8 @ 6:00 – 8:00 PM</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Junior Dancers Rehearsal</p>
                         </div>
 
                         <!-- June 10 Rehearsal -->
-                        <div class="sch-item junior-group bg-slate-950/40 border border-slate-900 p-2.5 rounded-xl opacity-60">
-                            <p class="text-xs font-black text-slate-500">Wed, June 10 @ 6:00 – 8:00 PM</p>
-                            <p class="text-[11px] text-slate-400">Junior Dancers Rehearsal</p>
+                        <div class="sch-item junior-group bg-slate-50/50 border border-slate-100 p-3 rounded-xl opacity-60">
+                            <p class="text-xs font-black text-slate-400">Wed, June 10 @ 6:00 – 8:00 PM</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Junior Dancers Rehearsal</p>
                         </div>
 
                         <!-- June 11 Props Pickup -->
-                        <div class="sch-item main-group bg-slate-950 border border-slate-850 p-2.5 rounded-xl">
+                        <div class="sch-item main-group bg-slate-50 border border-slate-200 p-3 rounded-xl">
                             <div class="flex items-center justify-between">
-                                <p class="text-xs font-black text-white">★ Thurs, June 11 @ 6:00 – 8:00 PM</p>
-                                <span class="text-[9px] bg-blue-500/10 text-blue-400 px-1.5 rounded uppercase font-black">Props</span>
+                                <p class="text-xs font-black text-slate-700">★ Thurs, June 11 @ 6:00 – 8:00 PM</p>
+                                <span class="text-[9px] bg-blue-100 text-blue-700 px-2 rounded uppercase font-black">Props</span>
                             </div>
-                            <p class="text-[11px] text-slate-300">Main Dancers Rehearsal — Receive performance props. No spares!</p>
+                            <p class="text-[11px] text-slate-800 font-semibold mt-1">Main Dancers Rehearsal — Receive performance props. No spares!</p>
                         </div>
 
                         <!-- June 17 Rehearsal -->
-                        <div class="sch-item main-group bg-slate-950 border border-slate-850 p-2.5 rounded-xl">
-                            <p class="text-xs font-black text-white">★ Wed, June 17 @ 6:00 – 8:00 PM</p>
-                            <p class="text-[11px] text-slate-400">Main Dancers Rehearsal</p>
+                        <div class="sch-item main-group bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                            <p class="text-xs font-black text-slate-700">★ Wed, June 17 @ 6:00 – 8:00 PM</p>
+                            <p class="text-[11px] text-slate-600 mt-1">Main Dancers Rehearsal</p>
                         </div>
 
                         <!-- June 18 Rehearsal -->
-                        <div class="sch-item main-group bg-slate-950 border border-slate-850 p-2.5 rounded-xl">
-                            <p class="text-xs font-black text-white">★ Thurs, June 18 @ 6:00 – 8:00 PM</p>
-                            <p class="text-[11px] text-slate-400">Main & Junior Dancers Rehearsal</p>
+                        <div class="sch-item main-group bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                            <p class="text-xs font-black text-slate-700">★ Thurs, June 18 @ 6:00 – 8:00 PM</p>
+                            <p class="text-[11px] text-slate-600 mt-1">Main & Junior Dancers Rehearsal</p>
                         </div>
 
                         <!-- June 22 Filming Review Night -->
-                        <div class="sch-item main-group bg-rose-950/20 border border-rose-500/30 p-2.5 rounded-xl relative overflow-hidden">
+                        <div class="sch-item main-group bg-rose-50 border border-rose-200 p-3 rounded-xl relative overflow-hidden shadow-xs">
                             <div class="absolute right-2 top-2">
                                 <span class="text-[8px] bg-rose-500 text-white font-extrabold px-1.5 py-0.5 rounded tracking-wide uppercase">Critical</span>
                             </div>
-                            <p class="text-xs font-black text-rose-400">★ Mon, June 22 @ 6:00 – 8:00 PM</p>
-                            <p class="text-[11px] font-bold text-slate-200">Main & Junior Dancers — FILMING NIGHT</p>
-                            <p class="text-[10px] text-slate-400 mt-1">Dancers will be filmed for the official Stadium of Fire choreographers & producers review.</p>
-                            <div class="mt-2 text-[10px] text-rose-300 space-y-0.5">
+                            <p class="text-xs font-black text-rose-600">★ Mon, June 22 @ 6:00 – 8:00 PM</p>
+                            <p class="text-[11px] font-bold text-slate-800 mt-1">Main & Junior Dancers — FILMING NIGHT</p>
+                            <p class="text-[10px] text-slate-500 mt-1 leading-normal">Dancers will be filmed for the official Stadium of Fire choreographers & producers review.</p>
+                            <div class="mt-2 text-[10px] text-rose-600 space-y-0.5">
                                 <p class="flex items-center gap-1.5"><i class="fa-solid fa-shirt text-[9px]"></i> Wear required Rehearsal Outfit</p>
                                 <p class="flex items-center gap-1.5"><i class="fa-solid fa-sparkles text-[9px]"></i> Performance Hair & Makeup required</p>
                             </div>
                         </div>
 
                         <!-- June 24 Rehearsal -->
-                        <div class="sch-item main-group bg-slate-950 border border-slate-850 p-2.5 rounded-xl">
-                            <p class="text-xs font-black text-white">★ Wed, June 24 @ 6:00 – 8:00 PM</p>
-                            <p class="text-[11px] text-slate-400">Main & Junior Dancers Rehearsal</p>
+                        <div class="sch-item main-group bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                            <p class="text-xs font-black text-slate-700">★ Wed, June 24 @ 6:00 – 8:00 PM</p>
+                            <p class="text-[11px] text-slate-600 mt-1">Main & Junior Dancers Rehearsal</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Provo Schedule -->
-            <div id="sch-provo-view" class="hidden space-y-3">
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-                    <div class="flex flex-col mb-3">
+                <!-- Provo Mandatory Rehearsals Card -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs self-start">
+                    <div class="flex flex-col mb-2">
                         <div class="flex items-center justify-between">
-                            <h4 class="text-xs font-black text-white uppercase tracking-wider">LaVell Edwards Stadium</h4>
-                            <span class="text-[9px] text-rose-400 font-bold flex items-center gap-1">
+                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">LaVell Edwards Stadium</h4>
+                            <span class="text-[10px] text-rose-500 font-bold flex items-center gap-1">
                                 <i class="fa-solid fa-stadium text-rose-500"></i> Provo
                             </span>
                         </div>
-                        <p class="text-[10px] text-slate-400 mt-1">1700 N Canyon Rd, Provo, UT 84604</p>
+                        <p class="text-[11px] text-slate-500 mt-1 font-medium">1700 N Canyon Rd, Provo, UT 84604</p>
                     </div>
 
                     <!-- Map Link Button -->
-                    <a href="https://maps.google.com/?q=LaVell+Edwards+Stadium+1700+N+Canyon+Rd+Provo+UT" target="_blank" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold text-[10px] flex items-center justify-center gap-1.5 transition-colors mb-3">
+                    <a href="https://maps.google.com/?q=LaVell+Edwards+Stadium+1700+N+Canyon+Rd+Provo+UT" target="_blank" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-colors mb-4">
                         <i class="fa-solid fa-map-location-dot"></i> Open Provo Stadium in Maps
                     </a>
 
                     <div class="space-y-3">
-                        <div class="bg-slate-950 border border-slate-850 p-3 rounded-xl border-l-2 border-l-rose-500">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <p class="text-xs font-black text-rose-400">★ Thursday, July 2 — DAY 1</p>
-                                <span class="text-[9px] bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded-md font-bold">ALL DAY</span>
+                        <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl border-l-4 border-l-rose-500">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs font-black text-rose-600">★ Thursday, July 2 — DAY 1</p>
+                                <span class="text-[9px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold uppercase">All Day</span>
                             </div>
-                            <ul class="text-[11px] text-slate-300 space-y-1 pl-3.5 list-disc">
+                            <ul class="text-[11px] text-slate-600 space-y-1 pl-3.5 list-disc">
                                 <li>All dancers must attend every Provo rehearsal — no exceptions.</li>
                                 <li>Wear <strong>DBD Swag</strong> (preferably black).</li>
                                 <li>Costumes and SOF Keepsake Items distributed today in Provo.</li>
                             </ul>
                         </div>
 
-                        <div class="bg-slate-950 border border-slate-850 p-3 rounded-xl border-l-2 border-l-rose-500">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <p class="text-xs font-black text-rose-400">★ Friday, July 3 — DAY 2</p>
-                                <span class="text-[9px] bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded-md font-bold">DRESS REHEARSAL</span>
+                        <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl border-l-4 border-l-rose-500">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs font-black text-rose-600">★ Friday, July 3 — DAY 2</p>
+                                <span class="text-[9px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold uppercase">Dress Rehearsal</span>
                             </div>
-                            <ul class="text-[11px] text-slate-300 space-y-1 pl-3.5 list-disc">
+                            <ul class="text-[11px] text-slate-600 space-y-1 pl-3.5 list-disc">
                                 <li>All dancers must attend every Provo rehearsal.</li>
                                 <li>Wear required <strong>DBD Rehearsal Outfit</strong>.</li>
-                                <li class="text-rose-400 font-bold">Includes late-night stadium dress rehearsal.</li>
+                                <li class="text-rose-600 font-bold">Includes late-night stadium dress rehearsal.</li>
                             </ul>
                         </div>
 
-                        <div class="bg-slate-950 border border-slate-850 p-3 rounded-xl border-l-2 border-l-blue-500">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <p class="text-xs font-black text-blue-400">★ Saturday, July 4 — SHOW DAY</p>
-                                <span class="text-[9px] bg-blue-500 text-white px-2 py-0.5 rounded-md font-black">SHOW</span>
+                        <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl border-l-4 border-l-blue-500">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs font-black text-blue-600">★ Saturday, July 4 — SHOW DAY</p>
+                                <span class="text-[9px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md font-black uppercase">Show Day</span>
                             </div>
-                            <ul class="text-[11px] text-slate-300 space-y-1.5 pl-3.5 list-disc">
+                            <ul class="text-[11px] text-slate-600 space-y-2 pl-3.5 list-disc">
                                 <li>
                                     <strong>6:45 AM – 12:00 PM:</strong> Mandatory Rehearsal<br>
-                                    <span class="text-slate-400">(Wear DBD or SOF T-shirt/Tank)</span>
+                                    <span class="text-slate-500">(Wear DBD or SOF T-shirt/Tank)</span>
                                 </li>
                                 <li>
                                     <strong>12:30 PM:</strong> Parent pick-up at BYU Stadium Northwest Entrance.
                                 </li>
-                                <li class="text-rose-400 font-bold">
+                                <li class="text-rose-600 font-bold">
                                     <strong>6:15 PM:</strong> Show Call Time (Dressed & ready)
                                 </li>
                                 <li>
@@ -378,6 +400,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
@@ -386,282 +409,291 @@
         <div id="tab-costumes" class="tab-content space-y-4">
             
             <!-- Appearance Rules Card -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Official Costumes
-                </h3>
-                <p class="text-[11px] text-slate-400 bg-slate-950 p-2.5 rounded-lg border border-slate-800/60">
-                    Distributed on <strong>Thursday, July 2nd</strong> in Provo.
-                </p>
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-4 shadow-xs">
+                <div class="border-b border-slate-100 pb-2">
+                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Official Costumes
+                    </h3>
+                    <p class="text-[11px] text-slate-500 mt-1">
+                        Costumes and keepsake items distributed on <strong>Thursday, July 2nd</strong> in Provo.
+                    </p>
+                </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-slate-950 border border-slate-850 p-3 rounded-xl">
-                        <span class="text-[9px] uppercase tracking-widest font-extrabold text-rose-400">Females</span>
-                        <p class="text-xs font-bold text-white mt-1">USA Red, White & Blue Dress</p>
-                        <p class="text-[11px] text-slate-400 mt-1">Features "USA" lettering graphic across the back.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-xs">
+                        <span class="text-[10px] uppercase tracking-widest font-extrabold text-rose-600 bg-rose-100/60 px-2.5 py-1 rounded">Females</span>
+                        <p class="text-sm font-bold text-slate-800 mt-2">USA Red, White & Blue Dress</p>
+                        <p class="text-xs text-slate-500 mt-1">Features "USA" lettering graphic across the back.</p>
                     </div>
-                    <div class="bg-slate-950 border border-slate-850 p-3 rounded-xl">
-                        <span class="text-[9px] uppercase tracking-widest font-extrabold text-blue-400">Males</span>
-                        <p class="text-xs font-bold text-white mt-1">Patriotic Top & Shorts</p>
-                        <p class="text-[11px] text-slate-400 mt-1">Coordinated red, white, and blue set.</p>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-xs">
+                        <span class="text-[10px] uppercase tracking-widest font-extrabold text-blue-600 bg-blue-100/60 px-2.5 py-1 rounded">Males</span>
+                        <p class="text-sm font-bold text-slate-800 mt-2">Patriotic Top & Shorts</p>
+                        <p class="text-xs text-slate-500 mt-1">Coordinated red, white, and blue set.</p>
                     </div>
                 </div>
 
                 <!-- Appearance Specifications -->
-                <div class="bg-slate-950 border border-slate-850 rounded-xl p-3.5 space-y-2.5">
-                    <span class="text-[10px] uppercase tracking-widest font-black text-slate-400">Required Items</span>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <span class="text-xs uppercase tracking-widest font-black text-slate-500">Required Items</span>
                     
-                    <div class="flex items-start gap-3 text-xs">
-                        <div class="w-5 h-5 rounded bg-rose-500/10 flex items-center justify-center text-rose-400 shrink-0 mt-0.5">
-                            <i class="fa-solid fa-socks text-[10px]"></i>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-socks text-[11px]"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800">Undergarments & Tights</p>
+                                <p class="text-slate-500 text-[11px] mt-0.5">All female dancers must wear a **tan body tight**.</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="font-bold text-white">Undergarments & Tights</p>
-                            <p class="text-slate-400 text-[11px]">All female dancers must wear a **tan body tight**.</p>
-                        </div>
-                    </div>
 
-                    <div class="flex items-start gap-3 text-xs">
-                        <div class="w-5 h-5 rounded bg-rose-500/10 flex items-center justify-center text-rose-400 shrink-0 mt-0.5">
-                            <i class="fa-solid fa-shoe-prints text-[10px]"></i>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-shoe-prints text-[11px]"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800">Shoes</p>
+                                <p class="text-slate-500 text-[11px] mt-0.5">All dancers require **tan turners** or **tan jazz shoes**.</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="font-bold text-white">Shoes</p>
-                            <p class="text-slate-400 text-[11px]">All dancers require **tan turners** or **tan jazz shoes**.</p>
-                        </div>
-                    </div>
 
-                    <div class="flex items-start gap-3 text-xs">
-                        <div class="w-5 h-5 rounded bg-rose-500/10 flex items-center justify-center text-rose-400 shrink-0 mt-0.5">
-                            <i class="fa-solid fa-scissors text-[10px]"></i>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-scissors text-[11px]"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800">Performance Hair</p>
+                                <p class="text-slate-500 text-[11px] mt-0.5">**Ballet bun** with costume applique pinned securely. (Hair & Makeup detailed specifications are TBD).</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="font-bold text-white">Performance Hair & Makeup</p>
-                            <p class="text-slate-400 text-[11px]">**Ballet bun** with costume applique pinned securely. Hair & Makeup info is currently **TBD**.</p>
-                        </div>
-                    </div>
 
-                    <div class="flex items-start gap-3 text-xs">
-                        <div class="w-5 h-5 rounded bg-rose-500/10 flex items-center justify-center text-rose-400 shrink-0 mt-0.5">
-                            <i class="fa-solid fa-gem text-[10px]"></i>
-                        </div>
-                        <div>
-                            <p class="font-bold text-white">Jewelry Requirements</p>
-                            <p class="text-slate-400 text-[11px]">Small **rhinestone stud earrings** required ($5 on order form, or use your own similar size).</p>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-gem text-[11px]"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800">Jewelry Requirements</p>
+                                <p class="text-slate-500 text-[11px] mt-0.5">Small **rhinestone stud earrings** required ($5 on order form, or use your own similar size).</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Rehearsal Uniform Card -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span class="w-1 h-4 bg-blue-500 rounded-full"></span> Rehearsal Uniform
                 </h3>
-                <p class="text-[11px] text-slate-300">
+                <p class="text-xs text-slate-500">
                     Required purchase. Must be worn on <strong>Filming Night (June 22)</strong> and the <strong>Provo Rehearsal (July 3)</strong>.
                 </p>
-                <div class="bg-slate-950 p-3 rounded-xl border border-slate-850 flex items-center justify-between">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
                     <div>
-                        <p class="text-xs font-bold text-white">Official Set</p>
-                        <p class="text-[11px] text-slate-400">Black tennis skort + Baby blue tank or t-shirt.</p>
+                        <p class="text-xs font-bold text-slate-800">Official Set</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Black tennis skort + Baby blue tank or t-shirt.</p>
                     </div>
-                    <i class="fa-solid fa-shirt text-blue-400 text-lg"></i>
+                    <i class="fa-solid fa-shirt text-blue-500 text-xl"></i>
                 </div>
             </div>
 
         </div>
 
-        <!-- ==================== TAB 4: LOGISTICS & RESOURCES ==================== -->
+        <!-- ==================== TAB 4: LOGISTICS ==================== -->
         <div id="tab-logistics" class="tab-content space-y-4">
             
             <!-- Quick Link Hub Card -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2 mb-1">
                     <span class="w-1 h-4 bg-blue-500 rounded-full"></span> Quick Portals & Links
                 </h3>
-                <div class="grid grid-cols-2 gap-2.5">
-                    <a href="https://www.thestudiodirector.com/dancebydenise/portal.jsp" target="_blank" class="bg-slate-950 hover:bg-slate-900 border border-slate-800 p-3 rounded-xl flex flex-col items-center justify-center text-center transition-colors">
-                        <i class="fa-solid fa-right-to-bracket text-rose-500 text-lg mb-1"></i>
-                        <span class="text-[10px] font-black text-white">Studio Portal</span>
-                        <span class="text-[8px] text-slate-500 mt-0.5">Pay & Registers</span>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <a href="https://www.thestudiodirector.com/dancebydenise/portal.jsp" target="_blank" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
+                        <i class="fa-solid fa-right-to-bracket text-rose-500 text-xl mb-1.5"></i>
+                        <span class="text-[11px] font-black text-slate-800">Studio Portal</span>
+                        <span class="text-[9px] text-slate-400 mt-0.5">Pay & Register</span>
                     </a>
-                    <a href="https://www.facebook.com/groups/dancebydenise" target="_blank" class="bg-slate-950 hover:bg-slate-900 border border-slate-800 p-3 rounded-xl flex flex-col items-center justify-center text-center transition-colors">
-                        <i class="fa-brands fa-facebook text-blue-500 text-lg mb-1"></i>
-                        <span class="text-[10px] font-black text-white">Private FB Group</span>
-                        <span class="text-[8px] text-slate-500 mt-0.5">Denise Davies Allen</span>
+                    <a href="https://www.facebook.com/groups/dancebydenise" target="_blank" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
+                        <i class="fa-brands fa-facebook text-blue-600 text-xl mb-1.5"></i>
+                        <span class="text-[11px] font-black text-slate-800">Private FB Group</span>
+                        <span class="text-[9px] text-slate-400 mt-0.5">Denise Allen</span>
                     </a>
-                    <button onclick="toggleModal('newsletter-modal')" class="bg-slate-950 hover:bg-slate-900 border border-slate-800 p-3 rounded-xl flex flex-col items-center justify-center text-center transition-colors">
-                        <i class="fa-solid fa-paper-plane text-emerald-500 text-lg mb-1"></i>
-                        <span class="text-[10px] font-black text-white">May Newsletter</span>
-                        <span class="text-[8px] text-slate-500 mt-0.5">Read updates</span>
+                    <button onclick="toggleModal('newsletter-modal')" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
+                        <i class="fa-solid fa-paper-plane text-emerald-500 text-xl mb-1.5"></i>
+                        <span class="text-[11px] font-black text-slate-800">May Newsletter</span>
+                        <span class="text-[9px] text-slate-400 mt-0.5">Read updates</span>
                     </button>
-                    <button onclick="showToast('Carpool details are currently TBD!')" class="bg-slate-950 hover:bg-slate-900 border border-slate-800 p-3 rounded-xl flex flex-col items-center justify-center text-center transition-colors">
-                        <i class="fa-solid fa-car-on text-amber-500 text-lg mb-1"></i>
-                        <span class="text-[10px] font-black text-white">Chaperone/Carpool</span>
-                        <span class="text-[8px] text-slate-500 mt-0.5">TBD schedule</span>
+                    <button onclick="showToast('Chaperone schedules and carpools are currently TBD!')" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
+                        <i class="fa-solid fa-car-on text-amber-500 text-xl mb-1.5"></i>
+                        <span class="text-[11px] font-black text-slate-800">Chaperone/Carpool</span>
+                        <span class="text-[9px] text-slate-400 mt-0.5">TBD schedules</span>
                     </button>
                 </div>
             </div>
 
-            <!-- TBD Resources Warning Alert -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-sm font-black text-white tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-amber-500 rounded-full"></span> Studio Resources Update
-                </h3>
-                <div class="grid grid-cols-2 gap-2 text-[10px]">
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex items-center justify-between">
+            <!-- Double-Column split on Desktop for Logistics Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- Hotel Accommodations Card -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Hotel details
+                    </h3>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                         <div>
-                            <p class="font-bold text-slate-400">Music Tracks</p>
-                            <p class="text-[8px] text-amber-500">TBD — Coming Soon</p>
+                            <h4 class="text-sm font-bold text-slate-800">Residence Inn Provo North by Marriott</h4>
+                            <p class="text-[11px] text-slate-500 mt-0.5">252 West 2230 North, Provo, UT</p>
                         </div>
-                        <i class="fa-solid fa-music text-slate-600"></i>
-                    </div>
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-400">Hair & Makeup</p>
-                            <p class="text-[8px] text-amber-500">TBD — Coming Soon</p>
+                        <div class="grid grid-cols-2 gap-2 border-t border-slate-200 pt-3 text-[11px]">
+                            <div>
+                                <span class="block text-slate-400">Rate</span>
+                                <span class="font-bold text-slate-800">$65 / Person</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400">Breakfast</span>
+                                <span class="font-bold text-emerald-600">Complimentary</span>
+                            </div>
                         </div>
-                        <i class="fa-solid fa-wand-magic-sparkles text-slate-600"></i>
-                    </div>
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-400">Dancer Contacts</p>
-                            <p class="text-[8px] text-amber-500">TBD — Coming Soon</p>
+                        <div class="text-[11px] text-slate-600 bg-white p-3 rounded-lg border border-slate-200 leading-normal">
+                            Room reservations are under <strong>Denise Allen</strong>. 1 parent chaperone with up to 3 dancers per room (or 4 senior dancers). Extra rooms are $260/night with tax.
                         </div>
-                        <i class="fa-solid fa-address-book text-slate-600"></i>
-                    </div>
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-400">Carpools</p>
-                            <p class="text-[8px] text-amber-500">TBD — Sign-ups pending</p>
-                        </div>
-                        <i class="fa-solid fa-user-group text-slate-600"></i>
+                        <!-- Map Link Button -->
+                        <a href="https://maps.google.com/?q=Residence+Inn+Provo+North+by+Marriott+Provo+UT" target="_blank" class="w-full py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 transition-colors">
+                            <i class="fa-solid fa-map-location-dot"></i> Open Address in Maps
+                        </a>
                     </div>
                 </div>
+
+                <!-- Money & Donations Card -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Money & Donations
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <!-- Money Card -->
+                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-800">Provo Meal Fund</span>
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-black">$50 Rec.</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 leading-normal">Food must be paid via Venmo before brought into stadium.</p>
+                            <div class="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200 mt-2">
+                                <div class="text-[11px]">
+                                    <p class="text-slate-400">Chaperone:</p>
+                                    <p class="font-bold text-slate-800">Misti Bird <span class="text-slate-500 font-normal block sm:inline">(801-597-0035)</span></p>
+                                </div>
+                                <button onclick="copyToClipboard('@Misti-Bird', 'Misti Bird\'s Venmo')" class="bg-rose-600 hover:bg-rose-500 px-3.5 py-1.5 rounded-lg text-[10px] font-black text-white transition-colors shrink-0">
+                                    Copy Venmo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Donations Card -->
+                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <span class="text-xs font-bold text-rose-600 block">Required Donations</span>
+                            <p class="text-[11px] text-slate-500 leading-normal">Bring Gatorade, PowerAde, or non-melting snacks (Swedish Fish, Starbursts, Rice Crispy treats, granola bars, cheese sticks, jerky) to any local rehearsal.</p>
+                            <div class="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200 mt-2">
+                                <div class="text-[11px]">
+                                    <p class="text-slate-400">Venmo Denise Instead:</p>
+                                    <p class="font-bold text-slate-800">@Denise-Allen-116</p>
+                                </div>
+                                <button onclick="copyToClipboard('@Denise-Allen-116', 'Denise Allen\'s Venmo')" class="bg-rose-600 hover:bg-rose-500 px-3.5 py-1.5 rounded-lg text-[10px] font-black text-white transition-colors shrink-0">
+                                    Copy Venmo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Chaperone Basecamp Info -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
+            <!-- Chaperone Rules Details -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Chaperone & Security
                 </h3>
-                <div class="bg-slate-950 p-3 rounded-xl border border-slate-850 text-xs text-slate-300 space-y-2">
-                    <p class="flex items-start gap-2">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-3">
+                    <p class="flex items-start gap-2.5">
                         <i class="fa-solid fa-ticket text-rose-500 mt-0.5"></i>
                         <span>All directors, dancers, & chaperones <strong>must wear an official SOF wristband</strong> to enter any Provo rehearsal.</span>
                     </p>
-                    <p class="flex items-start gap-2">
+                    <p class="flex items-start gap-2.5">
                         <i class="fa-solid fa-user-shield text-blue-500 mt-0.5"></i>
                         <span>Strict limit of <strong>4 parent chaperones</strong> inside the stadium at any single time.</span>
                     </p>
-                    <p class="flex items-start gap-2">
+                    <p class="flex items-start gap-2.5">
                         <i class="fa-solid fa-campground text-emerald-500 mt-0.5"></i>
                         <span><strong>DBD Base Camp:</strong> Located under the bleachers near the Northwest ramp.</span>
                     </p>
                 </div>
             </div>
 
-            <!-- Hotel Accommodations -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Hotel Details
+            <!-- TBD Alerts Checklist Warning -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
+                    <span class="w-1 h-4 bg-amber-500 rounded-full"></span> Studio Resources Update
                 </h3>
-                <div class="bg-slate-950 p-3 rounded-xl border border-slate-850 space-y-2.5">
-                    <div>
-                        <h4 class="text-xs font-bold text-white">Residence Inn Provo North by Marriott</h4>
-                        <p class="text-[11px] text-slate-400">252 West 2230 North, Provo, UT</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 border-t border-slate-800 pt-2.5 text-[11px]">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] md:text-xs">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
                         <div>
-                            <span class="block text-slate-500">Rate</span>
-                            <span class="font-bold text-white">$65 / Person</span>
+                            <p class="font-bold text-slate-500">Music Tracks</p>
+                            <p class="text-[8px] md:text-[9px] text-amber-600 font-semibold">TBD — Coming Soon</p>
                         </div>
+                        <i class="fa-solid fa-music text-slate-400"></i>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
                         <div>
-                            <span class="block text-slate-500">Breakfast</span>
-                            <span class="font-bold text-emerald-400">Complimentary</span>
+                            <p class="font-bold text-slate-500">Hair & Makeup</p>
+                            <p class="text-[8px] md:text-[9px] text-amber-600 font-semibold">TBD — Coming Soon</p>
                         </div>
+                        <i class="fa-solid fa-wand-magic-sparkles text-slate-400"></i>
                     </div>
-                    <div class="text-[11px] text-slate-400 bg-slate-900 p-2 rounded border border-slate-800">
-                        Room reservations are under <strong>Denise Allen</strong>. 1 parent chaperone with up to 3 dancers per room (or 4 senior dancers). Extra rooms are $260/night with tax.
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-slate-500">Dancer Contacts</p>
+                            <p class="text-[8px] md:text-[9px] text-amber-600 font-semibold">TBD — Coming Soon</p>
+                        </div>
+                        <i class="fa-solid fa-address-book text-slate-400"></i>
                     </div>
-                    <!-- Map Link Button -->
-                    <a href="https://maps.google.com/?q=Residence+Inn+Provo+North+by+Marriott+Provo+UT" target="_blank" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold text-[11px] flex items-center justify-center gap-1.5 transition-colors">
-                        <i class="fa-solid fa-map-location-dot"></i> Open Address in Maps
-                    </a>
-                </div>
-            </div>
-
-            <!-- Money & Donations -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Money & Donations
-                </h3>
-                
-                <div class="space-y-2.5">
-                    <!-- Money Card -->
-                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-850 space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-white">Provo Meal Fund</span>
-                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded font-black">$50 Rec.</span>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-slate-500">Carpools</p>
+                            <p class="text-[8px] md:text-[9px] text-amber-600 font-semibold">TBD — Sign-ups Pending</p>
                         </div>
-                        <p class="text-[11px] text-slate-400">Food must be paid via Venmo before brought into stadium.</p>
-                        <div class="flex items-center justify-between bg-slate-900 p-2.5 rounded border border-slate-800 mt-2">
-                            <div class="text-[11px]">
-                                <p class="text-slate-400">Chaperone:</p>
-                                <p class="font-bold text-white">Misti Bird <span class="text-slate-500 font-normal">(801-597-0035)</span></p>
-                            </div>
-                            <button onclick="copyToClipboard('@Misti-Bird', 'Misti Bird\'s Venmo')" class="bg-rose-600 hover:bg-rose-500 px-3 py-1.5 rounded-lg text-[10px] font-black text-white transition-colors">
-                                Copy Venmo
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Donations Card -->
-                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-850 space-y-2">
-                        <span class="text-xs font-bold text-rose-400 block">Required Donations</span>
-                        <p class="text-[11px] text-slate-300">Bring Gatorade, PowerAde, or non-melting snacks (Swedish Fish, Starbursts, Rice Crispy treats, granola bars, cheese sticks, jerky) to any local rehearsal.</p>
-                        <div class="flex items-center justify-between bg-slate-900 p-2.5 rounded border border-slate-800 mt-2">
-                            <div class="text-[11px]">
-                                <p class="text-slate-400">Venmo Denise Instead:</p>
-                                <p class="font-bold text-white">@Denise-Allen-116</p>
-                            </div>
-                            <button onclick="copyToClipboard('@Denise-Allen-116', 'Denise Allen\'s Venmo')" class="bg-rose-600 hover:bg-rose-500 px-3 py-1.5 rounded-lg text-[10px] font-black text-white transition-colors">
-                                Copy Venmo
-                            </button>
-                        </div>
+                        <i class="fa-solid fa-user-group text-slate-400"></i>
                     </div>
                 </div>
             </div>
 
             <!-- Contact Directory -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Contact Directory
                 </h3>
-                <div class="space-y-2 text-xs">
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex items-center justify-between">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
                         <div>
-                            <p class="font-bold text-white">Denise Davies Allen</p>
-                            <p class="text-[10px] text-slate-400">Director</p>
+                            <p class="font-bold text-slate-800">Denise Allen</p>
+                            <p class="text-[10px] text-slate-500">Director</p>
                         </div>
                         <a href="tel:8016355835" class="bg-blue-600 hover:bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs transition-colors">
                             <i class="fa-solid fa-phone"></i>
                         </a>
                     </div>
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex items-center justify-between">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
                         <div>
-                            <p class="font-bold text-white">Ashlee</p>
-                            <p class="text-[10px] text-slate-400">Director Assistant</p>
+                            <p class="font-bold text-slate-800">Ashlee</p>
+                            <p class="text-[10px] text-slate-500">Director Assistant</p>
                         </div>
                         <a href="tel:8018338459" class="bg-blue-600 hover:bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs transition-colors">
                             <i class="fa-solid fa-phone"></i>
                         </a>
                     </div>
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex items-center justify-between">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
                         <div>
-                            <p class="font-bold text-white">Email Contact</p>
-                            <p class="text-[10px] text-slate-400">cheech_allen@yahoo.com</p>
+                            <p class="font-bold text-slate-800">Email Contact</p>
+                            <p class="text-[10px] text-slate-500">cheech_allen@yahoo.com</p>
                         </div>
                         <a href="mailto:cheech_allen@yahoo.com" class="bg-blue-600 hover:bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs transition-colors">
                             <i class="fa-solid fa-envelope"></i>
@@ -675,75 +707,75 @@
         <!-- ==================== TAB 5: CHECKLIST ==================== -->
         <div id="tab-checklist" class="tab-content space-y-4">
             
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-black text-white tracking-tight flex items-center gap-2">
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
                         <span class="w-1 h-4 bg-rose-500 rounded-full"></span> My Prep Checklist
                     </h3>
-                    <button onclick="resetChecklist()" class="text-[10px] uppercase tracking-wider font-extrabold text-rose-400 hover:text-rose-300">
-                        Reset
+                    <button onclick="resetChecklist()" class="text-[10px] uppercase tracking-wider font-extrabold text-rose-600 hover:text-rose-500">
+                        Reset Checklist
                     </button>
                 </div>
-                <p class="text-[11px] text-slate-400">
+                <p class="text-xs text-slate-500">
                     Interactive packing list to ensure you don't forget any required pieces! Tap items to check them off.
                 </p>
 
                 <!-- Checkboxes -->
-                <div class="space-y-2 pt-2">
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">Black Tennis Skort</p>
-                            <p class="text-[10px] text-slate-400">Rehearsal Wear (June 22 & July 3)</p>
+                            <p class="font-bold text-slate-800">Black Tennis Skort</p>
+                            <p class="text-[10px] text-slate-500">Rehearsal Wear (June 22 & July 3)</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">Baby Blue Tank or T-shirt</p>
-                            <p class="text-[10px] text-slate-400">Rehearsal Wear (June 22 & July 3)</p>
+                            <p class="font-bold text-slate-800">Baby Blue Tank or T-shirt</p>
+                            <p class="text-[10px] text-slate-500">Rehearsal Wear (June 22 & July 3)</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">Tan Body Tight</p>
-                            <p class="text-[10px] text-slate-400">Required undergarment for girls</p>
+                            <p class="font-bold text-slate-800">Tan Body Tight</p>
+                            <p class="text-[10px] text-slate-500">Required undergarment for girls</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">Tan Turners or Jazz Shoes</p>
-                            <p class="text-[10px] text-slate-400">Performance shoes</p>
+                            <p class="font-bold text-slate-800">Tan Turners or Jazz Shoes</p>
+                            <p class="text-[10px] text-slate-500">Performance shoes</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">Rhinestone Stud Earrings</p>
-                            <p class="text-[10px] text-slate-400">Required accessory</p>
+                            <p class="font-bold text-slate-800">Rhinestone Stud Earrings</p>
+                            <p class="text-[10px] text-slate-500">Required accessory</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">Props (Poms / Hoops)</p>
-                            <p class="text-[10px] text-slate-400">Distributed June 11, bring to every practice</p>
+                            <p class="font-bold text-slate-800">Props (Poms / Hoops)</p>
+                            <p class="text-[10px] text-slate-500">Distributed June 11, bring to every practice</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">$50 Meal Money</p>
-                            <p class="text-[10px] text-slate-400">Venmo or cash for stadium food</p>
+                            <p class="font-bold text-slate-800">$50 Meal Money</p>
+                            <p class="text-[10px] text-slate-500">Venmo or cash for stadium food</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-850 cursor-pointer select-none">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-800 text-rose-500 focus:ring-rose-500/20 bg-slate-900 w-4.5 h-4.5" onchange="updateChecklistState()">
+                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-white">Gatorade / Snack Donation</p>
-                            <p class="text-[10px] text-slate-400">Delivered to DBD before travel</p>
+                            <p class="font-bold text-slate-800">Gatorade / Snack Donation</p>
+                            <p class="text-[10px] text-slate-500">Delivered to DBD before travel</p>
                         </div>
                     </label>
                 </div>
@@ -754,38 +786,38 @@
     </main>
 
     <!-- Custom Search Modal Overlay -->
-    <div id="search-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl shadow-2xl p-4 space-y-3">
+    <div id="search-modal" class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs hidden items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 w-full max-w-sm rounded-2xl shadow-xl p-4 space-y-3">
             <div class="flex items-center justify-between">
-                <span class="text-xs font-black uppercase tracking-wider text-rose-500">Quick Search</span>
-                <button onclick="toggleSearchModal(false)" class="text-slate-400 hover:text-white">
+                <span class="text-xs font-black uppercase tracking-wider text-rose-600">Quick Search</span>
+                <button onclick="toggleSearchModal(false)" class="text-slate-400 hover:text-slate-600">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
-            <input type="text" id="search-input" oninput="runSearch()" placeholder="Type a keyword (e.g. hotel, hair, time)..." class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500">
-            <div id="search-results" class="max-h-48 overflow-y-auto space-y-1.5 text-xs text-slate-300">
+            <input type="text" id="search-input" oninput="runSearch()" placeholder="Type a keyword (e.g. hotel, hair, time)..." class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500">
+            <div id="search-results" class="max-h-48 overflow-y-auto space-y-1.5 text-xs text-slate-600">
                 <!-- Search dynamic items inserted here -->
             </div>
         </div>
     </div>
 
     <!-- May 2026 Newsletter Modal -->
-    <div id="newsletter-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl shadow-2xl p-5 space-y-4 max-h-[85vh] overflow-y-auto">
-            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-                <span class="text-xs font-black uppercase tracking-wider text-rose-500">May 2026 Newsletter</span>
-                <button onclick="toggleModal('newsletter-modal')" class="text-slate-400 hover:text-white">
+    <div id="newsletter-modal" class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs hidden items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 w-full max-w-md rounded-2xl shadow-xl p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                <span class="text-xs font-black uppercase tracking-wider text-rose-600">May 2026 Newsletter</span>
+                <button onclick="toggleModal('newsletter-modal')" class="text-slate-400 hover:text-slate-600">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
             
-            <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
-                <div class="bg-rose-950/20 border border-rose-500/20 p-3 rounded-xl">
-                    <h4 class="font-bold text-white mb-1">Welcome Parents & Dancers!</h4>
+            <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
+                <div class="bg-rose-50 border border-rose-100 p-3.5 rounded-xl">
+                    <h4 class="font-bold text-slate-800 mb-1">Welcome Parents & Dancers!</h4>
                     <p>We are officially kicking off our preparations for the Stadium of Fire 2026 performance celebrating the US 250th anniversary!</p>
                 </div>
                 
-                <h5 class="font-black text-white uppercase mt-2">Key Reminders:</h5>
+                <h5 class="font-black text-slate-800 uppercase mt-2">Key Reminders:</h5>
                 <ul class="list-disc pl-4 space-y-1.5">
                     <li>Always arrive dressed as a dancer and prompt/on-time to rehearsals.</li>
                     <li>Always bring props (poms and hoops received on June 11) to every rehearsal.</li>
@@ -793,7 +825,7 @@
                     <li>Double-check your email regularly as the travel date draws closer.</li>
                 </ul>
 
-                <h5 class="font-black text-white uppercase mt-2">Required Fees Checklist:</h5>
+                <h5 class="font-black text-slate-800 uppercase mt-2">Required Fees Checklist:</h5>
                 <ul class="list-disc pl-4 space-y-1">
                     <li>Rehearsal Outfit Set</li>
                     <li>USA Dress / Men's Outfit Set</li>
@@ -802,22 +834,22 @@
                 </ul>
             </div>
             
-            <button onclick="toggleModal('newsletter-modal')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition-colors">
+            <button onclick="toggleModal('newsletter-modal')" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors">
                 Close Newsletter
             </button>
         </div>
     </div>
 
     <!-- Toast Messaging Notification Alert (Custom Native Element) -->
-    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white shadow-2xl flex items-center space-x-2 opacity-0 pointer-events-none transition-all duration-300">
-        <i class="fa-solid fa-circle-check text-emerald-500" id="toast-icon"></i>
+    <div id="toast" class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 shadow-md flex items-center space-x-2 opacity-0 pointer-events-none transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-emerald-600" id="toast-icon"></i>
         <span id="toast-text">Action completed successfully</span>
     </div>
 
-    <!-- Persistent Bottom Mobile Tab Navigation Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800/80 pb-safe">
+    <!-- Persistent Bottom Mobile Tab Navigation Bar (Highly Responsive - hidden on desktop) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 pb-safe md:hidden shadow-xs">
         <div class="max-w-md mx-auto grid grid-cols-5 h-16 text-center text-[10px] font-bold">
-            <button onclick="switchTab('overview')" id="nav-overview" class="flex flex-col items-center justify-center text-rose-500 space-y-1">
+            <button onclick="switchTab('overview')" id="nav-overview" class="flex flex-col items-center justify-center text-rose-600 space-y-1">
                 <i class="fa-solid fa-house text-base"></i>
                 <span>Overview</span>
             </button>
@@ -863,23 +895,33 @@
             { title: "Donations list", desc: "Gatorade, PowerAde, and non-melting snacks needed.", tags: ["snacks", "donations", "food", "gatorade"] }
         ];
 
-        // Tab Switching Mechanism
+        // Tab Switching Mechanism with Desktop and Mobile Sychronization
         function switchTab(tabId) {
             // Deactivate all tab content
             const tabContents = document.querySelectorAll('.tab-content');
             tabContents.forEach(content => content.classList.remove('active'));
 
-            // Reset navigation colors
+            // Reset mobile navigation button styling
             const navButtons = document.querySelectorAll('nav button');
             navButtons.forEach(btn => btn.className = 'flex flex-col items-center justify-center text-slate-500 space-y-1 relative');
 
-            // Activate chosen tab
+            // Reset desktop navigation button styling
+            const deskNavButtons = document.querySelectorAll('[id^="desk-nav-"]');
+            deskNavButtons.forEach(btn => btn.className = 'px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100');
+
+            // Activate chosen tab section
             document.getElementById(`tab-${tabId}`).classList.add('active');
             
-            // Highlight chosen nav button
+            // Highlight active mobile button
             const activeBtn = document.getElementById(`nav-${tabId}`);
             if (activeBtn) {
-                activeBtn.className = 'flex flex-col items-center justify-center text-rose-500 space-y-1 relative';
+                activeBtn.className = 'flex flex-col items-center justify-center text-rose-600 space-y-1 relative';
+            }
+
+            // Highlight active desktop button
+            const activeDeskBtn = document.getElementById(`desk-nav-${tabId}`);
+            if (activeDeskBtn) {
+                activeDeskBtn.className = 'px-3.5 py-2 rounded-lg text-xs font-black transition-all bg-rose-50 text-rose-600';
             }
         }
 
@@ -892,12 +934,12 @@
 
             if (view === 'kearns') {
                 kBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg bg-rose-600 text-white transition-all';
-                pBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg text-slate-400 hover:text-slate-200 transition-all';
+                pBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg text-slate-500 hover:text-slate-800 transition-all';
                 kView.classList.remove('hidden');
                 pView.classList.add('hidden');
             } else {
                 pBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg bg-rose-600 text-white transition-all';
-                kBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg text-slate-400 hover:text-slate-200 transition-all';
+                kBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg text-slate-500 hover:text-slate-800 transition-all';
                 pView.classList.remove('hidden');
                 kView.classList.add('hidden');
             }
@@ -910,8 +952,8 @@
             const filterMainBtn = document.getElementById('filter-main');
 
             if (group === 'main') {
-                filterMainBtn.className = 'text-[10px] font-black px-2.5 py-1 rounded bg-rose-600 text-white transition-colors';
-                filterAllBtn.className = 'text-[10px] font-bold px-2.5 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition-colors';
+                filterMainBtn.className = 'text-xs font-black px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-250 transition-colors';
+                filterAllBtn.className = 'text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
                 
                 allItems.forEach(item => {
                     if (item.classList.contains('main-group')) {
@@ -921,8 +963,8 @@
                     }
                 });
             } else {
-                filterAllBtn.className = 'text-[10px] font-black px-2.5 py-1 rounded bg-rose-600 text-white transition-colors';
-                filterMainBtn.className = 'text-[10px] font-bold px-2.5 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition-colors';
+                filterAllBtn.className = 'text-xs font-black px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-250 transition-colors';
+                filterMainBtn.className = 'text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
                 
                 allItems.forEach(item => {
                     item.classList.remove('hidden');
@@ -930,9 +972,8 @@
             }
         }
 
-        // Countdown System
+        // Countdown System to target trip date: July 2, 2026 at 8:00 AM
         function runCountdown() {
-            // Target date: July 2, 2026 at 8:00 AM
             const targetDate = new Date("July 2, 2026 08:00:00").getTime();
             
             function updateClock() {
@@ -962,7 +1003,7 @@
             setInterval(updateClock, 1000);
         }
 
-        // Search Modal Utility
+        // Search Modal toggles
         function toggleSearchModal(show) {
             const modal = document.getElementById('search-modal');
             if (show) {
@@ -977,7 +1018,7 @@
             }
         }
 
-        // Modal triggers
+        // Modal triggers for Newsletter
         function toggleModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal.classList.contains('hidden')) {
@@ -1003,16 +1044,16 @@
             });
 
             if (matches.length === 0) {
-                resultsBox.innerHTML = "<p class='text-slate-500 py-4 text-center'>No matching info found.</p>";
+                resultsBox.innerHTML = "<p class='text-slate-400 py-4 text-center'>No matching info found.</p>";
                 return;
             }
 
             matches.forEach(match => {
                 const resultDiv = document.createElement('div');
-                resultDiv.className = 'bg-slate-950 p-2.5 rounded-lg border border-slate-850 hover:bg-slate-900 cursor-pointer transition-colors';
+                resultDiv.className = 'bg-slate-50 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer transition-colors';
                 resultDiv.innerHTML = `
-                    <p class="font-bold text-white text-[11px]">${match.title}</p>
-                    <p class="text-[10px] text-slate-400 mt-0.5">${match.desc}</p>
+                    <p class="font-bold text-slate-800 text-[11px]">${match.title}</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">${match.desc}</p>
                 `;
                 resultsBox.appendChild(resultDiv);
             });
@@ -1024,17 +1065,17 @@
             tempInput.value = text;
             document.body.appendChild(tempInput);
             tempInput.select();
-            tempInput.setSelectionRange(0, 99999); // Mobile
+            tempInput.setSelectionRange(0, 99999); // Mobile compatibility support
             try {
                 document.execCommand("copy");
                 showToast(`${entityName} copied to clipboard!`);
             } catch (err) {
-                showToast("Unable to copy. Please manually write.");
+                showToast("Unable to copy. Please copy manually.");
             }
             document.body.removeChild(tempInput);
         }
 
-        // UI Toast Mechanism
+        // UI Toast Notifications
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastText = document.getElementById('toast-text');
@@ -1049,7 +1090,7 @@
             }, 2500);
         }
 
-        // Checklist State Persistence (Stored dynamically per-session)
+        // Checklist State Persistence (Synchronized for both Mobile and Desktop indicator dots)
         function updateChecklistState() {
             const checkboxes = document.querySelectorAll('.checklist-item');
             let checkedCount = 0;
@@ -1059,15 +1100,25 @@
                 }
             });
 
-            const dot = document.getElementById('checklist-dot');
+            const dotMobile = document.getElementById('checklist-dot');
+            const dotDesk = document.getElementById('checklist-dot-desk');
+            
+            function toggleDots(visible, colorClass) {
+                [dotMobile, dotDesk].forEach(dot => {
+                    if (visible) {
+                        dot.className = `absolute top-1.5 md:top-1 right-3.5 md:right-1.5 w-1.5 h-1.5 rounded-full ${colorClass}`;
+                    } else {
+                        dot.className = "absolute top-1.5 md:top-1 right-3.5 md:right-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 hidden";
+                    }
+                });
+            }
+
             if (checkedCount > 0 && checkedCount < checkboxes.length) {
-                dot.classList.remove('hidden');
-                dot.classList.add('bg-amber-400');
+                toggleDots(true, 'bg-amber-500');
             } else if (checkedCount === checkboxes.length) {
-                dot.classList.remove('hidden');
-                dot.classList.add('bg-emerald-500');
+                toggleDots(true, 'bg-emerald-500');
             } else {
-                dot.classList.add('hidden');
+                toggleDots(false, '');
             }
         }
 
@@ -1081,7 +1132,7 @@
         // Run application on load
         window.onload = function() {
             runCountdown();
-            // Default filter to Main/Senior schedule to keep overview clean
+            // Default filter to Main/Senior schedule to keep calendar neat and targeted
             filterSchedule('main');
         }
     </script>
