@@ -282,7 +282,7 @@
                     </div>
 
                     <!-- Admin Add Event Button -->
-                    <button onclick="promptAddEvent('kearns')" class="admin-only w-full py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 hover:bg-emerald-100 transition-all hidden">
+                    <button onclick="openEventEditor('kearns', -1)" class="admin-only w-full py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 hover:bg-emerald-100 transition-all hidden">
                         <i class="fa-solid fa-plus"></i> Add Kearns Event
                     </button>
                 </div>
@@ -310,7 +310,7 @@
                     </div>
 
                     <!-- Admin Add Event Button -->
-                    <button onclick="promptAddEvent('provo')" class="admin-only w-full py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 hover:bg-emerald-100 transition-all hidden">
+                    <button onclick="openEventEditor('provo', -1)" class="admin-only w-full py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 hover:bg-emerald-100 transition-all hidden">
                         <i class="fa-solid fa-plus"></i> Add Provo Event
                     </button>
                 </div>
@@ -803,6 +803,86 @@
         </div>
     </div>
 
+    <!-- -->
+    <!-- Custom Admin Event Editor Modal -->
+    <div id="event-editor-modal" class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs hidden items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 w-full max-w-md rounded-2xl shadow-xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                <span id="editor-modal-title" class="text-xs font-black uppercase tracking-wider text-rose-600">Edit Event</span>
+                <button onclick="closeEventEditor()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <input type="hidden" id="editor-event-type">
+            <input type="hidden" id="editor-event-idx">
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Date Header (e.g., ★ Wed, May 27)</label>
+                    <input type="text" id="editor-date" class="w-full bg-slate-50 border border-slate-250 text-slate-800 px-3 py-2 rounded-xl focus:ring-1 focus:ring-rose-500">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Time Range (e.g., 6:00 – 8:00 PM)</label>
+                    <input type="text" id="editor-time" class="w-full bg-slate-50 border border-slate-250 text-slate-800 px-3 py-2 rounded-xl focus:ring-1 focus:ring-rose-500">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Event Title/Description</label>
+                    <input type="text" id="editor-desc" class="w-full bg-slate-50 border border-slate-250 text-slate-800 px-3 py-2 rounded-xl focus:ring-1 focus:ring-rose-500">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Sub-details (optional)</label>
+                    <textarea id="editor-details" rows="2" class="w-full bg-slate-50 border border-slate-250 text-slate-800 p-3 rounded-xl focus:ring-1 focus:ring-rose-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Custom Highlight Tag Label (e.g., Tonight, Props)</label>
+                    <input type="text" id="editor-label" class="w-full bg-slate-50 border border-slate-250 text-slate-800 px-3 py-2 rounded-xl focus:ring-1 focus:ring-rose-500" placeholder="Leave empty for none">
+                </div>
+                
+                <div class="flex flex-col gap-2 pt-1">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="editor-main-only" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 w-4 h-4">
+                        <span class="font-bold text-slate-700 text-[11px]">★ Main/Senior Dancers ONLY</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="editor-is-critical" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 w-4 h-4">
+                        <span class="font-bold text-slate-700 text-[11px]">Critical Event (Red banner styling)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveEditedEvent()" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition-colors">
+                    Save Event
+                </button>
+                <button onclick="closeEventEditor()" class="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs hidden items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 w-full max-w-xs rounded-2xl shadow-xl p-5 space-y-4 text-center">
+            <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600 mx-auto">
+                <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+            </div>
+            <div>
+                <h4 id="confirm-title" class="text-sm font-black text-slate-900 uppercase">Are you sure?</h4>
+                <p id="confirm-message" class="text-xs text-slate-500 mt-1">This action cannot be undone.</p>
+            </div>
+            <div class="flex gap-2">
+                <button id="confirm-yes-btn" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl transition-colors">
+                    Delete
+                </button>
+                <button onclick="closeConfirmModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Messaging Notification Alert (Custom Native Element) -->
     <div id="toast" class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 shadow-md flex items-center space-x-2 opacity-0 pointer-events-none transition-all duration-300">
         <i class="fa-solid fa-circle-check text-emerald-600" id="toast-icon"></i>
@@ -869,6 +949,7 @@
         let db = null; // Firestore reference
         let adminMode = false;
         let activeFilter = 'main';
+        let currentConfirmCallback = null;
 
         // Initialize Application
         window.onload = function() {
@@ -947,7 +1028,7 @@
             renderAllData();
         }
 
-        // Dynamic View Rendering Engine
+        //        // Dynamic View Rendering Engine
         function renderAllData() {
             document.getElementById("last-updated-text").innerText = `Updated: ${dbState.lastUpdated}`;
             
@@ -999,7 +1080,8 @@
                         <p class="text-xs font-black ${ev.isCritical ? 'text-rose-600' : 'text-slate-700'}">${ev.date} @ ${ev.time}</p>
                         <div class="flex items-center space-x-2">
                             ${labelBadge}
-                            <button onclick="deleteEvent('kearns', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="openEventEditor('kearns', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-800 text-xs" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteEvent('kearns', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                     <p class="text-[11px] font-bold text-slate-800 mt-1">${ev.desc}</p>
@@ -1021,7 +1103,8 @@
                         <p class="text-xs font-black text-rose-600">${ev.date} — ${ev.time}</p>
                         <div class="flex items-center space-x-2">
                             ${ev.isCritical ? '<span class="text-[9px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold uppercase">Dress Rehearsal</span>' : ''}
-                            <button onclick="deleteEvent('provo', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="openEventEditor('provo', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-850 text-xs" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteEvent('provo', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                     <p class="text-[11px] font-bold text-slate-800 mt-1">${ev.desc}</p>
@@ -1034,35 +1117,118 @@
             toggleAdminElements();
         }
 
-        // Admin Edit Events Operations
-        function promptAddEvent(type) {
-            const date = prompt("Enter Event Date (e.g. Thurs, June 18):");
-            if (!date) return;
-            const time = prompt("Enter Event Time (e.g. 6:00 – 8:00 PM):");
-            const desc = prompt("Enter Event Title:");
-            const details = prompt("Enter Description/Details (optional):");
-            const mainOnly = confirm("Is this event for Main/Senior Dancers only? (OK = Yes, Cancel = No)");
-            const isCritical = confirm("Is this a critical filming or dress rehearsal event?");
-
-            const newEvent = { date, time, desc, details, mainOnly, isCritical };
+        //        // Custom Admin Event Editor Controllers
+        function openEventEditor(type, idx) {
+            const modal = document.getElementById("event-editor-modal");
+            document.getElementById("editor-event-type").value = type;
+            document.getElementById("editor-event-idx").value = idx;
             
-            if (type === 'kearns') {
-                dbState.kearnsEvents.push(newEvent);
+            const titleEl = document.getElementById("editor-modal-title");
+            
+            if (idx === -1) {
+                // Configuring clean default values for "Add Event" process
+                titleEl.innerText = `Add ${type === 'kearns' ? 'Kearns' : 'Provo'} Event`;
+                document.getElementById("editor-date").value = "";
+                document.getElementById("editor-time").value = "6:00 – 8:00 PM";
+                document.getElementById("editor-desc").value = "";
+                document.getElementById("editor-details").value = "";
+                document.getElementById("editor-label").value = "";
+                document.getElementById("editor-main-only").checked = (type === 'kearns');
+                document.getElementById("editor-is-critical").checked = false;
             } else {
-                dbState.provoEvents.push(newEvent);
+                // Extracting existing object parameters for "Edit Event" process
+                titleEl.innerText = `Edit ${type === 'kearns' ? 'Kearns' : 'Provo'} Event`;
+                const ev = (type === 'kearns') ? dbState.kearnsEvents[idx] : dbState.provoEvents[idx];
+                
+                document.getElementById("editor-date").value = ev.date || "";
+                document.getElementById("editor-time").value = ev.time || "";
+                document.getElementById("editor-desc").value = ev.desc || "";
+                document.getElementById("editor-details").value = ev.details || "";
+                document.getElementById("editor-label").value = ev.label || "";
+                document.getElementById("editor-main-only").checked = !!ev.mainOnly;
+                document.getElementById("editor-is-critical").checked = !!ev.isCritical;
             }
+            
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeEventEditor() {
+            const modal = document.getElementById("event-editor-modal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        function saveEditedEvent() {
+            const type = document.getElementById("editor-event-type").value;
+            const idx = parseInt(document.getElementById("editor-event-idx").value);
+            
+            const date = document.getElementById("editor-date").value.trim();
+            const time = document.getElementById("editor-time").value.trim();
+            const desc = document.getElementById("editor-desc").value.trim();
+            const details = document.getElementById("editor-details").value.trim();
+            const label = document.getElementById("editor-label").value.trim();
+            const mainOnly = document.getElementById("editor-main-only").checked;
+            const isCritical = document.getElementById("editor-is-critical").checked;
+
+            if (!date || !time || !desc) {
+                showToast("Date, Time, and Title are required fields!");
+                return;
+            }
+
+            const eventData = { date, time, desc, details, label, mainOnly, isCritical };
+            const targetArray = (type === 'kearns') ? dbState.kearnsEvents : dbState.provoEvents;
+
+            if (idx === -1) {
+                targetArray.push(eventData);
+                showToast("New event added!");
+            } else {
+                targetArray[idx] = eventData;
+                showToast("Event modified successfully!");
+            }
+
+            closeEventEditor();
             saveAllToDatabase();
         }
 
-        function deleteEvent(type, idx) {
-            if (confirm("Are you sure you want to delete this event?")) {
-                if (type === 'kearns') {
-                    dbState.kearnsEvents.splice(idx, 1);
-                } else {
-                    dbState.provoEvents.splice(idx, 1);
-                }
-                saveAllToDatabase();
+        //        // Custom Dialog Modal Controllers (Avoiding system standard block alerts)
+        function openConfirmModal(title, message, callback) {
+            document.getElementById("confirm-title").innerText = title;
+            document.getElementById("confirm-message").innerText = message;
+            currentConfirmCallback = callback;
+            
+            const modal = document.getElementById("confirm-modal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById("confirm-modal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+            currentConfirmCallback = null;
+        }
+
+        document.getElementById("confirm-yes-btn").addEventListener("click", function() {
+            if (typeof currentConfirmCallback === "function") {
+                currentConfirmCallback();
             }
+            closeConfirmModal();
+        });
+
+        function deleteEvent(type, idx) {
+            openConfirmModal(
+                "Delete Event", 
+                "Are you sure you want to permanently delete this event block?", 
+                function() {
+                    if (type === 'kearns') {
+                        dbState.kearnsEvents.splice(idx, 1);
+                    } else {
+                        dbState.provoEvents.splice(idx, 1);
+                    }
+                    saveAllToDatabase();
+                }
+            );
         }
 
         function saveResources() {
