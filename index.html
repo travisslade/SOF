@@ -6,15 +6,20 @@
     <title>Dance by Denise - Stadium of Fire 2026</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for premium icons -->
+    <!-- Google Fonts for ultimate readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for premium visual cues -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase Compat SDKs (For easy CDN integration in single-file deployment) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <style>
-        /* Custom scrollbar hiding and fluid designs */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Clear scrollbars */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -22,216 +27,310 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        /* Smooth page transition animations */
+        /* High-contrast smooth tab transitions */
         .tab-content {
             display: none;
         }
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.25s ease-out;
+            animation: slideUpClear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+        @keyframes slideUpClear {
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        /* Pulsing beacon highlight */
+        .map-glow-denise {
+            animation: mapHighlightPulse 1.5s infinite alternate;
+        }
+        @keyframes mapHighlightPulse {
+            0% { fill: rgba(239, 68, 68, 0.5); stroke: rgba(239, 68, 68, 1); stroke-width: 2.5; }
+            100% { fill: rgba(254, 205, 211, 0.95); stroke: rgba(190, 24, 74, 1); stroke-width: 4; }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans h-full flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+<body class="bg-slate-50 text-slate-900 font-sans h-full flex flex-col antialiased selection:bg-rose-500 selection:text-white">
 
-    <!-- Top Premium Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 shadow-xs">
+    <!-- High-Impact Top Header with visual indicators -->
+    <header class="sticky top-0 z-40 bg-white border-b-2 border-slate-200/80 px-4 py-3 shadow-xs">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-blue-600 flex items-center justify-center text-white font-black text-sm tracking-wider shadow-sm">
-                    DBD
+                <div class="w-11 h-11 rounded-xl bg-rose-600 text-white flex flex-col items-center justify-center shadow-md shrink-0">
+                    <span class="text-xs font-black leading-none">JULY</span>
+                    <span class="text-sm font-black tracking-tight leading-none">02</span>
                 </div>
                 <div>
-                    <h1 class="text-sm md:text-base font-black tracking-tight uppercase text-slate-900 leading-none">Dance By Denise</h1>
-                    <p class="text-[10px] md:text-xs text-slate-500 font-semibold mt-0.5 flex items-center gap-1.5">
-                        <span>Stadium of Fire 2026 Parent Hub</span>
-                        <span id="sync-badge" class="w-2 h-2 rounded-full bg-amber-400" title="Local Storage Mode"></span>
+                    <h1 class="text-sm md:text-lg font-black tracking-tight uppercase text-slate-900 flex items-center gap-1.5 leading-none">
+                        Dance By Denise
+                    </h1>
+                    <p class="text-[10px] md:text-xs text-slate-500 font-bold mt-0.5 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-rose-600 animate-ping"></span>
+                        <span>Stadium of Fire 2026 Hub</span>
+                        <span id="sync-badge" class="inline-block px-1.5 py-0.5 rounded-full text-[9px] bg-slate-100 text-slate-500" title="Active Connection Mode">Local Cache</span>
                     </p>
                 </div>
             </div>
 
-            <!-- Desktop Horizontal Navigation Menu -->
-            <div class="hidden md:flex items-center space-x-1">
-                <button onclick="switchTab('overview')" id="desk-nav-overview" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all bg-rose-50 text-rose-600">
-                    <i class="fa-solid fa-house mr-1.5"></i>Overview
+            <!-- Desktop Horizontal Navigation Tabs -->
+            <div class="hidden md:flex items-center space-x-2">
+                <button onclick="switchTab('overview')" id="desk-nav-overview" class="px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all bg-rose-600 text-white shadow-sm">
+                    <i class="fa-solid fa-house mr-1.5"></i>Overview & Map
                 </button>
-                <button onclick="switchTab('schedule')" id="desk-nav-schedule" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100">
-                    <i class="fa-solid fa-calendar-days mr-1.5"></i>Schedules
+                <button onclick="switchTab('schedule')" id="desk-nav-schedule" class="px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-calendar-day mr-1.5"></i>Schedules
                 </button>
-                <button onclick="switchTab('costumes')" id="desk-nav-costumes" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100">
-                    <i class="fa-solid fa-shirt mr-1.5"></i>Costumes
+                <button onclick="switchTab('costumes')" id="desk-nav-costumes" class="px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-shirt mr-1.5"></i>Dress & Applique
                 </button>
-                <button onclick="switchTab('logistics')" id="desk-nav-logistics" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100">
-                    <i class="fa-solid fa-truck-ramp-box mr-1.5"></i>Logistics
+                <button onclick="switchTab('logistics')" id="desk-nav-logistics" class="px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-truck-ramp-box mr-1.5"></i>Money & Travel
                 </button>
-                <button onclick="switchTab('checklist')" id="desk-nav-checklist" class="px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100 relative">
-                    <div class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 hidden" id="checklist-dot-desk"></div>
-                    <i class="fa-solid fa-list-check mr-1.5"></i>Checklist
+                <button onclick="switchTab('checklist')" id="desk-nav-checklist" class="px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all text-slate-600 hover:bg-slate-100 relative">
+                    <div class="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-600 hidden animate-pulse" id="checklist-dot-desk"></div>
+                    <i class="fa-solid fa-list-check mr-1.5"></i>My Checklist
                 </button>
             </div>
 
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-2">
-                <!-- Config & Database Integration Panel -->
-                <button onclick="toggleConfigModal(true)" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
-                    <i class="fa-solid fa-database text-xs"></i>
+                <!-- Database Link Panel -->
+                <button onclick="toggleConfigModal(true)" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors" title="Database Configuration">
+                    <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
                 </button>
-                <!-- Admin Lock Switch -->
-                <button onclick="toggleAdminPrompt()" id="admin-lock-btn" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-rose-50 hover:text-rose-600 flex items-center justify-center text-slate-600 transition-colors" title="Toggle Admin Edit Mode">
-                    <i class="fa-solid fa-lock text-xs"></i>
+                <!-- Admin Mode -->
+                <button onclick="toggleAdminPrompt()" id="admin-lock-btn" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 flex items-center justify-center text-slate-600 transition-colors" title="Admin Lock Panel">
+                    <i class="fa-solid fa-lock text-sm"></i>
                 </button>
-                <!-- Search -->
-                <button onclick="toggleSearchModal(true)" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
-                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                <!-- Global Search -->
+                <button onclick="toggleSearchModal(true)" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors" title="Search Hub">
+                    <i class="fa-solid fa-search text-sm"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Live Update Admin Banner -->
+    <!-- Admin Operations Banner -->
     <div id="admin-banner" class="bg-rose-600 text-white text-xs font-bold py-2.5 px-4 hidden">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-exclamation animate-pulse"></i> Admin Mode Active — All edits will save to your configured cloud database.</span>
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-exclamation animate-bounce"></i> Administrator Enabled — Edits will apply in real-time.</span>
             <div class="flex gap-2">
-                <button onclick="saveAllToDatabase()" class="bg-white text-rose-600 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-wider shadow-sm hover:bg-rose-50 transition-all">Save Changes</button>
-                <button onclick="exitAdminMode()" class="bg-rose-700 text-white px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider hover:bg-rose-800 transition-all">Exit</button>
+                <button onclick="saveAllToDatabase()" class="bg-white text-rose-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-xs hover:bg-rose-50 transition-all">Save To Cloud</button>
+                <button onclick="exitAdminMode()" class="bg-rose-700 text-white px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider hover:bg-rose-800 transition-all">Exit</button>
             </div>
         </div>
     </div>
 
-    <!-- Main Content Area (Spacious on Desktop, centered and sleek on Mobile) -->
+    <!-- Main Container -->
     <main class="flex-1 overflow-y-auto pb-24 md:pb-8 px-4 pt-4 max-w-6xl mx-auto w-full space-y-4">
 
-        <!-- Banner Countdown Card -->
-        <div id="countdown-card" class="bg-gradient-to-r from-blue-50 to-rose-50 border border-slate-200 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-24 h-24 bg-rose-500/5 rounded-full blur-xl"></div>
-            <div class="absolute -left-10 -bottom-10 w-24 h-24 bg-blue-500/5 rounded-full blur-xl"></div>
-            
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                <div class="flex items-center gap-2">
-                    <span class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
-                        Countdown to Provo
-                    </span>
-                    <span class="text-[10px] text-slate-400 font-semibold" id="last-updated-text">Updated: Loading...</span>
-                </div>
-                <span class="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
-                    <i class="fa-solid fa-calendar text-[10px] text-blue-600"></i> July 2, 2026
+        <!-- Visual Countdown Anchor Card -->
+        <div id="countdown-card" class="bg-white border-2 border-slate-200 rounded-3xl p-4 shadow-sm relative overflow-hidden flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+            <div class="space-y-1">
+                <span class="text-[9px] tracking-widest font-extrabold uppercase text-rose-600 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-md">
+                    DAYS REMAINING UNTIL TRAVEL
                 </span>
+                <h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                    Provo, UT Mandatories begin July 2, 2026
+                </h2>
+                <p class="text-[11px] text-slate-400 font-bold" id="last-updated-text">Synced: Loading...</p>
             </div>
             
-            <div class="grid grid-cols-4 gap-2 md:gap-4 text-center my-1 max-w-lg">
-                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
-                    <span id="days" class="block text-xl md:text-2xl font-black text-slate-800">00</span>
-                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Days</span>
+            <div class="grid grid-cols-4 gap-2 text-center max-w-sm w-full">
+                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl">
+                    <span id="days" class="block text-lg md:text-xl font-black text-slate-800">00</span>
+                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Days</span>
                 </div>
-                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
-                    <span id="hours" class="block text-xl md:text-2xl font-black text-slate-800">00</span>
-                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Hrs</span>
+                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl">
+                    <span id="hours" class="block text-lg md:text-xl font-black text-slate-800">00</span>
+                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Hrs</span>
                 </div>
-                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
-                    <span id="mins" class="block text-xl md:text-2xl font-black text-slate-800">00</span>
-                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Mins</span>
+                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl">
+                    <span id="mins" class="block text-lg md:text-xl font-black text-slate-800">00</span>
+                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Mins</span>
                 </div>
-                <div class="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
-                    <span id="secs" class="block text-xl md:text-2xl font-black text-rose-600 animate-pulse">00</span>
-                    <span class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 font-bold">Secs</span>
+                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl border-b-rose-400 border-b-2">
+                    <span id="secs" class="block text-lg md:text-xl font-black text-rose-600">00</span>
+                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Secs</span>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== TAB 1: OVERVIEW ==================== -->
+        <!-- ==================== TAB 1: OVERVIEW & FIELD PLACEMENT ==================== -->
         <div id="tab-overview" class="tab-content active space-y-4">
             
-            <!-- Quick Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center space-x-3 shadow-xs">
-                    <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 shrink-0">
-                        <i class="fa-solid fa-users text-lg"></i>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-slate-500 font-medium">Performers</span>
-                        <span class="text-xs md:text-sm font-black text-slate-800">Main/Senior Group</span>
-                    </div>
-                </div>
-                <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center space-x-3 shadow-xs">
-                    <div class="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-500 shrink-0">
-                        <i class="fa-solid fa-star text-lg"></i>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-slate-500 font-medium">Headliner</span>
-                        <span class="text-xs md:text-sm font-black text-slate-800">Brad Paisley</span>
-                    </div>
-                </div>
-                <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center space-x-3 shadow-xs">
-                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600 shrink-0">
-                        <i class="fa-solid fa-stadium text-lg"></i>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-slate-500 font-medium">Primary Stadium</span>
-                        <span class="text-xs md:text-sm font-black text-slate-800">LaVell Edwards</span>
-                    </div>
-                </div>
+            <!-- Quick Scannable Anchor: TL;DR Card -->
+            <div class="border-l-4 border-l-blue-600 bg-blue-50/50 border border-slate-200 rounded-2xl p-4">
+                <h3 class="text-sm font-black text-blue-900 uppercase tracking-tight flex items-center gap-1.5 mb-2">
+                    <i class="fa-solid fa-circle-info"></i> Fast Summary (TL;DR)
+                </h3>
+                <ul class="text-xs text-slate-700 space-y-2 list-none pl-0">
+                    <li class="flex items-start gap-2">
+                        <span class="text-blue-600 font-black shrink-0">➔</span>
+                        <span>Dancers perform on the <strong>West Side of the field, facing WEST</strong> (facing parents sitting in the West Stand).</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-blue-600 font-black shrink-0">➔</span>
+                        <span>This celebrates the <strong>250th anniversary of the signing of the Declaration of Independence</strong>.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-blue-600 font-black shrink-0">➔</span>
+                        <span>All dancers stay on the field for the <strong>entire show</strong>. No backstage pickups during the event.</span>
+                    </li>
+                </ul>
             </div>
 
-            <!-- Layout split on desktop for Overview Content -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Interactive Field Placement Grids -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                 
-                <!-- Field Placement Visualization Map -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight flex items-center justify-between">
-                        <span class="flex items-center gap-2">
-                            <span class="w-1 h-4 bg-emerald-500 rounded-full"></span> Field Placement Map
-                        </span>
-                        <span class="text-[9px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">Facing West</span>
-                    </h3>
-                    
-                    <!-- SVG Stadium Layout -->
-                    <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 flex flex-col items-center">
-                        <svg viewBox="0 0 320 180" class="w-full max-w-sm">
-                            <rect x="10" y="10" width="300" height="160" rx="40" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="3,3" />
-                            <path d="M 15,40 Q 5,90 15,140" fill="none" stroke="#ef4444" stroke-width="6" />
-                            <text x="24" y="93" fill="#ef4444" font-size="8" font-weight="bold" font-family="sans-serif">West Bleachers</text>
-                            <text x="24" y="103" fill="#475569" font-size="6.5" font-family="sans-serif">(Parents Sit Here)</text>
-                            <path d="M 305,40 Q 315,90 305,140" fill="none" stroke="#64748b" stroke-width="6" />
-                            <text x="235" y="95" fill="#64748b" font-size="7" font-family="sans-serif">East Bleachers</text>
-                            <rect x="80" y="30" width="160" height="120" rx="4" fill="#15803d" stroke="#166534" stroke-width="2" />
-                            <line x1="160" y1="30" x2="160" y2="150" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="2,2" />
-                            <rect x="110" y="30" width="100" height="120" fill="none" stroke="#4ade80" stroke-width="1" />
-                            <rect x="85" y="35" width="45" height="110" rx="4" fill="rgba(239, 68, 68, 0.25)" stroke="#f43f5e" stroke-width="2" />
-                            <path d="M 125,90 L 98,90" fill="none" stroke="#f43f5e" stroke-width="2" />
-                            <polygon points="98,90 104,87 104,93" fill="#f43f5e" />
-                            <text x="140" y="70" fill="#ffffff" font-size="7" font-weight="bold" font-family="sans-serif">Dancers Position</text>
-                            <text x="140" y="80" fill="#f43f5e" font-size="7" font-weight="bold" font-family="sans-serif">WEST side of field</text>
-                            <text x="140" y="90" fill="#f43f5e" font-size="7" font-weight="bold" font-family="sans-serif">FACING WEST</text>
-                            <text x="140" y="105" fill="#e2e8f0" font-size="6" font-family="sans-serif">(Opposite of prior years)</text>
-                        </svg>
+                <!-- SVG Field Map -->
+                <div class="bg-white border border-slate-200 rounded-3xl p-4 md:col-span-8 space-y-3 shadow-xs">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                        <div>
+                            <h3 class="text-sm font-black text-slate-950 uppercase tracking-tight flex items-center gap-2">
+                                <span class="w-1 h-4 bg-rose-600 rounded-full"></span> 250th Routine Stadium Map
+                            </h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Matches Homebase Chart 2a (South at top, North at bottom)</p>
+                        </div>
                     </div>
-                    
-                    <p class="text-[11px] text-slate-500 leading-relaxed text-center">
-                        Dancers remain on the performance field for the <strong>entire show</strong>.
-                    </p>
+
+                    <!-- SVG Grid Mapping (Matches image_936f38.jpg layout perfectly) -->
+                    <div class="bg-slate-100 rounded-2xl p-4 border border-slate-200">
+                        <div class="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-3 bg-white p-2.5 rounded-xl border border-slate-200">
+                            <span>Tap any highlighted box to view details:</span>
+                            <div class="flex gap-2">
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-rose-300 rounded border border-rose-500"></span> Denise Positions</span>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full overflow-x-auto no-scrollbar">
+                            <svg viewBox="0 0 600 350" class="w-full min-w-[500px] h-auto">
+                                <!-- Base Grid Background -->
+                                <rect width="600" height="350" fill="#f8fafc" rx="12" />
+                                <rect x="30" y="30" width="540" height="290" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+                                
+                                <!-- Core Lines -->
+                                <line x1="300" y1="30" x2="300" y2="320" stroke="#94a3b8" stroke-dasharray="3,3" />
+                                <line x1="30" y1="175" x2="570" y2="175" stroke="#94a3b8" stroke-dasharray="3,3" />
+                                
+                                <!-- Diagonal Staircase / Ramp line -->
+                                <line x1="30" y1="320" x2="450" y2="30" stroke="#64748b" stroke-width="10" opacity="0.4" />
+                                <text x="210" y="210" fill="#1e293b" font-size="9" font-weight="900" transform="rotate(-33 210 210)">STAGE / ENTRANCE RAMP</text>
+
+                                <!-- Compass Markers -->
+                                <text x="300" y="20" fill="#475569" font-size="13" font-weight="900" text-anchor="middle">S (SOUTH ENDZONE)</text>
+                                <text x="300" y="340" fill="#475569" font-size="13" font-weight="900" text-anchor="middle">N (NORTH ENDZONE)</text>
+                                <text x="15" y="180" fill="#475569" font-size="13" font-weight="900" text-anchor="middle">E</text>
+                                <text x="585" y="180" fill="#475569" font-size="13" font-weight="900" text-anchor="middle">W</text>
+
+                                <!-- Grid Sections -->
+                                <!-- GROUP 3 -->
+                                <rect x="35" y="35" width="235" height="135" fill="rgba(148, 163, 184, 0.05)" stroke="#cbd5e1" stroke-dasharray="2,2" />
+                                <text x="45" y="50" fill="#94a3b8" font-size="8" font-weight="900">GROUP 3 (EAST)</text>
+
+                                <!-- GROUP 1 -->
+                                <rect x="330" y="35" width="235" height="135" fill="rgba(148, 163, 184, 0.05)" stroke="#cbd5e1" stroke-dasharray="2,2" />
+                                <text x="515" y="50" fill="#94a3b8" font-size="8" font-weight="900">GROUP 1 (WEST)</text>
+
+                                <!-- Other Studios block references matching user photo -->
+                                <rect x="40" y="65" width="60" height="25" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="70" y="80" fill="#475569" font-size="7" font-weight="bold" text-anchor="middle">CENTENNIAL</text>
+
+                                <rect x="110" y="65" width="50" height="25" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="135" y="80" fill="#475569" font-size="7" font-weight="bold" text-anchor="middle">EVANSTON</text>
+
+                                <rect x="340" y="65" width="65" height="25" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="372" y="80" fill="#475569" font-size="7" font-weight="bold" text-anchor="middle">INTENSITY (13)</text>
+
+                                <rect x="420" y="65" width="60" height="25" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="450" y="80" fill="#475569" font-size="7" font-weight="bold" text-anchor="middle">JAZZWORKS</text>
+
+                                <rect x="495" y="65" width="65" height="25" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="527" y="80" fill="#475569" font-size="7" font-weight="bold" text-anchor="middle">STEPS / VALIN</text>
+
+                                <!-- ★ SPOT 1: PRIMARY DANCE BY DENISE SITE ★ -->
+                                <!-- West Side, facing West, Group 1/3 boundary -->
+                                <g class="cursor-pointer" onclick="selectSpot('spot-main')">
+                                    <rect x="390" y="105" width="100" height="55" rx="8" fill="#ffe4e6" stroke="#e11d48" stroke-width="2.5" class="map-glow-denise" />
+                                    <circle cx="440" cy="118" r="4.5" fill="#be123c" />
+                                    <circle cx="440" cy="118" r="7" fill="none" stroke="#be123c" stroke-width="1.5" class="animate-ping" />
+                                    <text x="440" y="132" fill="#9f1239" font-size="8.5" font-weight="900" text-anchor="middle">DANCE BY DENISE</text>
+                                    <text x="440" y="145" fill="#e11d48" font-size="7.5" font-weight="900" text-anchor="middle">★ (14) MAIN SITE</text>
+                                </g>
+
+                                <!-- ★ SPOT 2: BOTTOM RIGHT / NORTH ENDZONE SITE ★ -->
+                                <g class="cursor-pointer" onclick="selectSpot('spot-side')">
+                                    <rect x="480" y="245" width="85" height="55" rx="8" fill="#ffe4e6" stroke="#e11d48" stroke-width="2.5" class="map-glow-denise" />
+                                    <circle cx="522" cy="258" r="4.5" fill="#be123c" />
+                                    <circle cx="522" cy="258" r="7" fill="none" stroke="#be123c" stroke-width="1.5" class="animate-ping" />
+                                    <text x="522" y="272" fill="#9f1239" font-size="8.5" font-weight="900" text-anchor="middle">DANCE BY DENISE</text>
+                                    <text x="522" y="285" fill="#e11d48" font-size="7.5" font-weight="900" text-anchor="middle">★ (6) SIDE SITE</text>
+                                </g>
+
+                                <!-- Other visual blocks for accurate chart representation -->
+                                <rect x="40" y="245" width="80" height="35" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="80" y="266" fill="#475569" font-size="8" font-weight="bold" text-anchor="middle">LEGACY (15)</text>
+
+                                <rect x="180" y="245" width="90" height="35" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="225" y="266" fill="#475569" font-size="8" font-weight="bold" text-anchor="middle">EVANSTON (8)</text>
+
+                                <rect x="360" y="245" width="80" height="35" fill="#e2e8f0" stroke="#cbd5e1" rx="4" />
+                                <text x="400" y="266" fill="#475569" font-size="8" font-weight="bold" text-anchor="middle">JAZZWORKS (17)</text>
+
+                                <!-- Axis columns indicator -->
+                                <text x="35" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">A</text>
+                                <text x="100" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">G</text>
+                                <text x="200" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">M</text>
+                                <text x="300" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">N</text>
+                                <text x="400" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">T</text>
+                                <text x="500" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">Y</text>
+                                <text x="545" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">AA</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Details Panel for Selected Field Spot -->
+                    <div id="spot-details-panel" class="bg-rose-50 border border-rose-150 p-4 rounded-2xl space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs uppercase font-extrabold text-rose-700 tracking-wider flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot text-rose-600"></i> Location Selector
+                            </span>
+                            <span id="spot-location-tag" class="text-[9px] bg-rose-200 text-rose-800 font-extrabold px-2.5 py-0.5 rounded-full uppercase">Spot 1 (Main)</span>
+                        </div>
+                        <h4 id="spot-title" class="text-sm font-black text-slate-900">Dance by Denise — Primary Position (14 Dancers)</h4>
+                        <p id="spot-description" class="text-xs text-slate-600 leading-relaxed">
+                            Located on the <strong>West Side of the stadium (Group 3, Rows 10-15)</strong>. This aligns directly in front of the West Spectator Bleachers (where parents sit!). Dancers will be facing West for the entire duration of the performance.
+                        </p>
+                    </div>
                 </div>
 
-                <!-- About the Show Card -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2 mb-2">
-                            <span class="w-1 h-4 bg-rose-500 rounded-full"></span> About the Show
-                        </h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Celebrating the **250th anniversary of the signing of the Declaration of Independence**. This historic production features over 36 combined studios representing multiple states with around 360 total performers.
-                        </p>
+                <!-- PDF Documents and Quick Shelf panel -->
+                <div class="space-y-4 md:col-span-4 flex flex-col justify-stretch">
+                    
+                    <!-- Document Shelf -->
+                    <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs flex-1">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <h3 class="text-xs font-black text-slate-950 uppercase tracking-tight flex items-center gap-2">
+                                <span class="w-1 h-4 bg-rose-600 rounded-full"></span> Newsletters & Forms
+                            </h3>
+                            <!-- Admin Upload Button trigger -->
+                            <button onclick="triggerPDFUpload()" class="admin-only hidden text-xs font-bold text-rose-600 hover:text-rose-700">
+                                <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload PDF
+                            </button>
+                            <input type="file" id="pdf-upload-input" accept="application/pdf" class="hidden" onchange="handlePDFUpload(event)">
+                        </div>
+
+                        <!-- Dynamic list of newsletters (both text-based and uploaded PDFs) -->
+                        <div id="newsletters-dynamic-list" class="space-y-2">
+                            <!-- Loaded from dbState -->
+                        </div>
                     </div>
-                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 mt-4">
-                        <div class="text-[10px] uppercase tracking-widest font-bold text-blue-600">Official Show Order:</div>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Skydivers → SOF Dancers <strong class="text-rose-600">"250th Celebration Production Routine"</strong> → Color Guard → Freedom Honorees → Nitro Circus & SOF Dancers → Brad Paisley Concert → Drone Sky Show → Fireworks Spectacular.
-                        </p>
+
+                    <!-- Highlight Card: Quick Safety Guide -->
+                    <div class="border-l-4 border-l-rose-600 bg-rose-50/40 border border-rose-200/50 p-4 rounded-2xl">
+                        <h4 class="text-xs font-extrabold text-rose-800 uppercase flex items-center gap-1"><i class="fa-solid fa-shield"></i> Safety & Access reminder</h4>
+                        <p class="text-[11px] text-slate-600 leading-relaxed mt-1">Dancers & Chaperones must wear their **official SOF wristband** to access all Provo rehearsals. Wristbands are checked strictly.</p>
                     </div>
+
                 </div>
 
             </div>
@@ -241,43 +340,45 @@
         <!-- ==================== TAB 2: SCHEDULES ==================== -->
         <div id="tab-schedule" class="tab-content space-y-4">
             
-            <!-- Rehearsal Group Filter Buttons -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-white p-3 rounded-xl border border-slate-200 gap-3">
+            <!-- Quick Filter Bar -->
+            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <div class="flex items-center space-x-2">
-                    <span class="text-xs uppercase font-black tracking-wider text-slate-400">Filter Calendar:</span>
+                    <span class="text-xs uppercase font-black tracking-wider text-slate-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-filter"></i> Focus View:
+                    </span>
                 </div>
-                <div class="flex gap-2">
-                    <button onclick="filterSchedule('all')" id="filter-all" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
+                <div class="flex gap-1.5">
+                    <button onclick="filterSchedule('all')" id="filter-all" class="text-xs font-black px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
                         Show All
                     </button>
-                    <button onclick="filterSchedule('main')" id="filter-main" class="text-xs font-black px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 transition-colors">
+                    <button onclick="filterSchedule('main')" id="filter-main" class="text-xs font-black px-4 py-2 rounded-xl bg-rose-600 text-white shadow-xs transition-colors">
                         ★ Main/Senior Only
                     </button>
                 </div>
             </div>
 
-            <!-- Double-Column Rehearsals on Desktop -->
+            <!-- Double-Column Rehearsals Timeline Layout -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 <!-- Kearns Rehearsals Card -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
                     <div class="flex flex-col mb-2">
                         <div class="flex items-center justify-between">
-                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">Kearns OPFC Rehearsals</h4>
-                            <span class="text-[10px] text-slate-500 font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-location-dot text-rose-500"></i> Local
+                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">Kearns Local Schedule</h4>
+                            <span class="text-[10px] text-blue-600 font-extrabold flex items-center gap-1 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md">
+                                <i class="fa-solid fa-location-dot"></i> Kearns
                             </span>
                         </div>
-                        <p class="text-[11px] text-slate-500 mt-1 font-medium">Oquirrh Park Fitness Center — 5624 Cougar Lane, Kearns UT</p>
+                        <p class="text-[11px] text-slate-500 mt-1 font-semibold">Oquirrh Park Fitness Center — 5624 Cougar Lane, Kearns UT</p>
                     </div>
 
                     <!-- Map Link Button -->
-                    <a href="https://maps.google.com/?q=Oquirrh+Park+Fitness+Center+5624+Cougar+Lane+Kearns+UT" target="_blank" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-colors mb-4">
-                        <i class="fa-solid fa-map-location-dot"></i> Open Kearns Location in Maps
+                    <a href="https://maps.google.com/?q=Oquirrh+Park+Fitness+Center+5624+Cougar+Lane+Kearns+UT" target="_blank" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all mb-4 border border-slate-200">
+                        <i class="fa-solid fa-map-location-dot text-rose-600"></i> Open Kearns Location in Google Maps
                     </a>
                     
                     <!-- Dynamic local schedule render list -->
-                    <div id="local-schedule-list" class="space-y-2.5">
+                    <div id="local-schedule-list" class="space-y-3 relative border-l border-slate-200 pl-4 ml-2">
                         <!-- Populated by JavaScript -->
                     </div>
 
@@ -288,24 +389,24 @@
                 </div>
 
                 <!-- Provo Mandatory Rehearsals Card -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs self-start">
+                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs self-start">
                     <div class="flex flex-col mb-2">
                         <div class="flex items-center justify-between">
-                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">LaVell Edwards Stadium</h4>
-                            <span class="text-[10px] text-rose-500 font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-stadium text-rose-500"></i> Provo
+                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">Provo Travel Schedule</h4>
+                            <span class="text-[10px] text-rose-600 font-extrabold flex items-center gap-1 uppercase tracking-widest bg-rose-50 px-2 py-0.5 rounded-md">
+                                <i class="fa-solid fa-stadium"></i> BYU Stadium
                             </span>
                         </div>
-                        <p class="text-[11px] text-slate-500 mt-1 font-medium">1700 N Canyon Rd, Provo, UT 84604</p>
+                        <p class="text-[11px] text-slate-500 mt-1 font-semibold">LaVell Edwards Stadium — 1700 N Canyon Rd, Provo, UT 84604</p>
                     </div>
 
                     <!-- Map Link Button -->
-                    <a href="https://maps.google.com/?q=LaVell+Edwards+Stadium+1700+N+Canyon+Rd+Provo+UT" target="_blank" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-colors mb-4">
-                        <i class="fa-solid fa-map-location-dot"></i> Open Provo Stadium in Maps
+                    <a href="https://maps.google.com/?q=LaVell+Edwards+Stadium+1700+N+Canyon+Rd+Provo+UT" target="_blank" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all mb-4 border border-slate-200">
+                        <i class="fa-solid fa-map-location-dot text-rose-600"></i> Open Provo Stadium in Google Maps
                     </a>
 
                     <!-- Dynamic provo schedule render list -->
-                    <div id="provo-schedule-list" class="space-y-3">
+                    <div id="provo-schedule-list" class="space-y-3 relative border-l border-slate-200 pl-4 ml-2">
                         <!-- Populated by JavaScript -->
                     </div>
 
@@ -319,74 +420,83 @@
 
         </div>
 
-        <!-- ==================== TAB 3: COSTUMES ==================== -->
+        <!-- ==================== TAB 3: COSTUMES & APPLIQUE ==================== -->
         <div id="tab-costumes" class="tab-content space-y-4">
             
-            <!-- Appearance Rules Card -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-4 shadow-xs">
-                <div class="border-b border-slate-100 pb-2">
-                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                        <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Official Costumes
-                    </h3>
-                    <p class="text-[11px] text-slate-500 mt-1">
-                        Costumes and keepsake items distributed on <strong>Thursday, July 2nd</strong> in Provo.
-                    </p>
-                </div>
+            <!-- Quick Scannable Anchor: TL;DR Card -->
+            <div class="border-l-4 border-l-rose-600 bg-rose-50/50 border border-slate-200 rounded-2xl p-4">
+                <h3 class="text-sm font-black text-rose-900 uppercase tracking-tight flex items-center gap-1.5 mb-2">
+                    <i class="fa-solid fa-shirt"></i> Costume Bottom Line (TL;DR)
+                </h3>
+                <ul class="text-xs text-slate-700 space-y-2 list-none pl-0">
+                    <li class="flex items-start gap-2">
+                        <span class="text-rose-600 font-black shrink-0">➔</span>
+                        <span>Performance costumes are handed out on <strong>Thursday, July 2nd</strong> directly in Provo.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-rose-600 font-black shrink-0">➔</span>
+                        <span>All girls must pack a <strong>tan body tight</strong> and wear small <strong>rhinestone studs</strong>.</span>
+                    </li>
+                </ul>
+            </div>
 
+            <!-- Main Costume Specs -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-4 shadow-xs">
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-xs">
-                        <span class="text-[10px] uppercase tracking-widest font-extrabold text-rose-600 bg-rose-100/60 px-2.5 py-1 rounded">Females</span>
-                        <p class="text-sm font-bold text-slate-800 mt-2">USA Red, White & Blue Dress</p>
-                        <p class="text-xs text-slate-500 mt-1">Features "USA" lettering graphic across the back.</p>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl border-t-4 border-t-rose-500">
+                        <span class="text-[9px] uppercase tracking-widest font-extrabold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">Females</span>
+                        <p class="text-sm font-black text-slate-900 mt-2">USA Red, White & Blue Dress</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Features "USA" graphic lettering across the back.</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-xs">
-                        <span class="text-[10px] uppercase tracking-widest font-extrabold text-blue-600 bg-blue-100/60 px-2.5 py-1 rounded">Males</span>
-                        <p class="text-sm font-bold text-slate-800 mt-2">Patriotic Top & Shorts</p>
-                        <p class="text-xs text-slate-500 mt-1">Coordinated red, white, and blue set.</p>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl border-t-4 border-t-blue-500">
+                        <span class="text-[9px] uppercase tracking-widest font-extrabold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Males</span>
+                        <p class="text-sm font-black text-slate-900 mt-2">Patriotic Set</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Coordinated red, white, and blue top with shorts.</p>
                     </div>
                 </div>
 
-                <!-- Appearance Specifications -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-                    <span class="text-xs uppercase tracking-widest font-black text-slate-500">Required Items</span>
+                <!-- Appearance Specifications grid -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                    <span class="text-xs uppercase tracking-widest font-extrabold text-slate-500">Exact Visual Rules:</span>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
-                        <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-socks text-[11px]"></i>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
+                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-socks"></i>
                             </div>
                             <div>
                                 <p class="font-bold text-slate-800">Undergarments & Tights</p>
-                                <p class="text-slate-500 text-[11px] mt-0.5">All female dancers must wear a **tan body tight**.</p>
+                                <p class="text-slate-500 text-[11px] mt-0.5">All female dancers must wear a **tan body tight** under their USA dresses.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-shoe-prints text-[11px]"></i>
+                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
+                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-shoe-prints"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-slate-800">Shoes</p>
-                                <p class="text-slate-500 text-[11px] mt-0.5">All dancers require **tan turners** or **tan jazz shoes**.</p>
+                                <p class="font-bold text-slate-800">Tan Performance Shoes</p>
+                                <p class="text-slate-500 text-[11px] mt-0.5">Dancers require **tan turners** or **tan jazz shoes**.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-scissors text-[11px]"></i>
+                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
+                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-cut"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-slate-800">Performance Hair</p>
-                                <p class="text-slate-500 text-[11px] mt-0.5">**Ballet bun** with costume applique pinned securely. (Hair & Makeup detailed specifications are TBD).</p>
+                                <p class="font-bold text-slate-800">Ballet Bun (No exceptions)</p>
+                                <p class="text-slate-500 text-[11px] mt-0.5">Neat **ballet bun** with costume applique pinned securely. Hair & makeup specifications are TBD.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-3">
-                            <div class="w-6 h-6 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-gem text-[11px]"></i>
+                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
+                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+                                <i class="fa-solid fa-gem"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-slate-800">Jewelry Requirements</p>
+                                <p class="font-bold text-slate-800">Rhinestone Earrings</p>
                                 <p class="text-slate-500 text-[11px] mt-0.5">Small **rhinestone stud earrings** required ($5 on order form, or use your own similar size).</p>
                             </div>
                         </div>
@@ -394,18 +504,18 @@
                 </div>
             </div>
 
-            <!-- Rehearsal Uniform Card -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-blue-500 rounded-full"></span> Rehearsal Uniform
+            <!-- Rehearsal Uniform Requirements Card -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
+                    <span class="w-1 h-4 bg-blue-500 rounded-full"></span> Mandatory Rehearsal Wear
                 </h3>
                 <p class="text-xs text-slate-500">
-                    Required purchase. Must be worn on <strong>Filming Night (June 22)</strong> and the <strong>Provo Rehearsal (July 3)</strong>.
+                    Required purchase set. Must be worn on <strong>Filming Night (June 22)</strong> and the <strong>Provo dress rehearsal (July 3)</strong>.
                 </p>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
                     <div>
-                        <p class="text-xs font-bold text-slate-800">Official Set</p>
-                        <p class="text-xs text-slate-500 mt-0.5">Black tennis skort + Baby blue tank or t-shirt.</p>
+                        <p class="text-xs font-bold text-slate-850">Black skort + Baby blue tank or t-shirt</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Required apparel set.</p>
                     </div>
                     <i class="fa-solid fa-shirt text-blue-500 text-xl"></i>
                 </div>
@@ -413,86 +523,75 @@
 
         </div>
 
-        <!-- ==================== TAB 4: LOGISTICS ==================== -->
+        <!-- ==================== TAB 4: MONEY & LOGISTICS ==================== -->
         <div id="tab-logistics" class="tab-content space-y-4">
             
-            <!-- Quick Link Hub Card -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2 mb-1">
-                    <span class="w-1 h-4 bg-blue-500 rounded-full"></span> Quick Portals & Links
+            <!-- Quick Scannable Anchor: TL;DR Card -->
+            <div class="border-l-4 border-l-amber-500 bg-amber-50/50 border border-slate-200 rounded-2xl p-4">
+                <h3 class="text-sm font-black text-amber-900 uppercase tracking-tight flex items-center gap-1.5 mb-2">
+                    <i class="fa-solid fa-coins"></i> Money & Travel Bottom Line (TL;DR)
                 </h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <a href="https://www.thestudiodirector.com/dancebydenise/portal.jsp" target="_blank" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
-                        <i class="fa-solid fa-right-to-bracket text-rose-500 text-xl mb-1.5"></i>
-                        <span class="text-[11px] font-black text-slate-800">Studio Portal</span>
-                        <span class="text-[9px] text-slate-400 mt-0.5">Pay & Register</span>
-                    </a>
-                    <a href="https://www.facebook.com/groups/dancebydenise" target="_blank" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
-                        <i class="fa-brands fa-facebook text-blue-600 text-xl mb-1.5"></i>
-                        <span class="text-[11px] font-black text-slate-800">Private FB Group</span>
-                        <span class="text-[9px] text-slate-400 mt-0.5">Denise Allen</span>
-                    </a>
-                    <button onclick="toggleModal('newsletter-modal')" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
-                        <i class="fa-solid fa-paper-plane text-emerald-500 text-xl mb-1.5"></i>
-                        <span class="text-[11px] font-black text-slate-800">May Newsletter</span>
-                        <span class="text-[9px] text-slate-400 mt-0.5">Read updates</span>
-                    </button>
-                    <button onclick="showToast('Chaperone schedules and carpools are currently TBD!')" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-colors shadow-xs">
-                        <i class="fa-solid fa-car-on text-amber-500 text-xl mb-1.5"></i>
-                        <span class="text-[11px] font-black text-slate-800">Chaperone/Carpool</span>
-                        <span class="text-[9px] text-slate-400 mt-0.5">TBD schedules</span>
-                    </button>
-                </div>
+                <ul class="text-xs text-slate-700 space-y-2 list-none pl-0">
+                    <li class="flex items-start gap-2">
+                        <span class="text-amber-600 font-black shrink-0">➔</span>
+                        <span>Hotel room fee is <strong>$65 per person</strong>. Under Denise Allen reservation.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-amber-600 font-black shrink-0">➔</span>
+                        <span>Send <strong>$50 food money</strong> to Misti Bird via Venmo before she orders stadium meals.</span>
+                    </li>
+                </ul>
             </div>
 
-            <!-- Double-Column split on Desktop for Logistics Details -->
+            <!-- Double-Column split on Desktop -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                <!-- Hotel Accommodations Card -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                        <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Hotel details
+                <!-- Hotel Specifications Card -->
+                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
+                    <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="w-1 h-4 bg-blue-600 rounded-full"></span> Hotel Accommodations
                     </h3>
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
                         <div>
-                            <h4 class="text-sm font-bold text-slate-800">Residence Inn Provo North by Marriott</h4>
+                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest bg-blue-100 text-blue-800 px-2 py-0.5 rounded inline-block">Residence Inn Provo North</h4>
+                            <p class="text-sm font-black text-slate-900 mt-2">Residence Inn Provo North by Marriott</p>
                             <p class="text-[11px] text-slate-500 mt-0.5">252 West 2230 North, Provo, UT</p>
                         </div>
                         <div class="grid grid-cols-2 gap-2 border-t border-slate-200 pt-3 text-[11px]">
                             <div>
-                                <span class="block text-slate-400">Rate</span>
-                                <span class="font-bold text-slate-800">$65 / Person</span>
+                                <span class="block text-slate-400">Nightly Rate</span>
+                                <span class="font-black text-slate-800">$65 / Person</span>
                             </div>
                             <div>
                                 <span class="block text-slate-400">Breakfast</span>
-                                <span class="font-bold text-emerald-600">Complimentary</span>
+                                <span class="font-black text-emerald-600">Complimentary</span>
                             </div>
                         </div>
-                        <div class="text-[11px] text-slate-600 bg-white p-3 rounded-lg border border-slate-200 leading-normal">
-                            Room reservations are under <strong>Denise Allen</strong>. 1 parent chaperone with up to 3 dancers per room (or 4 senior dancers). Extra rooms are $260/night with tax.
+                        <div class="text-[11px] text-slate-600 bg-white p-3 rounded-xl border border-slate-200 leading-normal">
+                            Reservations are managed under <strong>Denise Allen</strong>. Up to 3 dancers per room with 1 parent chaperone (or 4 senior dancers). Extra rooms are $260/night with tax.
                         </div>
                         <!-- Map Link Button -->
-                        <a href="https://maps.google.com/?q=Residence+Inn+Provo+North+by+Marriott+Provo+UT" target="_blank" class="w-full py-2 bg-slate-250 hover:bg-slate-300 text-slate-850 rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 transition-colors">
-                            <i class="fa-solid fa-map-location-dot"></i> Open Address in Maps
+                        <a href="https://maps.google.com/?q=Residence+Inn+Provo+North+by+Marriott+Provo+UT" target="_blank" class="w-full py-2 bg-slate-200 hover:bg-slate-350 text-slate-800 rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all border border-slate-300">
+                            <i class="fa-solid fa-map-location-dot text-rose-600"></i> Open Address in Maps
                         </a>
                     </div>
                 </div>
 
                 <!-- Money & Donations Card -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                        <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Money & Donations
+                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
+                    <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="w-1 h-4 bg-emerald-600 rounded-full"></span> Money & Donations
                     </h3>
                     
                     <div class="space-y-3">
                         <!-- Money Card -->
-                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold text-slate-800">Provo Meal Fund</span>
+                                <span class="text-xs font-black text-slate-850">Provo Meal Fund</span>
                                 <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-black">$50 Rec.</span>
                             </div>
-                            <p class="text-[11px] text-slate-500 leading-normal">Food must be paid via Venmo before brought into stadium.</p>
-                            <div class="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200 mt-2">
+                            <p class="text-[11px] text-slate-500 leading-normal">Food money is due to chaperone Misti Bird prior to loading buses to guarantee group stadium lunch order delivery.</p>
+                            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 mt-2">
                                 <div class="text-[11px]">
                                     <p class="text-slate-400">Chaperone:</p>
                                     <p class="font-bold text-slate-800">Misti Bird <span class="text-slate-500 font-normal block sm:inline">(801-597-0035)</span></p>
@@ -504,10 +603,10 @@
                         </div>
 
                         <!-- Donations Card -->
-                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
-                            <span class="text-xs font-bold text-rose-600 block">Required Donations</span>
-                            <p class="text-[11px] text-slate-500 leading-normal">Bring Gatorade, PowerAde, or non-melting snacks (Swedish Fish, Starbursts, Rice Crispy treats, granola bars, cheese sticks, jerky) to any local rehearsal.</p>
-                            <div class="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200 mt-2">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <span class="text-xs font-bold text-rose-600 block">Required Snack Donations</span>
+                            <p class="text-[11px] text-slate-500 leading-normal">Bring Gatorade, PowerAde, or non-melting snacks (Swedish Fish, Starbursts, Rice Crispy treats, granola bars, cheese sticks, jerky) to local rehearsals.</p>
+                            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 mt-2">
                                 <div class="text-[11px]">
                                     <p class="text-slate-400">Venmo Denise Instead:</p>
                                     <p class="font-bold text-slate-800">@Denise-Allen-116</p>
@@ -522,29 +621,8 @@
 
             </div>
 
-            <!-- Chaperone Rules Details -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Chaperone & Security
-                </h3>
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-3">
-                    <p class="flex items-start gap-2.5">
-                        <i class="fa-solid fa-ticket text-rose-500 mt-0.5"></i>
-                        <span>All directors, dancers, & chaperones <strong>must wear an official SOF wristband</strong> to enter any Provo rehearsal.</span>
-                    </p>
-                    <p class="flex items-start gap-2.5">
-                        <i class="fa-solid fa-user-shield text-blue-500 mt-0.5"></i>
-                        <span>Strict limit of <strong>4 parent chaperones</strong> inside the stadium at any single time.</span>
-                    </p>
-                    <p class="flex items-start gap-2.5">
-                        <i class="fa-solid fa-campground text-emerald-500 mt-0.5"></i>
-                        <span><strong>DBD Base Camp:</strong> Located under the bleachers near the Northwest ramp.</span>
-                    </p>
-                </div>
-            </div>
-
             <!-- TBD Alerts Checklist Warning -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
                 <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span class="w-1 h-4 bg-amber-500 rounded-full"></span> Studio Resources Update
                 </h3>
@@ -579,7 +657,7 @@
                     </div>
                 </div>
                 <!-- Admin Edit Resources Panel -->
-                <div class="admin-only hidden bg-slate-100 p-3.5 rounded-xl border border-slate-200 space-y-2 mt-2">
+                <div class="admin-only hidden bg-slate-105 p-3.5 rounded-xl border border-slate-200 space-y-2 mt-2">
                     <p class="text-[10px] uppercase font-black text-slate-600 tracking-wider">Update Resources & TBDs</p>
                     <div class="grid grid-cols-2 gap-2">
                         <input type="text" id="input-res-music" placeholder="Music details/link" class="bg-white border border-slate-300 text-xs px-2.5 py-1.5 rounded-lg text-slate-800">
@@ -591,36 +669,60 @@
                 </div>
             </div>
 
-            <!-- Contact Directory -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Contact Directory
+            <!-- Quick Link Portals Map -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2 mb-1">
+                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Quick Portals & Facebook Groups
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                    <a href="https://www.thestudiodirector.com/dancebydenise/portal.jsp" target="_blank" class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-all hover:bg-slate-100">
+                        <i class="fa-solid fa-right-to-bracket text-rose-500 text-xl mb-1.5"></i>
+                        <span class="font-black text-slate-800">The Studio Director Portal</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Pay & Register</span>
+                    </a>
+                    <a href="https://www.facebook.com/groups/dancebydenise" target="_blank" class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-all hover:bg-slate-100">
+                        <i class="fa-brands fa-facebook text-blue-600 text-xl mb-1.5"></i>
+                        <span class="font-black text-slate-800">Private Facebook Group</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Denise Allen Admin</span>
+                    </a>
+                    <button onclick="toggleModal('newsletter-modal')" class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-all hover:bg-slate-100">
+                        <i class="fa-solid fa-paper-plane text-emerald-500 text-xl mb-1.5"></i>
+                        <span class="font-black text-slate-800">May 2026 Newsletter</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Click to Open Summary</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contact Directory Details -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
+                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
+                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Studio Contact Directory
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
                         <div>
                             <p class="font-bold text-slate-800">Denise Allen</p>
-                            <p class="text-[10px] text-slate-500">Director</p>
+                            <p class="text-[10px] text-slate-500">Director Cell</p>
                         </div>
-                        <a href="tel:8016355835" class="bg-blue-600 hover:bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs transition-colors">
+                        <a href="tel:8016355835" class="bg-blue-600 hover:bg-blue-500 w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs transition-colors shadow-xs">
                             <i class="fa-solid fa-phone"></i>
                         </a>
                     </div>
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
                         <div>
                             <p class="font-bold text-slate-800">Ashlee</p>
                             <p class="text-[10px] text-slate-500">Director Assistant</p>
                         </div>
-                        <a href="tel:8018338459" class="bg-blue-600 hover:bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs transition-colors">
+                        <a href="tel:8018338459" class="bg-blue-600 hover:bg-blue-500 w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs transition-colors shadow-xs">
                             <i class="fa-solid fa-phone"></i>
                         </a>
                     </div>
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
                         <div>
-                            <p class="font-bold text-slate-800">Email Contact</p>
+                            <p class="font-bold text-slate-800">Email Hub</p>
                             <p class="text-[10px] text-slate-500">cheech_allen@yahoo.com</p>
                         </div>
-                        <a href="mailto:cheech_allen@yahoo.com" class="bg-blue-600 hover:bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs transition-colors">
+                        <a href="mailto:cheech_allen@yahoo.com" class="bg-blue-600 hover:bg-blue-500 w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs transition-colors shadow-xs">
                             <i class="fa-solid fa-envelope"></i>
                         </a>
                     </div>
@@ -629,80 +731,108 @@
 
         </div>
 
-        <!-- ==================== TAB 5: CHECKLIST ==================== -->
+        <!-- ==================== TAB 5: MY CHECKLIST ==================== -->
         <div id="tab-checklist" class="tab-content space-y-4">
             
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-xs">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                        <span class="w-1 h-4 bg-rose-500 rounded-full"></span> My Prep Checklist
-                    </h3>
-                    <button onclick="resetChecklist()" class="text-[10px] uppercase tracking-wider font-extrabold text-rose-600 hover:text-rose-500">
-                        Reset Checklist
-                    </button>
+            <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-5 shadow-xs">
+                
+                <!-- Dynamic progress headers with high visual ADHD feedback -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div class="space-y-1 text-center sm:text-left">
+                        <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                            <span class="w-1.5 h-5 bg-emerald-500 rounded-full"></span> My Progress Tracker
+                        </h3>
+                        <p class="text-xs text-slate-400">Interactive packing tracker to make sure you have every detail packed!</p>
+                    </div>
+                    
+                    <!-- Circular Gamified Progress Ring Indicator -->
+                    <div class="flex items-center space-x-3 bg-slate-55 p-2 px-4 rounded-2xl border border-slate-200 shadow-xs">
+                        <div class="relative w-12 h-12 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="24" cy="24" r="20" stroke="#f1f5f9" stroke-width="4" fill="transparent" />
+                                <circle id="progress-circle" cx="24" cy="24" r="20" stroke="#10b981" stroke-width="4" fill="transparent" 
+                                    stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-linecap="round" class="transition-all duration-500" />
+                            </svg>
+                            <span id="progress-percent" class="absolute text-xs font-black text-slate-800">0%</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] text-slate-400 uppercase font-black tracking-widest leading-none">Task status</span>
+                            <span id="progress-fraction" class="text-xs font-black text-slate-800 mt-1 block">0 of 8 complete</span>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-xs text-slate-500">
-                    Interactive packing list to ensure you don't forget any required pieces! Tap items to check them off.
-                </p>
 
-                <!-- Checkboxes -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+                <!-- Checkboxes in premium grid layout -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">Black Tennis Skort</p>
-                            <p class="text-[10px] text-slate-500">Rehearsal Wear (June 22 & July 3)</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Black Tennis Skort</p>
+                            <p class="text-[11px] text-slate-500">Required Rehearsal Uniform set (June 22 & July 3)</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">Baby Blue Tank or T-shirt</p>
-                            <p class="text-[10px] text-slate-500">Rehearsal Wear (June 22 & July 3)</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Baby Blue Tank or T-shirt</p>
+                            <p class="text-[11px] text-slate-500">Required Rehearsal Uniform set (June 22 & July 3)</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">Tan Body Tight</p>
-                            <p class="text-[10px] text-slate-500">Required undergarment for girls</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Tan Body Tight</p>
+                            <p class="text-[11px] text-slate-500">Required dress undergarment for female dancers</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">Tan Turners or Jazz Shoes</p>
-                            <p class="text-[10px] text-slate-500">Performance shoes</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Tan Turners or Jazz Shoes</p>
+                            <p class="text-[11px] text-slate-500">Standard performance footwear</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">Rhinestone Stud Earrings</p>
-                            <p class="text-[10px] text-slate-500">Required accessory</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Rhinestone Stud Earrings</p>
+                            <p class="text-[11px] text-slate-500">Small rhinestone studs required ($5 on order sheet)</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">Props (Poms / Hoops)</p>
-                            <p class="text-[10px] text-slate-500">Distributed June 11, bring to every practice</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Performance Props (Poms / Hoops)</p>
+                            <p class="text-[11px] text-slate-500">Distributed June 11, bring to every single rehearsal</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">$50 Meal Money</p>
-                            <p class="text-[10px] text-slate-500">Venmo or cash for stadium food</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">$50 Meal Money</p>
+                            <p class="text-[11px] text-slate-500">Recommended cash or Venmo to chaperone Misti Bird</p>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3.5 p-3 bg-slate-50 hover:bg-slate-100/60 rounded-xl border border-slate-250 cursor-pointer select-none transition-colors">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-4.5 h-4.5" onchange="updateChecklistState()">
+
+                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
+                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
                         <div class="text-xs">
-                            <p class="font-bold text-slate-800">Gatorade / Snack Donation</p>
-                            <p class="text-[10px] text-slate-500">Delivered to DBD before travel</p>
+                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Gatorade & Snack Donation</p>
+                            <p class="text-[11px] text-slate-500">Bring to any local Kearns OPFC rehearsal date</p>
                         </div>
                     </label>
+                </div>
+
+                <div class="pt-2 text-center">
+                    <button onclick="resetChecklist()" class="px-5 py-2 border-2 border-rose-200 hover:bg-rose-50 text-rose-600 rounded-xl text-xs font-black tracking-wider uppercase transition-colors">
+                        Reset All Checkmarks
+                    </button>
                 </div>
             </div>
 
@@ -710,6 +840,8 @@
 
     </main>
 
+    <!-- ==================== CUSTOM DIALOGS & OVERLAYS ==================== -->
+    
     <!-- Custom Search Modal Overlay -->
     <div id="search-modal" class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs hidden items-center justify-center p-4">
         <div class="bg-white border border-slate-200 w-full max-w-sm rounded-2xl shadow-xl p-4 space-y-3">
@@ -759,7 +891,7 @@
                 </ul>
             </div>
             
-            <button onclick="toggleModal('newsletter-modal')" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors">
+            <button onclick="toggleModal('newsletter-modal')" class="w-full py-2 bg-slate-105 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors">
                 Close Newsletter
             </button>
         </div>
@@ -803,7 +935,6 @@
         </div>
     </div>
 
-    <!-- -->
     <!-- Custom Admin Event Editor Modal -->
     <div id="event-editor-modal" class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs hidden items-center justify-center p-4">
         <div class="bg-white border border-slate-200 w-full max-w-md rounded-2xl shadow-xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -876,9 +1007,33 @@
                 <button id="confirm-yes-btn" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl transition-colors">
                     Delete
                 </button>
-                <button onclick="closeConfirmModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition-colors">
+                <button onclick="closeConfirmModal()" class="flex-1 py-2 bg-slate-105 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition-colors">
                     Cancel
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen PDF Viewer Modal -->
+    <div id="pdf-viewer-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs hidden flex-col p-4 md:p-6">
+        <div class="bg-white border border-slate-200 w-full max-w-4xl mx-auto rounded-2xl shadow-2xl flex-1 flex flex-col overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 bg-slate-50">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-file-pdf text-rose-600 text-xl"></i>
+                    <span id="pdf-viewer-title" class="text-sm font-black text-slate-900">Document Reader</span>
+                </div>
+                <button onclick="closePDFViewer()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 bg-slate-200 relative">
+                <!-- Fallback link if browser blocks base64 rendering directly in iframe -->
+                <div id="pdf-fallback-container" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 text-slate-600 p-4 hidden text-center">
+                    <i class="fa-solid fa-circle-exclamation text-amber-500 text-3xl mb-2"></i>
+                    <p class="font-bold text-sm">Your browser prevents inline PDF viewing of base64 objects.</p>
+                    <a id="pdf-fallback-btn" href="" download="" class="mt-3 px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow transition-all">Download PDF to View</a>
+                </div>
+                <iframe id="pdf-iframe-viewport" class="w-full h-full border-0" src=""></iframe>
             </div>
         </div>
     </div>
@@ -909,7 +1064,7 @@
                 <span>Logistics</span>
             </button>
             <button onclick="switchTab('checklist')" id="nav-checklist" class="flex flex-col items-center justify-center text-slate-500 space-y-1 relative">
-                <div class="absolute top-2 right-4 w-1.5 h-1.5 rounded-full bg-rose-500 hidden" id="checklist-dot"></div>
+                <div class="absolute top-2 right-4 w-1.5 h-1.5 rounded-full bg-rose-500 hidden animate-pulse" id="checklist-dot"></div>
                 <i class="fa-solid fa-list-check text-base"></i>
                 <span>Checklist</span>
             </button>
@@ -927,6 +1082,9 @@
                 contacts: "TBD",
                 carpools: "TBD"
             },
+            newsletters: [
+                { id: "default-may", title: "Official May 2026 Newsletter", date: "May 27, 2026", type: "text" }
+            ],
             kearnsEvents: [
                 { date: "★ Wed, May 27", time: "6:00 – 6:30 PM", desc: "Parent Information Meeting", details: "Essential details regarding the production.", mainOnly: true, label: "Tonight" },
                 { date: "★ Wed, May 27", time: "6:30 – 8:00 PM", desc: "First Rehearsal — Main & Junior Dancers", details: "Starting routine structures.", mainOnly: true },
@@ -951,13 +1109,19 @@
         let activeFilter = 'main';
         let currentConfirmCallback = null;
 
-        // Initialize Application
-        window.onload = function() {
-            loadFirebase();
-            runCountdown();
-            renderAllData();
-            filterSchedule(activeFilter);
-        }
+        // Custom Stadium Position specifications
+        const spotsData = {
+            'spot-main': {
+                title: "Dance by Denise — Spot 1: Main Position (14 Dancers)",
+                tag: "Spot 1 (Main / Senior)",
+                desc: "Located on the <strong>West Side of the stadium (Group 3, Rows 10-15)</strong>. This aligns directly in front of the West Spectator Bleachers (where parents sit!). Dancers will be facing West for the entire duration of the performance. This position is primarily for the Senior/Main team performers."
+            },
+            'spot-side': {
+                title: "Dance by Denise — Spot 2: Side Position (6 Dancers)",
+                tag: "Spot 2 (Side / Endzone)",
+                desc: "Located at the <strong>North-West corner of the stadium grid (columns Y, Z, AA, rows 2-4)</strong> near the North Endzone. Highly visible for spectators positioned around the North end zone and NW portals."
+            }
+        };
 
         // Connect Firebase if configurations exist
         function loadFirebase() {
@@ -973,19 +1137,28 @@
                         firebase.initializeApp(parsedConfig);
                     }
                     db = firebase.firestore();
-                    badge.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
-                    badge.title = "Cloud Synced Mode";
+                    badge.className = "inline-block px-1.5 py-0.5 rounded-full text-[9px] bg-emerald-100 text-emerald-800 font-bold animate-pulse";
+                    badge.innerText = "Cloud Sync";
+                    badge.title = "Cloud Synced Mode Connected";
                     
                     // Fetch real-time data from Firestore
                     db.collection("stadium_of_fire_2026").doc("hub_data").onSnapshot((doc) => {
                         if (doc.exists) {
                             dbState = doc.data();
+                            if (!dbState.newsletters) {
+                                dbState.newsletters = [
+                                    { id: "default-may", title: "Official May 2026 Newsletter", date: "May 27, 2026", type: "text" }
+                                ];
+                            }
                             renderAllData();
                             filterSchedule(activeFilter);
                         } else {
                             // Seed database with default state if empty
                             db.collection("stadium_of_fire_2026").doc("hub_data").set(dbState);
                         }
+                    }, (error) => {
+                        console.error("Firestore loading error:", error);
+                        showToast("Failed to fetch cloud database updates.");
                     });
                 } catch (e) {
                     console.error("Firebase startup error. Running Local Storage Mode.", e);
@@ -1000,6 +1173,11 @@
             const localState = localStorage.getItem("dbd_local_db_state");
             if (localState) {
                 dbState = JSON.parse(localState);
+                if (!dbState.newsletters) {
+                    dbState.newsletters = [
+                        { id: "default-may", title: "Official May 2026 Newsletter", date: "May 27, 2026", type: "text" }
+                    ];
+                }
             }
             renderAllData();
         }
@@ -1028,9 +1206,9 @@
             renderAllData();
         }
 
-        //        // Dynamic View Rendering Engine
+        // Dynamic View Rendering Engine
         function renderAllData() {
-            document.getElementById("last-updated-text").innerText = `Updated: ${dbState.lastUpdated}`;
+            document.getElementById("last-updated-text").innerText = `Synced: ${dbState.lastUpdated}`;
             
             // Resources values inside logistics
             const resMusic = document.getElementById("res-val-music");
@@ -1050,6 +1228,27 @@
             document.getElementById("input-res-carpools").value = dbState.resources.carpools;
 
             renderScheduleLists();
+            renderNewsletters();
+            updateChecklistState();
+        }
+
+        // Render Field Location Spots
+        function selectSpot(spotKey) {
+            const data = spotsData[spotKey];
+            if (!data) return;
+
+            document.getElementById("spot-title").innerText = data.title;
+            document.getElementById("spot-location-tag").innerText = data.tag;
+            document.getElementById("spot-description").innerHTML = data.desc;
+            
+            // Pulse anim trigger
+            const panel = document.getElementById("spot-details-panel");
+            panel.classList.remove("bg-rose-50");
+            panel.classList.add("bg-amber-100", "ring-4", "ring-rose-500/20");
+            setTimeout(() => {
+                panel.classList.remove("bg-amber-100", "ring-4", "ring-rose-500/20");
+                panel.classList.add("bg-rose-50");
+            }, 1000);
         }
 
         function renderScheduleLists() {
@@ -1062,30 +1261,30 @@
             // Render Kearns Local Rehearsals
             dbState.kearnsEvents.forEach((ev, idx) => {
                 const itemClass = ev.mainOnly ? "main-group" : "junior-group";
-                const borderClass = ev.isCritical ? "bg-rose-50 border-rose-200" : "bg-slate-50 border-slate-200";
-                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-60' : '';
+                const borderClass = ev.isCritical ? "border-rose-500 bg-rose-50/60" : "border-slate-200 bg-slate-50";
+                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-40' : '';
                 
                 const item = document.createElement("div");
-                item.className = `sch-item ${itemClass} ${borderClass} p-3 rounded-xl border relative ${isOpac}`;
+                item.className = `sch-item ${itemClass} ${borderClass} p-3 rounded-2xl border-2 relative transition-all ${isOpac}`;
                 
                 let labelBadge = '';
                 if (ev.label) {
-                    labelBadge = `<span class="text-[8px] bg-rose-500 text-white font-extrabold px-1.5 py-0.5 rounded tracking-wide uppercase">${ev.label}</span>`;
+                    labelBadge = `<span class="text-[8px] bg-rose-600 text-white font-extrabold px-1.5 py-0.5 rounded-md tracking-wide uppercase shadow-xs">${ev.label}</span>`;
                 } else if (ev.isCritical) {
-                    labelBadge = `<span class="text-[8px] bg-rose-500 text-white font-extrabold px-1.5 py-0.5 rounded tracking-wide uppercase">Critical</span>`;
+                    labelBadge = `<span class="text-[8px] bg-rose-600 text-white font-extrabold px-1.5 py-0.5 rounded-md tracking-wide uppercase shadow-xs">Required</span>`;
                 }
 
                 item.innerHTML = `
                     <div class="flex items-center justify-between">
                         <p class="text-xs font-black ${ev.isCritical ? 'text-rose-600' : 'text-slate-700'}">${ev.date} @ ${ev.time}</p>
-                        <div class="flex items-center space-x-2">
+                        <div class="flex items-center space-x-1.5">
                             ${labelBadge}
-                            <button onclick="openEventEditor('kearns', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-800 text-xs" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteEvent('kearns', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="openEventEditor('kearns', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-800 text-xs p-1" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteEvent('kearns', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs p-1" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
-                    <p class="text-[11px] font-bold text-slate-800 mt-1">${ev.desc}</p>
-                    ${ev.details ? `<p class="text-[10px] text-slate-500 mt-0.5">${ev.details}</p>` : ''}
+                    <p class="text-[11px] font-extrabold text-slate-800 mt-1">${ev.desc}</p>
+                    ${ev.details ? `<p class="text-[10px] text-slate-500 mt-0.5 font-medium leading-relaxed">${ev.details}</p>` : ''}
                 `;
                 localContainer.appendChild(item);
             });
@@ -1093,31 +1292,167 @@
             // Render Provo Travel Rehearsals
             dbState.provoEvents.forEach((ev, idx) => {
                 const itemClass = ev.mainOnly ? "main-group" : "junior-group";
-                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-60' : '';
+                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-40' : '';
+                const borderClass = ev.isCritical ? "border-rose-500 bg-rose-50/60" : "border-slate-200 bg-slate-50";
                 
                 const item = document.createElement("div");
-                item.className = `sch-item ${itemClass} bg-slate-50 border border-slate-200 p-3.5 rounded-xl border-l-4 border-l-rose-500 relative ${isOpac}`;
+                item.className = `sch-item ${itemClass} ${borderClass} p-3.5 rounded-2xl border-2 relative transition-all ${isOpac}`;
                 
                 item.innerHTML = `
-                    <div class="flex items-center justify-between mb-1.5">
+                    <div class="flex items-center justify-between mb-1">
                         <p class="text-xs font-black text-rose-600">${ev.date} — ${ev.time}</p>
-                        <div class="flex items-center space-x-2">
-                            ${ev.isCritical ? '<span class="text-[9px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold uppercase">Dress Rehearsal</span>' : ''}
-                            <button onclick="openEventEditor('provo', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-850 text-xs" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteEvent('provo', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
+                        <div class="flex items-center space-x-1.5">
+                            ${ev.isCritical ? '<span class="text-[8px] bg-rose-600 text-white px-2 py-0.5 rounded-md font-black uppercase shadow-xs">Dress Rehearsal</span>' : ''}
+                            <button onclick="openEventEditor('provo', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-850 text-xs p-1" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteEvent('provo', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs p-1" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
-                    <p class="text-[11px] font-bold text-slate-800 mt-1">${ev.desc}</p>
-                    ${ev.details ? `<p class="text-[10px] text-slate-500 mt-0.5">${ev.details}</p>` : ''}
+                    <p class="text-[11px] font-extrabold text-slate-800 mt-1">${ev.desc}</p>
+                    ${ev.details ? `<p class="text-[10px] text-slate-500 mt-0.5 font-medium leading-relaxed">${ev.details}</p>` : ''}
                 `;
                 provoContainer.appendChild(item);
             });
 
-            // Maintain visual visibility configurations of buttons based on Admin State
             toggleAdminElements();
         }
 
-        //        // Custom Admin Event Editor Controllers
+        // Render Newsletters & Documents Shelf
+        function renderNewsletters() {
+            const listContainer = document.getElementById("newsletters-dynamic-list");
+            listContainer.innerHTML = "";
+
+            if (!dbState.newsletters || dbState.newsletters.length === 0) {
+                listContainer.innerHTML = `<p class="text-slate-400 text-xs text-center py-2">No documents available.</p>`;
+                return;
+            }
+
+            dbState.newsletters.forEach((doc, idx) => {
+                const docCard = document.createElement("div");
+                docCard.className = "bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between shadow-xs hover:bg-slate-100/80 transition-colors";
+                
+                const isPDF = doc.type === 'pdf';
+                const iconClass = isPDF ? 'fa-solid fa-file-pdf text-rose-600' : 'fa-solid fa-file-lines text-blue-500';
+
+                docCard.innerHTML = `
+                    <div class="flex items-center space-x-2.5 min-w-0">
+                        <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                            <i class="${iconClass} text-sm"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="text-xs font-black text-slate-850 truncate">${doc.title}</h4>
+                            <p class="text-[9px] text-slate-400 font-bold">${doc.date}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-1 shrink-0">
+                        <button onclick="viewDocument(${idx})" class="px-2.5 py-1.5 bg-white border border-slate-250 text-slate-700 hover:bg-rose-50 hover:text-rose-600 rounded-lg text-[10px] font-black transition-all">
+                            View
+                        </button>
+                        <button onclick="deleteDocument(${idx})" class="admin-only hidden text-red-500 hover:text-red-700 p-1.5 text-xs" title="Delete File">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(docCard);
+            });
+            toggleAdminElements();
+        }
+
+        // Document Reader triggers
+        function viewDocument(idx) {
+            const doc = dbState.newsletters[idx];
+            if (!doc) return;
+
+            if (doc.type === 'text') {
+                toggleModal('newsletter-modal');
+            } else if (doc.type === 'pdf') {
+                openPDFViewer(doc.title, doc.fileData);
+            }
+        }
+
+        // Base64 PDF Viewing Module
+        function openPDFViewer(title, base64Data) {
+            document.getElementById("pdf-viewer-title").innerText = title;
+            const iframe = document.getElementById("pdf-iframe-viewport");
+            const fallbackContainer = document.getElementById("pdf-fallback-container");
+            const fallbackBtn = document.getElementById("pdf-fallback-btn");
+
+            try {
+                iframe.src = base64Data;
+                iframe.classList.remove("hidden");
+                fallbackContainer.classList.add("hidden");
+            } catch (err) {
+                iframe.classList.add("hidden");
+                fallbackContainer.classList.remove("hidden");
+                fallbackBtn.href = base64Data;
+                fallbackBtn.download = `${title}.pdf`;
+            }
+
+            const modal = document.getElementById("pdf-viewer-modal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closePDFViewer() {
+            const modal = document.getElementById("pdf-viewer-modal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+            document.getElementById("pdf-iframe-viewport").src = "";
+        }
+
+        // Trigger native file dialogue picker
+        function triggerPDFUpload() {
+            document.getElementById("pdf-upload-input").click();
+        }
+
+        // Native PDF Upload & Compression Handler
+        function handlePDFUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 1.2 * 1024 * 1024) {
+                alert("This file is too large! Please compress the PDF below 1MB to prevent database storage limits.");
+                return;
+            }
+
+            showToast("Reading and uploading PDF...");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+                
+                const newDoc = {
+                    id: "pdf-" + Date.now(),
+                    title: file.name.replace(".pdf", ""),
+                    date: new Date().toLocaleDateString(),
+                    type: "pdf",
+                    fileData: base64Data
+                };
+
+                if (!dbState.newsletters) {
+                    dbState.newsletters = [];
+                }
+                
+                dbState.newsletters.push(newDoc);
+                saveAllToDatabase();
+                showToast("PDF document uploaded successfully!");
+            };
+            reader.readAsDataURL(file);
+            event.target.value = ""; // Clear file target
+        }
+
+        // Delete Uploaded Document
+        function deleteDocument(idx) {
+            const doc = dbState.newsletters[idx];
+            openConfirmModal(
+                "Delete Document",
+                `Are you sure you want to delete "${doc.title}"?`,
+                function() {
+                    dbState.newsletters.splice(idx, 1);
+                    saveAllToDatabase();
+                }
+            );
+        }
+
+        // Custom Admin Event Editor Controllers
         function openEventEditor(type, idx) {
             const modal = document.getElementById("event-editor-modal");
             document.getElementById("editor-event-type").value = type;
@@ -1126,7 +1461,6 @@
             const titleEl = document.getElementById("editor-modal-title");
             
             if (idx === -1) {
-                // Configuring clean default values for "Add Event" process
                 titleEl.innerText = `Add ${type === 'kearns' ? 'Kearns' : 'Provo'} Event`;
                 document.getElementById("editor-date").value = "";
                 document.getElementById("editor-time").value = "6:00 – 8:00 PM";
@@ -1136,7 +1470,6 @@
                 document.getElementById("editor-main-only").checked = (type === 'kearns');
                 document.getElementById("editor-is-critical").checked = false;
             } else {
-                // Extracting existing object parameters for "Edit Event" process
                 titleEl.innerText = `Edit ${type === 'kearns' ? 'Kearns' : 'Provo'} Event`;
                 const ev = (type === 'kearns') ? dbState.kearnsEvents[idx] : dbState.provoEvents[idx];
                 
@@ -1191,7 +1524,7 @@
             saveAllToDatabase();
         }
 
-        //        // Custom Dialog Modal Controllers (Avoiding system standard block alerts)
+        // Custom Dialog Modal Controllers
         function openConfirmModal(title, message, callback) {
             document.getElementById("confirm-title").innerText = title;
             document.getElementById("confirm-message").innerText = message;
@@ -1249,7 +1582,7 @@
             if (pass === "DBD2026") {
                 adminMode = true;
                 document.getElementById("admin-banner").classList.remove("hidden");
-                document.getElementById("admin-lock-btn").className = "w-9 h-9 rounded-full bg-rose-600 text-white flex items-center justify-center transition-colors";
+                document.getElementById("admin-lock-btn").className = "w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center transition-colors shadow-md";
                 showToast("Admin mode activated! Edit systems are open.");
                 toggleAdminElements();
             } else if (pass !== null) {
@@ -1260,7 +1593,7 @@
         function exitAdminMode() {
             adminMode = false;
             document.getElementById("admin-banner").classList.add("hidden");
-            document.getElementById("admin-lock-btn").className = "w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center transition-colors";
+            document.getElementById("admin-lock-btn").className = "w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center transition-colors";
             toggleAdminElements();
             showToast("Admin mode exited.");
         }
@@ -1306,7 +1639,7 @@
             navButtons.forEach(btn => btn.className = 'flex flex-col items-center justify-center text-slate-500 space-y-1 relative');
 
             const deskNavButtons = document.querySelectorAll('[id^="desk-nav-"]');
-            deskNavButtons.forEach(btn => btn.className = 'px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100');
+            deskNavButtons.forEach(btn => btn.className = 'px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all text-slate-600 hover:bg-slate-100');
 
             document.getElementById(`tab-${tabId}`).classList.add('active');
             
@@ -1317,27 +1650,7 @@
 
             const activeDeskBtn = document.getElementById(`desk-nav-${tabId}`);
             if (activeDeskBtn) {
-                activeDeskBtn.className = 'px-3.5 py-2 rounded-lg text-xs font-black transition-all bg-rose-50 text-rose-600';
-            }
-        }
-
-        // Switching Kearns vs Provo Views
-        function switchScheduleView(view) {
-            const kBtn = document.getElementById('btn-sch-kearns');
-            const pBtn = document.getElementById('btn-sch-provo');
-            const kView = document.getElementById('sch-kearns-view');
-            const pView = document.getElementById('sch-provo-view');
-
-            if (view === 'kearns') {
-                kBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg bg-rose-600 text-white transition-all';
-                pBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg text-slate-500 hover:text-slate-800 transition-all';
-                kView.classList.remove('hidden');
-                pView.classList.add('hidden');
-            } else {
-                pBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg bg-rose-600 text-white transition-all';
-                kBtn.className = 'flex-1 text-center py-2 text-xs font-black rounded-lg text-slate-500 hover:text-slate-800 transition-all';
-                pView.classList.remove('hidden');
-                kView.classList.add('hidden');
+                activeDeskBtn.className = 'px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all bg-rose-600 text-white shadow-sm';
             }
         }
 
@@ -1349,27 +1662,27 @@
             const filterMainBtn = document.getElementById('filter-main');
 
             if (group === 'main') {
-                filterMainBtn.className = 'text-xs font-black px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 transition-colors';
-                filterAllBtn.className = 'text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
+                filterMainBtn.className = 'text-xs font-black px-4 py-2 rounded-xl bg-rose-600 text-white shadow-xs transition-colors';
+                filterAllBtn.className = 'text-xs font-black px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
                 
                 allItems.forEach(item => {
                     if (item.classList.contains('main-group')) {
                         item.classList.remove('hidden');
-                        item.classList.remove('opacity-60');
+                        item.classList.remove('opacity-40');
                     } else {
                         item.classList.add('hidden');
                     }
                 });
             } else {
-                filterAllBtn.className = 'text-xs font-black px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 transition-colors';
-                filterMainBtn.className = 'text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
+                filterAllBtn.className = 'text-xs font-black px-4 py-2 rounded-xl bg-rose-600 text-white shadow-xs transition-colors';
+                filterMainBtn.className = 'text-xs font-black px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
                 
                 allItems.forEach(item => {
                     item.classList.remove('hidden');
                     if (!item.classList.contains('main-group')) {
-                        item.classList.add('opacity-60');
+                        item.classList.add('opacity-40');
                     } else {
-                        item.classList.remove('opacity-60');
+                        item.classList.remove('opacity-40');
                     }
                 });
             }
@@ -1467,7 +1780,6 @@
                 { title: "Hotel Residence Inn", desc: "$65/person. 252 West 2230 North, Provo.", tags: ["hotel", "inn", "stay", "marriott", "residence"] }
             ];
 
-            // Add dynamic events to search terms
             dbState.kearnsEvents.forEach(ev => {
                 searchDatabase.push({ title: ev.desc, desc: `${ev.date} @ ${ev.time}`, tags: [ev.desc.toLowerCase(), 'kearns', 'rehearsal'] });
             });
@@ -1538,22 +1850,41 @@
                 }
             });
 
+            // Calculate SVG Circle Dash offsets (radius = 20, circumference = 125.6)
+            const circle = document.getElementById('progress-circle');
+            const percentText = document.getElementById('progress-percent');
+            const fractionText = document.getElementById('progress-fraction');
+
+            const total = checkboxes.length;
+            const percentage = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
+            const strokeOffset = 125.6 - (125.6 * percentage) / 100;
+
+            if (circle) {
+                circle.style.strokeDashoffset = strokeOffset;
+            }
+            if (percentText) {
+                percentText.innerText = `${percentage}%`;
+            }
+            if (fractionText) {
+                fractionText.innerText = `${checkedCount} of ${total} complete`;
+            }
+
             const dotMobile = document.getElementById('checklist-dot');
             const dotDesk = document.getElementById('checklist-dot-desk');
             
             function toggleDots(visible, colorClass) {
                 [dotMobile, dotDesk].forEach(dot => {
                     if (visible) {
-                        dot.className = `absolute top-1.5 md:top-1 right-3.5 md:right-1.5 w-1.5 h-1.5 rounded-full ${colorClass}`;
+                        dot.className = `absolute top-1.5 md:top-1 right-3.5 md:right-1.5 w-2 h-2 rounded-full ${colorClass}`;
                     } else {
-                        dot.className = "absolute top-1.5 md:top-1 right-3.5 md:right-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 hidden";
+                        dot.className = "absolute top-1.5 md:top-1 right-3.5 md:right-1.5 w-2 h-2 rounded-full bg-rose-500 hidden";
                     }
                 });
             }
 
-            if (checkedCount > 0 && checkedCount < checkboxes.length) {
-                toggleDots(true, 'bg-amber-500');
-            } else if (checkedCount === checkboxes.length) {
+            if (checkedCount > 0 && checkedCount < total) {
+                toggleDots(true, 'bg-amber-500 animate-pulse');
+            } else if (checkedCount === total) {
                 toggleDots(true, 'bg-emerald-500');
             } else {
                 toggleDots(false, '');
