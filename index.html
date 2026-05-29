@@ -47,9 +47,64 @@
             0% { fill: rgba(239, 68, 68, 0.5); stroke: rgba(239, 68, 68, 1); stroke-width: 2.5; }
             100% { fill: rgba(254, 205, 211, 0.95); stroke: rgba(190, 24, 74, 1); stroke-width: 4; }
         }
+        
+        /* Flattened Design System Overrides */
+        .flat-card {
+            background-color: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1.5rem 0;
+        }
+        .flat-card:last-child {
+            border-bottom: none;
+        }
+        .flat-header {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 900;
+            color: #0f172a; /* slate-900 */
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .flat-header::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 18px;
+            background-color: #e11d48; /* rose-600 default */
+            border-radius: 2px;
+        }
+        .flat-header.blue-accent::before { background-color: #2563eb; }
+        .flat-header.amber-accent::before { background-color: #f59e0b; }
+        .flat-header.emerald-accent::before { background-color: #10b981; }
+
+        .flat-sub-section {
+            padding: 1rem 0;
+            border-top: 1px dashed #f1f5f9;
+        }
+        .flat-sub-section:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+        
+        .flat-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f8fafc;
+        }
+        .flat-item-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Clean Background override */
+        body {
+            background-color: #ffffff;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans h-full flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+<body class="bg-white text-slate-800 font-sans h-full flex flex-col antialiased selection:bg-rose-500 selection:text-white">
 
     <!-- High-Impact Top Header with visual indicators -->
     <header class="sticky top-0 z-40 bg-white border-b-2 border-slate-200/80 px-4 py-3 shadow-xs">
@@ -110,8 +165,8 @@
     </header>
 
     <!-- Admin Operations Banner -->
-    <div id="admin-banner" class="bg-rose-600 text-white text-xs font-bold py-2.5 px-4 hidden">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <div id="admin-banner" class="bg-rose-600 text-white text-xs font-bold py-2.5 px-4 hidden shadow-sm relative z-30">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
             <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-exclamation animate-bounce"></i> Administrator Enabled — Edits will apply in real-time.</span>
             <div class="flex gap-2">
                 <button onclick="saveAllToDatabase()" class="bg-white text-rose-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-xs hover:bg-rose-50 transition-all">Save To Cloud</button>
@@ -120,79 +175,79 @@
         </div>
     </div>
 
-    <!-- Main Container -->
-    <main class="flex-1 overflow-y-auto pb-24 md:pb-8 px-4 pt-4 max-w-6xl mx-auto w-full space-y-4">
+    <!-- Main Container - Flattened -->
+    <main class="flex-1 overflow-y-auto pb-24 md:pb-12 px-4 md:px-8 pt-6 max-w-4xl mx-auto w-full">
 
-        <!-- Visual Countdown Anchor Card -->
-        <div id="countdown-card" class="bg-white border-2 border-slate-200 rounded-3xl p-4 shadow-sm relative overflow-hidden flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-            <div class="space-y-1">
-                <span class="text-[9px] tracking-widest font-extrabold uppercase text-rose-600 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-md">
+        <!-- Visual Countdown Anchor Card (Simplified) -->
+        <div id="countdown-card" class="mb-8 pb-8 border-b-2 border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="space-y-2">
+                <span class="inline-block text-[10px] tracking-widest font-extrabold uppercase text-rose-600 bg-rose-50 px-2 py-1 rounded">
                     DAYS REMAINING UNTIL TRAVEL
                 </span>
-                <h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
-                    Provo, UT Mandatories begin July 2, 2026
+                <h2 class="text-xl md:text-2xl font-black text-slate-900 leading-tight">
+                    Provo, UT Mandatories<br>begin July 2, 2026
                 </h2>
-                <p class="text-[11px] text-slate-400 font-bold" id="last-updated-text">Synced: Loading...</p>
+                <p class="text-xs text-slate-400 font-medium" id="last-updated-text">Synced: Loading...</p>
             </div>
             
-            <div class="grid grid-cols-4 gap-2 text-center max-w-sm w-full">
-                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl">
-                    <span id="days" class="block text-lg md:text-xl font-black text-slate-800">00</span>
-                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Days</span>
+            <div class="flex gap-4 text-center">
+                <div class="flex flex-col items-center">
+                    <span id="days" class="text-3xl md:text-4xl font-black text-slate-800 leading-none">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">Days</span>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl">
-                    <span id="hours" class="block text-lg md:text-xl font-black text-slate-800">00</span>
-                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Hrs</span>
+                <div class="flex flex-col items-center">
+                    <span id="hours" class="text-3xl md:text-4xl font-black text-slate-800 leading-none">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">Hrs</span>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl">
-                    <span id="mins" class="block text-lg md:text-xl font-black text-slate-800">00</span>
-                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Mins</span>
+                <div class="flex flex-col items-center">
+                    <span id="mins" class="text-3xl md:text-4xl font-black text-slate-800 leading-none">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">Mins</span>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 p-2 rounded-2xl border-b-rose-400 border-b-2">
-                    <span id="secs" class="block text-lg md:text-xl font-black text-rose-600">00</span>
-                    <span class="text-[8px] uppercase tracking-wider text-slate-400 font-extrabold">Secs</span>
+                <div class="flex flex-col items-center">
+                    <span id="secs" class="text-3xl md:text-4xl font-black text-rose-600 leading-none">00</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">Secs</span>
                 </div>
             </div>
         </div>
 
         <!-- ==================== TAB 1: OVERVIEW & FIELD PLACEMENT ==================== -->
-        <div id="tab-overview" class="tab-content active space-y-4">
+        <div id="tab-overview" class="tab-content active">
             
-            <!-- Quick Scannable Anchor: TL;DR Card -->
-            <div class="border-l-4 border-l-blue-600 bg-blue-50/50 border border-slate-200 rounded-2xl p-4">
-                <h3 class="text-sm font-black text-blue-900 uppercase tracking-tight flex items-center gap-1.5 mb-2">
-                    <i class="fa-solid fa-circle-info"></i> Fast Summary (TL;DR)
-                </h3>
-                <ul class="text-xs text-slate-700 space-y-2 list-none pl-0">
-                    <li class="flex items-start gap-2">
-                        <span class="text-blue-600 font-black shrink-0">➔</span>
+            <!-- Quick Scannable Anchor: TL;DR -->
+            <div class="mb-8">
+                <h3 class="flat-header blue-accent">Fast Summary (TL;DR)</h3>
+                <ul class="text-sm text-slate-700 space-y-3 list-none pl-2 border-l-2 border-blue-100 ml-1">
+                    <li class="flex items-start gap-3">
+                        <span class="text-blue-500 mt-1"><i class="fa-solid fa-check"></i></span>
                         <span>Dancers perform on the <strong>West Side of the field, facing WEST</strong> (facing parents sitting in the West Stand).</span>
                     </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-blue-600 font-black shrink-0">➔</span>
+                    <li class="flex items-start gap-3">
+                        <span class="text-blue-500 mt-1"><i class="fa-solid fa-check"></i></span>
                         <span>This celebrates the <strong>250th anniversary of the signing of the Declaration of Independence</strong>.</span>
                     </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-blue-600 font-black shrink-0">➔</span>
+                    <li class="flex items-start gap-3">
+                        <span class="text-blue-500 mt-1"><i class="fa-solid fa-check"></i></span>
                         <span>All dancers stay on the field for the <strong>entire show</strong>. No backstage pickups during the event.</span>
                     </li>
                 </ul>
             </div>
 
             <!-- Interactive Field Placement Grids -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                
-                <!-- SVG Field Map -->
-                <div class="bg-white border border-slate-200 rounded-3xl p-4 md:col-span-8 space-y-3 shadow-xs">
-                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                        <div>
-                            <h3 class="text-sm font-black text-slate-950 uppercase tracking-tight flex items-center gap-2">
-                                <span class="w-1 h-4 bg-rose-600 rounded-full"></span> 250th Routine Stadium Map
-                            </h3>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Matches Homebase Chart 2a (South at top, North at bottom)</p>
-                        </div>
+            <div class="flat-card border-t border-slate-200 pt-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="flat-header m-0">250th Routine Stadium Map</h3>
+                    <p class="text-xs text-slate-400 font-medium">Matches Homebase Chart 2a</p>
+                </div>
+
+                <!-- SVG Grid Mapping -->
+                <div class="mb-6">
+                    <div class="flex items-center gap-4 text-xs font-medium text-slate-500 mb-3">
+                        <span>Tap highlights for info:</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-rose-100 rounded border border-rose-400"></span> Denise Spots</span>
                     </div>
 
+                    <div class="relative w-full overflow-x-auto no-scrollbar">
+                        <svg viewBox="0 0 600 350" class="w-full min-w-[500px] h-auto rounded-xl border border-slate-200">
                     <!-- SVG Grid Mapping (Matches image_936f38.jpg layout perfectly) -->
                     <div class="bg-slate-100 rounded-2xl p-4 border border-slate-200">
                         <div class="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-3 bg-white p-2.5 rounded-xl border border-slate-200">
@@ -285,446 +340,374 @@
                                 <text x="500" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">Y</text>
                                 <text x="545" y="315" fill="#94a3b8" font-size="6.5" font-weight="bold">AA</text>
                             </svg>
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Details Panel for Selected Field Spot -->
-                    <div id="spot-details-panel" class="bg-rose-50 border border-rose-150 p-4 rounded-2xl space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs uppercase font-extrabold text-rose-700 tracking-wider flex items-center gap-1">
-                                <i class="fa-solid fa-location-dot text-rose-600"></i> Location Selector
-                            </span>
-                            <span id="spot-location-tag" class="text-[9px] bg-rose-200 text-rose-800 font-extrabold px-2.5 py-0.5 rounded-full uppercase">Spot 1 (Main)</span>
-                        </div>
-                        <h4 id="spot-title" class="text-sm font-black text-slate-900">Dance by Denise — Primary Position (14 Dancers)</h4>
-                        <p id="spot-description" class="text-xs text-slate-600 leading-relaxed">
-                            Located on the <strong>West Side of the stadium (Group 3, Rows 10-15)</strong>. This aligns directly in front of the West Spectator Bleachers (where parents sit!). Dancers will be facing West for the entire duration of the performance.
-                        </p>
                     </div>
                 </div>
 
-                <!-- PDF Documents and Quick Shelf panel -->
-                <div class="space-y-4 md:col-span-4 flex flex-col justify-stretch">
-                    
-                    <!-- Document Shelf -->
-                    <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs flex-1">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                            <h3 class="text-xs font-black text-slate-950 uppercase tracking-tight flex items-center gap-2">
-                                <span class="w-1 h-4 bg-rose-600 rounded-full"></span> Newsletters & Forms
-                            </h3>
-                            <!-- Admin Upload Button trigger -->
-                            <button onclick="triggerPDFUpload()" class="admin-only hidden text-xs font-bold text-rose-600 hover:text-rose-700">
-                                <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload PDF
-                            </button>
-                            <input type="file" id="pdf-upload-input" accept="application/pdf" class="hidden" onchange="handlePDFUpload(event)">
-                        </div>
-
-                        <!-- Dynamic list of newsletters (both text-based and uploaded PDFs) -->
-                        <div id="newsletters-dynamic-list" class="space-y-2">
-                            <!-- Loaded from dbState -->
-                        </div>
+                <!-- Dynamic Details Panel (Flattened) -->
+                <div id="spot-details-panel" class="pl-4 border-l-4 border-rose-200 transition-colors duration-300 py-1">
+                    <div class="flex items-center gap-3 mb-1">
+                        <h4 id="spot-title" class="text-base font-black text-slate-900">Dance by Denise — Primary Position (14 Dancers)</h4>
+                        <span id="spot-location-tag" class="text-[10px] bg-rose-100 text-rose-700 font-bold px-2 py-0.5 rounded">Spot 1 (Main)</span>
                     </div>
+                    <p id="spot-description" class="text-sm text-slate-600 leading-relaxed max-w-2xl">
+                        Located on the <strong>West Side of the stadium (Group 3, Rows 10-15)</strong>. This aligns directly in front of the West Spectator Bleachers (where parents sit!). Dancers will be facing West for the entire duration of the performance.
+                    </p>
+                </div>
+            </div>
 
-                    <!-- Highlight Card: Quick Safety Guide -->
-                    <div class="border-l-4 border-l-rose-600 bg-rose-50/40 border border-rose-200/50 p-4 rounded-2xl">
-                        <h4 class="text-xs font-extrabold text-rose-800 uppercase flex items-center gap-1"><i class="fa-solid fa-shield"></i> Safety & Access reminder</h4>
-                        <p class="text-[11px] text-slate-600 leading-relaxed mt-1">Dancers & Chaperones must wear their **official SOF wristband** to access all Provo rehearsals. Wristbands are checked strictly.</p>
-                    </div>
-
+            <!-- Documents Shelf (Flattened) -->
+            <div class="flat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="flat-header m-0">Newsletters & Forms</h3>
+                    <button onclick="triggerPDFUpload()" class="admin-only hidden text-sm font-bold text-rose-600 hover:text-rose-700">
+                        + Upload PDF
+                    </button>
+                    <input type="file" id="pdf-upload-input" accept="application/pdf" class="hidden" onchange="handlePDFUpload(event)">
                 </div>
 
+                <div id="newsletters-dynamic-list" class="space-y-1">
+                    <!-- Loaded from dbState -->
+                </div>
+            </div>
+
+            <!-- Safety Highlight (Flattened) -->
+            <div class="flat-card">
+                <h4 class="text-sm font-black text-rose-700 uppercase mb-2 flex items-center gap-2"><i class="fa-solid fa-shield"></i> Safety & Access reminder</h4>
+                <p class="text-sm text-slate-600 leading-relaxed max-w-2xl">Dancers & Chaperones must wear their <strong>official SOF wristband</strong> to access all Provo rehearsals. Wristbands are checked strictly.</p>
             </div>
 
         </div>
 
         <!-- ==================== TAB 2: SCHEDULES ==================== -->
-        <div id="tab-schedule" class="tab-content space-y-4">
+        <div id="tab-schedule" class="tab-content">
             
-            <!-- Quick Filter Bar -->
-            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs uppercase font-black tracking-wider text-slate-400 flex items-center gap-1.5">
-                        <i class="fa-solid fa-filter"></i> Focus View:
-                    </span>
-                </div>
-                <div class="flex gap-1.5">
-                    <button onclick="filterSchedule('all')" id="filter-all" class="text-xs font-black px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
-                        Show All
-                    </button>
-                    <button onclick="filterSchedule('main')" id="filter-main" class="text-xs font-black px-4 py-2 rounded-xl bg-rose-600 text-white shadow-xs transition-colors">
-                        ★ Main/Senior Only
-                    </button>
-                </div>
+            <!-- Quick Filter Bar (Flattened text links) -->
+            <div class="flex items-center gap-6 mb-8 border-b border-slate-100 pb-4">
+                <span class="text-xs uppercase font-black tracking-wider text-slate-400">View:</span>
+                <button onclick="filterSchedule('all')" id="filter-all" class="text-sm font-bold text-slate-400 hover:text-slate-800 transition-colors pb-1 border-b-2 border-transparent">
+                    All Rehearsals
+                </button>
+                <button onclick="filterSchedule('main')" id="filter-main" class="text-sm font-bold text-rose-600 border-b-2 border-rose-600 transition-colors pb-1">
+                    Main/Senior Only
+                </button>
             </div>
 
-            <!-- Double-Column Rehearsals Timeline Layout -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Kearns Rehearsals List (Flattened) -->
+            <div class="flat-card pt-0">
+                <div class="flex items-baseline justify-between mb-1">
+                    <h4 class="flat-header blue-accent m-0">Kearns Local Schedule</h4>
+                    <span class="text-xs text-slate-500 font-medium">Oquirrh Park Fitness Center</span>
+                </div>
+                <a href="https://maps.google.com/?q=Oquirrh+Park+Fitness+Center+5624+Cougar+Lane+Kearns+UT" target="_blank" class="text-sm text-blue-600 hover:underline font-medium inline-flex items-center gap-1.5 mb-6">
+                    5624 Cougar Lane, Kearns UT <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
                 
-                <!-- Kearns Rehearsals Card -->
-                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
-                    <div class="flex flex-col mb-2">
-                        <div class="flex items-center justify-between">
-                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">Kearns Local Schedule</h4>
-                            <span class="text-[10px] text-blue-600 font-extrabold flex items-center gap-1 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md">
-                                <i class="fa-solid fa-location-dot"></i> Kearns
-                            </span>
-                        </div>
-                        <p class="text-[11px] text-slate-500 mt-1 font-semibold">Oquirrh Park Fitness Center — 5624 Cougar Lane, Kearns UT</p>
-                    </div>
-
-                    <!-- Map Link Button -->
-                    <a href="https://maps.google.com/?q=Oquirrh+Park+Fitness+Center+5624+Cougar+Lane+Kearns+UT" target="_blank" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all mb-4 border border-slate-200">
-                        <i class="fa-solid fa-map-location-dot text-rose-600"></i> Open Kearns Location in Google Maps
-                    </a>
-                    
-                    <!-- Dynamic local schedule render list -->
-                    <div id="local-schedule-list" class="space-y-3 relative border-l border-slate-200 pl-4 ml-2">
-                        <!-- Populated by JavaScript -->
-                    </div>
-
-                    <!-- Admin Add Event Button -->
-                    <button onclick="openEventEditor('kearns', -1)" class="admin-only w-full py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 hover:bg-emerald-100 transition-all hidden">
-                        <i class="fa-solid fa-plus"></i> Add Kearns Event
-                    </button>
+                <div id="local-schedule-list" class="space-y-0">
+                    <!-- Populated by JavaScript -->
                 </div>
 
-                <!-- Provo Mandatory Rehearsals Card -->
-                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs self-start">
-                    <div class="flex flex-col mb-2">
-                        <div class="flex items-center justify-between">
-                            <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">Provo Travel Schedule</h4>
-                            <span class="text-[10px] text-rose-600 font-extrabold flex items-center gap-1 uppercase tracking-widest bg-rose-50 px-2 py-0.5 rounded-md">
-                                <i class="fa-solid fa-stadium"></i> BYU Stadium
-                            </span>
-                        </div>
-                        <p class="text-[11px] text-slate-500 mt-1 font-semibold">LaVell Edwards Stadium — 1700 N Canyon Rd, Provo, UT 84604</p>
-                    </div>
+                <button onclick="openEventEditor('kearns', -1)" class="admin-only mt-4 text-sm font-bold text-emerald-600 hover:underline hidden">
+                    + Add Kearns Event
+                </button>
+            </div>
 
-                    <!-- Map Link Button -->
-                    <a href="https://maps.google.com/?q=LaVell+Edwards+Stadium+1700+N+Canyon+Rd+Provo+UT" target="_blank" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all mb-4 border border-slate-200">
-                        <i class="fa-solid fa-map-location-dot text-rose-600"></i> Open Provo Stadium in Google Maps
-                    </a>
+            <!-- Provo Mandatory Rehearsals List (Flattened) -->
+            <div class="flat-card">
+                <div class="flex items-baseline justify-between mb-1">
+                    <h4 class="flat-header m-0">Provo Travel Schedule</h4>
+                    <span class="text-xs text-slate-500 font-medium">LaVell Edwards Stadium</span>
+                </div>
+                <a href="https://maps.google.com/?q=LaVell+Edwards+Stadium+1700+N+Canyon+Rd+Provo+UT" target="_blank" class="text-sm text-blue-600 hover:underline font-medium inline-flex items-center gap-1.5 mb-6">
+                    1700 N Canyon Rd, Provo UT <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
 
-                    <!-- Dynamic provo schedule render list -->
-                    <div id="provo-schedule-list" class="space-y-3 relative border-l border-slate-200 pl-4 ml-2">
-                        <!-- Populated by JavaScript -->
-                    </div>
-
-                    <!-- Admin Add Event Button -->
-                    <button onclick="openEventEditor('provo', -1)" class="admin-only w-full py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 hover:bg-emerald-100 transition-all hidden">
-                        <i class="fa-solid fa-plus"></i> Add Provo Event
-                    </button>
+                <div id="provo-schedule-list" class="space-y-0">
+                    <!-- Populated by JavaScript -->
                 </div>
 
+                <button onclick="openEventEditor('provo', -1)" class="admin-only mt-4 text-sm font-bold text-emerald-600 hover:underline hidden">
+                    + Add Provo Event
+                </button>
             </div>
 
         </div>
 
         <!-- ==================== TAB 3: COSTUMES & APPLIQUE ==================== -->
-        <div id="tab-costumes" class="tab-content space-y-4">
+        <div id="tab-costumes" class="tab-content">
             
-            <!-- Quick Scannable Anchor: TL;DR Card -->
-            <div class="border-l-4 border-l-rose-600 bg-rose-50/50 border border-slate-200 rounded-2xl p-4">
-                <h3 class="text-sm font-black text-rose-900 uppercase tracking-tight flex items-center gap-1.5 mb-2">
-                    <i class="fa-solid fa-shirt"></i> Costume Bottom Line (TL;DR)
-                </h3>
-                <ul class="text-xs text-slate-700 space-y-2 list-none pl-0">
-                    <li class="flex items-start gap-2">
-                        <span class="text-rose-600 font-black shrink-0">➔</span>
+            <!-- Quick Scannable Anchor: TL;DR -->
+            <div class="mb-8">
+                <h3 class="flat-header">Costume Bottom Line (TL;DR)</h3>
+                <ul class="text-sm text-slate-700 space-y-3 list-none pl-2 border-l-2 border-rose-100 ml-1">
+                    <li class="flex items-start gap-3">
+                        <span class="text-rose-500 mt-1"><i class="fa-solid fa-check"></i></span>
                         <span>Performance costumes are handed out on <strong>Thursday, July 2nd</strong> directly in Provo.</span>
                     </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-rose-600 font-black shrink-0">➔</span>
+                    <li class="flex items-start gap-3">
+                        <span class="text-rose-500 mt-1"><i class="fa-solid fa-check"></i></span>
                         <span>All girls must pack a <strong>tan body tight</strong> and wear small <strong>rhinestone studs</strong>.</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- Main Costume Specs -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-4 shadow-xs">
+            <!-- Main Costume Specs (Flattened) -->
+            <div class="flat-card border-t border-slate-200 pt-8">
+                <h3 class="flat-header blue-accent">Performance Costumes</h3>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl border-t-4 border-t-rose-500">
-                        <span class="text-[9px] uppercase tracking-widest font-extrabold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">Females</span>
-                        <p class="text-sm font-black text-slate-900 mt-2">USA Red, White & Blue Dress</p>
-                        <p class="text-xs text-slate-500 mt-0.5">Features "USA" graphic lettering across the back.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+                    <div class="flat-sub-section border-t-0 py-0">
+                        <span class="text-xs uppercase tracking-widest font-bold text-slate-400">Females</span>
+                        <p class="text-lg font-black text-slate-900 mt-1">USA Red, White & Blue Dress</p>
+                        <p class="text-sm text-slate-500 mt-1">Features "USA" graphic lettering across the back.</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl border-t-4 border-t-blue-500">
-                        <span class="text-[9px] uppercase tracking-widest font-extrabold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Males</span>
-                        <p class="text-sm font-black text-slate-900 mt-2">Patriotic Set</p>
-                        <p class="text-xs text-slate-500 mt-0.5">Coordinated red, white, and blue top with shorts.</p>
+                    <div class="flat-sub-section border-t-0 md:border-l md:border-dashed md:border-slate-200 md:pl-8 py-0">
+                        <span class="text-xs uppercase tracking-widest font-bold text-slate-400">Males</span>
+                        <p class="text-lg font-black text-slate-900 mt-1">Patriotic Set</p>
+                        <p class="text-sm text-slate-500 mt-1">Coordinated red, white, and blue top with shorts.</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Appearance Specifications grid -->
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-                    <span class="text-xs uppercase tracking-widest font-extrabold text-slate-500">Exact Visual Rules:</span>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
-                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-socks"></i>
-                            </div>
+            <!-- Appearance Specifications List (Flattened) -->
+            <div class="flat-card">
+                <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Exact Visual Rules</h3>
+                
+                <div class="space-y-0">
+                    <div class="flat-item-row border-b border-slate-100 py-4">
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-socks text-slate-300 mt-1 w-4 text-center"></i>
                             <div>
-                                <p class="font-bold text-slate-800">Undergarments & Tights</p>
-                                <p class="text-slate-500 text-[11px] mt-0.5">All female dancers must wear a **tan body tight** under their USA dresses.</p>
+                                <p class="text-base font-bold text-slate-900">Undergarments & Tights</p>
+                                <p class="text-sm text-slate-500 mt-1 max-w-lg">All female dancers must wear a <strong>tan body tight</strong> under their USA dresses.</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
-                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-shoe-prints"></i>
-                            </div>
+                    <div class="flat-item-row border-b border-slate-100 py-4">
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-shoe-prints text-slate-300 mt-1 w-4 text-center"></i>
                             <div>
-                                <p class="font-bold text-slate-800">Tan Performance Shoes</p>
-                                <p class="text-slate-500 text-[11px] mt-0.5">Dancers require **tan turners** or **tan jazz shoes**.</p>
+                                <p class="text-base font-bold text-slate-900">Tan Performance Shoes</p>
+                                <p class="text-sm text-slate-500 mt-1 max-w-lg">Dancers require <strong>tan turners</strong> or <strong>tan jazz shoes</strong>.</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
-                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-cut"></i>
-                            </div>
+                    <div class="flat-item-row border-b border-slate-100 py-4">
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-cut text-slate-300 mt-1 w-4 text-center"></i>
                             <div>
-                                <p class="font-bold text-slate-800">Ballet Bun (No exceptions)</p>
-                                <p class="text-slate-500 text-[11px] mt-0.5">Neat **ballet bun** with costume applique pinned securely. Hair & makeup specifications are TBD.</p>
+                                <p class="text-base font-bold text-slate-900">Ballet Bun (No exceptions)</p>
+                                <p class="text-sm text-slate-500 mt-1 max-w-lg">Neat <strong>ballet bun</strong> with costume applique pinned securely. Hair & makeup specifications are TBD.</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="flex items-start gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs">
-                            <div class="w-8 h-8 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
-                                <i class="fa-solid fa-gem"></i>
-                            </div>
+                    <div class="flat-item-row border-b border-slate-100 py-4">
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-gem text-slate-300 mt-1 w-4 text-center"></i>
                             <div>
-                                <p class="font-bold text-slate-800">Rhinestone Earrings</p>
-                                <p class="text-slate-500 text-[11px] mt-0.5">Small **rhinestone stud earrings** required ($5 on order form, or use your own similar size).</p>
+                                <p class="text-base font-bold text-slate-900">Rhinestone Earrings</p>
+                                <p class="text-sm text-slate-500 mt-1 max-w-lg">Small <strong>rhinestone stud earrings</strong> required ($5 on order form, or use your own similar size).</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Rehearsal Uniform Requirements Card -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-blue-500 rounded-full"></span> Mandatory Rehearsal Wear
-                </h3>
-                <p class="text-xs text-slate-500">
+            <!-- Rehearsal Uniform (Flattened) -->
+            <div class="flat-card">
+                <h3 class="flat-header amber-accent">Mandatory Rehearsal Wear</h3>
+                <p class="text-sm text-slate-600 max-w-2xl mb-4">
                     Required purchase set. Must be worn on <strong>Filming Night (June 22)</strong> and the <strong>Provo dress rehearsal (July 3)</strong>.
                 </p>
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs font-bold text-slate-850">Black skort + Baby blue tank or t-shirt</p>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Required apparel set.</p>
-                    </div>
-                    <i class="fa-solid fa-shirt text-blue-500 text-xl"></i>
+                <div class="flex items-center gap-4 bg-slate-50 px-4 py-3 rounded-lg w-fit">
+                    <i class="fa-solid fa-shirt text-slate-400"></i>
+                    <p class="text-base font-bold text-slate-800">Black skort + Baby blue tank or t-shirt</p>
                 </div>
             </div>
 
         </div>
 
         <!-- ==================== TAB 4: MONEY & LOGISTICS ==================== -->
-        <div id="tab-logistics" class="tab-content space-y-4">
+        <div id="tab-logistics" class="tab-content">
             
-            <!-- Quick Scannable Anchor: TL;DR Card -->
-            <div class="border-l-4 border-l-amber-500 bg-amber-50/50 border border-slate-200 rounded-2xl p-4">
-                <h3 class="text-sm font-black text-amber-900 uppercase tracking-tight flex items-center gap-1.5 mb-2">
-                    <i class="fa-solid fa-coins"></i> Money & Travel Bottom Line (TL;DR)
-                </h3>
-                <ul class="text-xs text-slate-700 space-y-2 list-none pl-0">
-                    <li class="flex items-start gap-2">
-                        <span class="text-amber-600 font-black shrink-0">➔</span>
+            <!-- Quick Scannable Anchor: TL;DR -->
+            <div class="mb-8">
+                <h3 class="flat-header amber-accent">Money & Travel Bottom Line (TL;DR)</h3>
+                <ul class="text-sm text-slate-700 space-y-3 list-none pl-2 border-l-2 border-amber-200 ml-1">
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1"><i class="fa-solid fa-check"></i></span>
                         <span>Hotel room fee is <strong>$65 per person</strong>. Under Denise Allen reservation.</span>
                     </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-amber-600 font-black shrink-0">➔</span>
+                    <li class="flex items-start gap-3">
+                        <span class="text-amber-500 mt-1"><i class="fa-solid fa-check"></i></span>
                         <span>Send <strong>$50 food money</strong> to Misti Bird via Venmo before she orders stadium meals.</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- Double-Column split on Desktop -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                <!-- Hotel Specifications Card -->
-                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
-                    <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
-                        <span class="w-1 h-4 bg-blue-600 rounded-full"></span> Hotel Accommodations
-                    </h3>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-                        <div>
-                            <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest bg-blue-100 text-blue-800 px-2 py-0.5 rounded inline-block">Residence Inn Provo North</h4>
-                            <p class="text-sm font-black text-slate-900 mt-2">Residence Inn Provo North by Marriott</p>
-                            <p class="text-[11px] text-slate-500 mt-0.5">252 West 2230 North, Provo, UT</p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 border-t border-slate-200 pt-3 text-[11px]">
-                            <div>
-                                <span class="block text-slate-400">Nightly Rate</span>
-                                <span class="font-black text-slate-800">$65 / Person</span>
-                            </div>
-                            <div>
-                                <span class="block text-slate-400">Breakfast</span>
-                                <span class="font-black text-emerald-600">Complimentary</span>
-                            </div>
-                        </div>
-                        <div class="text-[11px] text-slate-600 bg-white p-3 rounded-xl border border-slate-200 leading-normal">
-                            Reservations are managed under <strong>Denise Allen</strong>. Up to 3 dancers per room with 1 parent chaperone (or 4 senior dancers). Extra rooms are $260/night with tax.
-                        </div>
-                        <!-- Map Link Button -->
-                        <a href="https://maps.google.com/?q=Residence+Inn+Provo+North+by+Marriott+Provo+UT" target="_blank" class="w-full py-2 bg-slate-200 hover:bg-slate-350 text-slate-800 rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all border border-slate-300">
-                            <i class="fa-solid fa-map-location-dot text-rose-600"></i> Open Address in Maps
-                        </a>
-                    </div>
+            <!-- Hotel Specifications (Flattened) -->
+            <div class="flat-card border-t border-slate-200 pt-8">
+                <h3 class="flat-header blue-accent">Hotel Accommodations</h3>
+                
+                <div class="flat-sub-section">
+                    <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Residence Inn Provo North by Marriott</h4>
+                    <a href="https://maps.google.com/?q=Residence+Inn+Provo+North+by+Marriott+Provo+UT" target="_blank" class="text-lg font-black text-blue-600 hover:underline flex items-center gap-2 w-fit">
+                        252 West 2230 North, Provo, UT <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
                 </div>
 
-                <!-- Money & Donations Card -->
-                <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
-                    <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
-                        <span class="w-1 h-4 bg-emerald-600 rounded-full"></span> Money & Donations
-                    </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 py-4">
+                    <div>
+                        <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Nightly Rate</span>
+                        <span class="text-xl font-black text-slate-900">$65 / Person</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Breakfast</span>
+                        <span class="text-lg font-bold text-emerald-600">Complimentary</span>
+                    </div>
+                </div>
+                
+                <p class="text-sm text-slate-600 leading-relaxed max-w-2xl mt-2">
+                    Reservations are managed under <strong>Denise Allen</strong>. Up to 3 dancers per room with 1 parent chaperone (or 4 senior dancers). Extra rooms are $260/night with tax.
+                </p>
+            </div>
+
+            <!-- Money & Donations (Flattened) -->
+            <div class="flat-card">
+                <h3 class="flat-header emerald-accent">Money & Donations</h3>
+                
+                <div class="flat-sub-section">
+                    <div class="flex items-end justify-between mb-2">
+                        <h4 class="text-lg font-black text-slate-900">Provo Meal Fund</h4>
+                        <span class="text-sm font-bold text-emerald-600">$50 Rec.</span>
+                    </div>
+                    <p class="text-sm text-slate-600 max-w-2xl mb-3">Food money is due to chaperone Misti Bird prior to loading buses to guarantee group stadium lunch order delivery.</p>
                     
-                    <div class="space-y-3">
-                        <!-- Money Card -->
-                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-black text-slate-850">Provo Meal Fund</span>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-black">$50 Rec.</span>
-                            </div>
-                            <p class="text-[11px] text-slate-500 leading-normal">Food money is due to chaperone Misti Bird prior to loading buses to guarantee group stadium lunch order delivery.</p>
-                            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 mt-2">
-                                <div class="text-[11px]">
-                                    <p class="text-slate-400">Chaperone:</p>
-                                    <p class="font-bold text-slate-800">Misti Bird <span class="text-slate-500 font-normal block sm:inline">(801-597-0035)</span></p>
-                                </div>
-                                <button onclick="copyToClipboard('@Misti-Bird', 'Misti Bird\'s Venmo')" class="bg-rose-600 hover:bg-rose-500 px-3.5 py-1.5 rounded-lg text-[10px] font-black text-white transition-colors shrink-0">
-                                    Copy Venmo
-                                </button>
-                            </div>
+                    <div class="flex items-center gap-4 py-2 border-l-2 border-slate-200 pl-4">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Chaperone</p>
+                            <p class="text-base font-bold text-slate-900">Misti Bird <span class="text-sm text-slate-500 font-normal ml-2">(801-597-0035)</span></p>
                         </div>
-
-                        <!-- Donations Card -->
-                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
-                            <span class="text-xs font-bold text-rose-600 block">Required Snack Donations</span>
-                            <p class="text-[11px] text-slate-500 leading-normal">Bring Gatorade, PowerAde, or non-melting snacks (Swedish Fish, Starbursts, Rice Crispy treats, granola bars, cheese sticks, jerky) to local rehearsals.</p>
-                            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 mt-2">
-                                <div class="text-[11px]">
-                                    <p class="text-slate-400">Venmo Denise Instead:</p>
-                                    <p class="font-bold text-slate-800">@Denise-Allen-116</p>
-                                </div>
-                                <button onclick="copyToClipboard('@Denise-Allen-116', 'Denise Allen\'s Venmo')" class="bg-rose-600 hover:bg-rose-500 px-3.5 py-1.5 rounded-lg text-[10px] font-black text-white transition-colors shrink-0">
-                                    Copy Venmo
-                                </button>
-                            </div>
-                        </div>
+                        <button onclick="copyToClipboard('@Misti-Bird', 'Misti Bird\'s Venmo')" class="text-sm font-bold text-blue-600 hover:underline ml-auto">
+                            Copy Venmo
+                        </button>
                     </div>
                 </div>
 
+                <div class="flat-sub-section">
+                    <h4 class="text-lg font-black text-slate-900 mb-2">Required Snack Donations</h4>
+                    <p class="text-sm text-slate-600 max-w-2xl mb-3">Bring Gatorade, PowerAde, or non-melting snacks (Swedish Fish, Starbursts, Rice Crispy treats, granola bars, cheese sticks, jerky) to local rehearsals.</p>
+                    
+                    <div class="flex items-center gap-4 py-2 border-l-2 border-slate-200 pl-4">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Venmo Denise Instead</p>
+                            <p class="text-base font-bold text-slate-900">@Denise-Allen-116</p>
+                        </div>
+                        <button onclick="copyToClipboard('@Denise-Allen-116', 'Denise Allen\'s Venmo')" class="text-sm font-bold text-blue-600 hover:underline ml-auto">
+                            Copy Venmo
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <!-- TBD Alerts Checklist Warning -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-amber-500 rounded-full"></span> Studio Resources Update
-                </h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] md:text-xs">
-                    <div id="res-music" class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-500">Music Tracks</p>
-                            <p class="res-val text-[8px] md:text-[9px] text-amber-600 font-semibold" id="res-val-music">TBD</p>
-                        </div>
-                        <i class="fa-solid fa-music text-slate-400"></i>
+            <!-- TBD Alerts Checklist Warning (Flattened) -->
+            <div class="flat-card">
+                <h3 class="flat-header amber-accent">Studio Resources Update</h3>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-4 mt-4">
+                    <div id="res-music" class="border-l-2 border-amber-200 pl-3">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Music Tracks</p>
+                        <p class="res-val text-sm font-bold text-slate-800" id="res-val-music">TBD</p>
                     </div>
-                    <div id="res-hair" class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-500">Hair & Makeup</p>
-                            <p class="res-val text-[8px] md:text-[9px] text-amber-600 font-semibold" id="res-val-hair">TBD</p>
-                        </div>
-                        <i class="fa-solid fa-wand-magic-sparkles text-slate-400"></i>
+                    <div id="res-hair" class="border-l-2 border-amber-200 pl-3">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Hair & Makeup</p>
+                        <p class="res-val text-sm font-bold text-slate-800" id="res-val-hair">TBD</p>
                     </div>
-                    <div id="res-contacts" class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-500">Dancer Contacts</p>
-                            <p class="res-val text-[8px] md:text-[9px] text-amber-600 font-semibold" id="res-val-contacts">TBD</p>
-                        </div>
-                        <i class="fa-solid fa-address-book text-slate-400"></i>
+                    <div id="res-contacts" class="border-l-2 border-amber-200 pl-3">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Dancer Contacts</p>
+                        <p class="res-val text-sm font-bold text-slate-800" id="res-val-contacts">TBD</p>
                     </div>
-                    <div id="res-carpools" class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-500">Carpools</p>
-                            <p class="res-val text-[8px] md:text-[9px] text-amber-600 font-semibold" id="res-val-carpools">TBD</p>
-                        </div>
-                        <i class="fa-solid fa-user-group text-slate-400"></i>
+                    <div id="res-carpools" class="border-l-2 border-amber-200 pl-3">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Carpools</p>
+                        <p class="res-val text-sm font-bold text-slate-800" id="res-val-carpools">TBD</p>
                     </div>
                 </div>
+                
                 <!-- Admin Edit Resources Panel -->
-                <div class="admin-only hidden bg-slate-105 p-3.5 rounded-xl border border-slate-200 space-y-2 mt-2">
-                    <p class="text-[10px] uppercase font-black text-slate-600 tracking-wider">Update Resources & TBDs</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="input-res-music" placeholder="Music details/link" class="bg-white border border-slate-300 text-xs px-2.5 py-1.5 rounded-lg text-slate-800">
-                        <input type="text" id="input-res-hair" placeholder="Hair & Makeup specifications" class="bg-white border border-slate-300 text-xs px-2.5 py-1.5 rounded-lg text-slate-800">
-                        <input type="text" id="input-res-contacts" placeholder="Dancer contact details" class="bg-white border border-slate-300 text-xs px-2.5 py-1.5 rounded-lg text-slate-800">
-                        <input type="text" id="input-res-carpools" placeholder="Carpool links/schedules" class="bg-white border border-slate-300 text-xs px-2.5 py-1.5 rounded-lg text-slate-800">
+                <div class="admin-only hidden mt-6 pt-6 border-t border-dashed border-slate-200">
+                    <p class="text-sm font-black text-slate-900 mb-3">Update Resources & TBDs</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <input type="text" id="input-res-music" placeholder="Music details/link" class="bg-slate-50 border border-slate-200 text-sm px-3 py-2 rounded focus:outline-none focus:border-slate-400">
+                        <input type="text" id="input-res-hair" placeholder="Hair & Makeup specifications" class="bg-slate-50 border border-slate-200 text-sm px-3 py-2 rounded focus:outline-none focus:border-slate-400">
+                        <input type="text" id="input-res-contacts" placeholder="Dancer contact details" class="bg-slate-50 border border-slate-200 text-sm px-3 py-2 rounded focus:outline-none focus:border-slate-400">
+                        <input type="text" id="input-res-carpools" placeholder="Carpool links/schedules" class="bg-slate-50 border border-slate-200 text-sm px-3 py-2 rounded focus:outline-none focus:border-slate-400">
                     </div>
-                    <button onclick="saveResources()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] uppercase tracking-wider py-1 px-3 rounded-lg shadow-sm transition-all">Save Resources</button>
+                    <button onclick="saveResources()" class="mt-3 text-sm font-bold text-emerald-600 hover:underline">Save Resources</button>
                 </div>
             </div>
 
-            <!-- Quick Link Portals Map -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2 mb-1">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Quick Portals & Facebook Groups
-                </h3>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-                    <a href="https://www.thestudiodirector.com/dancebydenise/portal.jsp" target="_blank" class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-all hover:bg-slate-100">
-                        <i class="fa-solid fa-right-to-bracket text-rose-500 text-xl mb-1.5"></i>
-                        <span class="font-black text-slate-800">The Studio Director Portal</span>
-                        <span class="text-[10px] text-slate-400 mt-0.5">Pay & Register</span>
+            <!-- Quick Link Portals Map (Flattened) -->
+            <div class="flat-card">
+                <h3 class="flat-header m-0 mb-4">Quick Portals & Links</h3>
+                
+                <div class="space-y-4">
+                    <a href="https://www.thestudiodirector.com/dancebydenise/portal.jsp" target="_blank" class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                        </div>
+                        <div>
+                            <span class="block text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">The Studio Director Portal</span>
+                            <span class="text-sm text-slate-500">Pay & Register</span>
+                        </div>
                     </a>
-                    <a href="https://www.facebook.com/groups/dancebydenise" target="_blank" class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-all hover:bg-slate-100">
-                        <i class="fa-brands fa-facebook text-blue-600 text-xl mb-1.5"></i>
-                        <span class="font-black text-slate-800">Private Facebook Group</span>
-                        <span class="text-[10px] text-slate-400 mt-0.5">Denise Allen Admin</span>
+                    <a href="https://www.facebook.com/groups/dancebydenise" target="_blank" class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                            <i class="fa-brands fa-facebook"></i>
+                        </div>
+                        <div>
+                            <span class="block text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Private Facebook Group</span>
+                            <span class="text-sm text-slate-500">Denise Allen Admin</span>
+                        </div>
                     </a>
-                    <button onclick="toggleModal('newsletter-modal')" class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col items-center justify-center text-center transition-all hover:bg-slate-100">
-                        <i class="fa-solid fa-paper-plane text-emerald-500 text-xl mb-1.5"></i>
-                        <span class="font-black text-slate-800">May 2026 Newsletter</span>
-                        <span class="text-[10px] text-slate-400 mt-0.5">Click to Open Summary</span>
+                    <button onclick="toggleModal('newsletter-modal')" class="flex items-center gap-4 group text-left">
+                        <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <div>
+                            <span class="block text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">May 2026 Newsletter</span>
+                            <span class="text-sm text-slate-500">Click to Open Summary</span>
+                        </div>
                     </button>
                 </div>
             </div>
 
-            <!-- Contact Directory Details -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-3 shadow-xs">
-                <h3 class="text-sm font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span class="w-1 h-4 bg-rose-500 rounded-full"></span> Studio Contact Directory
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
+            <!-- Contact Directory Details (Flattened) -->
+            <div class="flat-card">
+                <h3 class="flat-header m-0 mb-4">Studio Contact Directory</h3>
+                
+                <div class="space-y-0">
+                    <div class="flat-item-row border-b border-slate-100 py-3">
                         <div>
-                            <p class="font-bold text-slate-800">Denise Allen</p>
-                            <p class="text-[10px] text-slate-500">Director Cell</p>
+                            <p class="text-base font-bold text-slate-900">Denise Allen</p>
+                            <p class="text-sm text-slate-500">Director Cell</p>
                         </div>
-                        <a href="tel:8016355835" class="bg-blue-600 hover:bg-blue-500 w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs transition-colors shadow-xs">
-                            <i class="fa-solid fa-phone"></i>
-                        </a>
+                        <a href="tel:8016355835" class="text-sm font-bold text-blue-600 hover:underline">(801) 635-5835</a>
                     </div>
-                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
+                    <div class="flat-item-row border-b border-slate-100 py-3">
                         <div>
-                            <p class="font-bold text-slate-800">Ashlee</p>
-                            <p class="text-[10px] text-slate-500">Director Assistant</p>
+                            <p class="text-base font-bold text-slate-900">Ashlee</p>
+                            <p class="text-sm text-slate-500">Director Assistant</p>
                         </div>
-                        <a href="tel:8018338459" class="bg-blue-600 hover:bg-blue-500 w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs transition-colors shadow-xs">
-                            <i class="fa-solid fa-phone"></i>
-                        </a>
+                        <a href="tel:8018338459" class="text-sm font-bold text-blue-600 hover:underline">(801) 833-8459</a>
                     </div>
-                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
+                    <div class="flat-item-row border-b border-slate-100 py-3">
                         <div>
-                            <p class="font-bold text-slate-800">Email Hub</p>
-                            <p class="text-[10px] text-slate-500">cheech_allen@yahoo.com</p>
+                            <p class="text-base font-bold text-slate-900">Email Hub</p>
+                            <p class="text-sm text-slate-500">General Contact</p>
                         </div>
-                        <a href="mailto:cheech_allen@yahoo.com" class="bg-blue-600 hover:bg-blue-500 w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs transition-colors shadow-xs">
-                            <i class="fa-solid fa-envelope"></i>
-                        </a>
+                        <a href="mailto:cheech_allen@yahoo.com" class="text-sm font-bold text-blue-600 hover:underline">cheech_allen@yahoo.com</a>
                     </div>
                 </div>
             </div>
@@ -732,108 +715,118 @@
         </div>
 
         <!-- ==================== TAB 5: MY CHECKLIST ==================== -->
-        <div id="tab-checklist" class="tab-content space-y-4">
+        <div id="tab-checklist" class="tab-content">
             
-            <div class="bg-white border border-slate-200 rounded-3xl p-5 space-y-5 shadow-xs">
+            <div class="mb-8 border-b border-slate-100 pb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900 mb-2">My Progress Tracker</h3>
+                    <p class="text-sm text-slate-500 max-w-md">Interactive packing tracker to make sure you have every detail packed! Tap items below.</p>
+                </div>
                 
-                <!-- Dynamic progress headers with high visual ADHD feedback -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                    <div class="space-y-1 text-center sm:text-left">
-                        <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                            <span class="w-1.5 h-5 bg-emerald-500 rounded-full"></span> My Progress Tracker
-                        </h3>
-                        <p class="text-xs text-slate-400">Interactive packing tracker to make sure you have every detail packed!</p>
+                <!-- Circular Gamified Progress Ring Indicator -->
+                <div class="flex items-center gap-4 bg-slate-50 px-5 py-3 rounded-2xl">
+                    <div class="relative w-14 h-14 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="28" cy="28" r="24" stroke="#e2e8f0" stroke-width="4" fill="transparent" />
+                            <circle id="progress-circle" cx="28" cy="28" r="24" stroke="#10b981" stroke-width="4" fill="transparent" 
+                                stroke-dasharray="150.7" stroke-dashoffset="150.7" stroke-linecap="round" class="transition-all duration-500" />
+                        </svg>
+                        <span id="progress-percent" class="absolute text-sm font-black text-slate-900">0%</span>
                     </div>
-                    
-                    <!-- Circular Gamified Progress Ring Indicator -->
-                    <div class="flex items-center space-x-3 bg-slate-55 p-2 px-4 rounded-2xl border border-slate-200 shadow-xs">
-                        <div class="relative w-12 h-12 flex items-center justify-center">
-                            <svg class="w-full h-full transform -rotate-90">
-                                <circle cx="24" cy="24" r="20" stroke="#f1f5f9" stroke-width="4" fill="transparent" />
-                                <circle id="progress-circle" cx="24" cy="24" r="20" stroke="#10b981" stroke-width="4" fill="transparent" 
-                                    stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-linecap="round" class="transition-all duration-500" />
-                            </svg>
-                            <span id="progress-percent" class="absolute text-xs font-black text-slate-800">0%</span>
-                        </div>
+                    <div>
+                        <span class="block text-xs text-slate-400 uppercase font-black tracking-widest mb-0.5">Status</span>
+                        <span id="progress-fraction" class="text-sm font-bold text-slate-800">0 of 8 complete</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkboxes in flattened list layout -->
+            <div class="space-y-0">
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
                         <div>
-                            <span class="block text-[10px] text-slate-400 uppercase font-black tracking-widest leading-none">Task status</span>
-                            <span id="progress-fraction" class="text-xs font-black text-slate-800 mt-1 block">0 of 8 complete</span>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">Black Tennis Skort</p>
+                            <p class="text-sm text-slate-500">Required Rehearsal Uniform set (June 22 & July 3)</p>
                         </div>
                     </div>
-                </div>
+                </label>
 
-                <!-- Checkboxes in premium grid layout -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Black Tennis Skort</p>
-                            <p class="text-[11px] text-slate-500">Required Rehearsal Uniform set (June 22 & July 3)</p>
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
+                        <div>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">Baby Blue Tank or T-shirt</p>
+                            <p class="text-sm text-slate-500">Required Rehearsal Uniform set (June 22 & July 3)</p>
                         </div>
-                    </label>
+                    </div>
+                </label>
 
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Baby Blue Tank or T-shirt</p>
-                            <p class="text-[11px] text-slate-500">Required Rehearsal Uniform set (June 22 & July 3)</p>
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
+                        <div>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">Tan Body Tight</p>
+                            <p class="text-sm text-slate-500">Required dress undergarment for female dancers</p>
                         </div>
-                    </label>
+                    </div>
+                </label>
 
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Tan Body Tight</p>
-                            <p class="text-[11px] text-slate-500">Required dress undergarment for female dancers</p>
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
+                        <div>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">Tan Turners or Jazz Shoes</p>
+                            <p class="text-sm text-slate-500">Standard performance footwear</p>
                         </div>
-                    </label>
+                    </div>
+                </label>
 
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Tan Turners or Jazz Shoes</p>
-                            <p class="text-[11px] text-slate-500">Standard performance footwear</p>
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
+                        <div>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">Rhinestone Stud Earrings</p>
+                            <p class="text-sm text-slate-500">Small rhinestone studs required ($5 on order sheet)</p>
                         </div>
-                    </label>
+                    </div>
+                </label>
 
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Rhinestone Stud Earrings</p>
-                            <p class="text-[11px] text-slate-500">Small rhinestone studs required ($5 on order sheet)</p>
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
+                        <div>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">Performance Props (Poms / Hoops)</p>
+                            <p class="text-sm text-slate-500">Distributed June 11, bring to every single rehearsal</p>
                         </div>
-                    </label>
+                    </div>
+                </label>
 
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Performance Props (Poms / Hoops)</p>
-                            <p class="text-[11px] text-slate-500">Distributed June 11, bring to every single rehearsal</p>
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
+                        <div>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">$50 Meal Money</p>
+                            <p class="text-sm text-slate-500">Recommended cash or Venmo to chaperone Misti Bird</p>
                         </div>
-                    </label>
+                    </div>
+                </label>
 
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">$50 Meal Money</p>
-                            <p class="text-[11px] text-slate-500">Recommended cash or Venmo to chaperone Misti Bird</p>
+                <label class="flat-item-row border-b border-slate-100 py-4 cursor-pointer group">
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="checklist-item mt-1 w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500/20 cursor-pointer" onchange="updateChecklistState()">
+                        <div>
+                            <p class="text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors">Gatorade & Snack Donation</p>
+                            <p class="text-sm text-slate-500">Bring to any local Kearns OPFC rehearsal date</p>
                         </div>
-                    </label>
+                    </div>
+                </label>
+            </div>
 
-                    <label class="flex items-start gap-4 p-4 bg-slate-50 hover:bg-slate-100/60 rounded-2xl border border-slate-200/80 cursor-pointer select-none transition-all shadow-xs group">
-                        <input type="checkbox" class="checklist-item mt-0.5 rounded-md border-slate-300 text-rose-600 focus:ring-rose-500/20 bg-white w-5 h-5" onchange="updateChecklistState()">
-                        <div class="text-xs">
-                            <p class="font-black text-slate-800 group-hover:text-rose-600 transition-colors">Gatorade & Snack Donation</p>
-                            <p class="text-[11px] text-slate-500">Bring to any local Kearns OPFC rehearsal date</p>
-                        </div>
-                    </label>
-                </div>
-
-                <div class="pt-2 text-center">
-                    <button onclick="resetChecklist()" class="px-5 py-2 border-2 border-rose-200 hover:bg-rose-50 text-rose-600 rounded-xl text-xs font-black tracking-wider uppercase transition-colors">
-                        Reset All Checkmarks
-                    </button>
-                </div>
+            <div class="mt-8 text-left">
+                <button onclick="resetChecklist()" class="text-sm font-bold text-slate-400 hover:text-slate-800 transition-colors underline underline-offset-4">
+                    Clear Checklist
+                </button>
             </div>
 
         </div>
@@ -1258,57 +1251,67 @@
             localContainer.innerHTML = "";
             provoContainer.innerHTML = "";
 
-            // Render Kearns Local Rehearsals
+            // Render Kearns Local Rehearsals (Flattened layout)
             dbState.kearnsEvents.forEach((ev, idx) => {
                 const itemClass = ev.mainOnly ? "main-group" : "junior-group";
-                const borderClass = ev.isCritical ? "border-rose-500 bg-rose-50/60" : "border-slate-200 bg-slate-50";
-                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-40' : '';
+                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-40 hidden' : '';
                 
                 const item = document.createElement("div");
-                item.className = `sch-item ${itemClass} ${borderClass} p-3 rounded-2xl border-2 relative transition-all ${isOpac}`;
+                item.className = `sch-item ${itemClass} py-4 border-b border-slate-100 relative group ${isOpac}`;
                 
                 let labelBadge = '';
                 if (ev.label) {
-                    labelBadge = `<span class="text-[8px] bg-rose-600 text-white font-extrabold px-1.5 py-0.5 rounded-md tracking-wide uppercase shadow-xs">${ev.label}</span>`;
+                    labelBadge = `<span class="text-[10px] text-rose-600 font-black uppercase tracking-widest">${ev.label}</span>`;
                 } else if (ev.isCritical) {
-                    labelBadge = `<span class="text-[8px] bg-rose-600 text-white font-extrabold px-1.5 py-0.5 rounded-md tracking-wide uppercase shadow-xs">Required</span>`;
+                    labelBadge = `<span class="text-[10px] text-rose-600 font-black uppercase tracking-widest"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Critical</span>`;
                 }
 
                 item.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <p class="text-xs font-black ${ev.isCritical ? 'text-rose-600' : 'text-slate-700'}">${ev.date} @ ${ev.time}</p>
-                        <div class="flex items-center space-x-1.5">
-                            ${labelBadge}
-                            <button onclick="openEventEditor('kearns', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-800 text-xs p-1" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteEvent('kearns', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs p-1" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
+                    <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4 mb-1">
+                        <p class="text-sm font-black w-40 shrink-0 ${ev.isCritical ? 'text-rose-600' : 'text-slate-900'}">${ev.date}</p>
+                        <div class="flex-1">
+                            <p class="text-base font-bold text-slate-800 flex items-center gap-3">
+                                ${ev.desc} 
+                                ${labelBadge}
+                            </p>
                         </div>
+                        <p class="text-sm font-medium text-slate-500 w-32 shrink-0 md:text-right">${ev.time}</p>
                     </div>
-                    <p class="text-[11px] font-extrabold text-slate-800 mt-1">${ev.desc}</p>
-                    ${ev.details ? `<p class="text-[10px] text-slate-500 mt-0.5 font-medium leading-relaxed">${ev.details}</p>` : ''}
+                    ${ev.details ? `<p class="text-sm text-slate-500 md:ml-44">${ev.details}</p>` : ''}
+                    
+                    <div class="absolute right-0 top-4 admin-only hidden flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity bg-white pl-4">
+                        <button onclick="openEventEditor('kearns', ${idx})" class="text-blue-600 hover:text-blue-800 text-sm font-bold" title="Edit Event">Edit</button>
+                        <button onclick="deleteEvent('kearns', ${idx})" class="text-red-500 hover:text-red-700 text-sm font-bold" title="Delete Event">Delete</button>
+                    </div>
                 `;
                 localContainer.appendChild(item);
             });
 
-            // Render Provo Travel Rehearsals
+            // Render Provo Travel Rehearsals (Flattened layout)
             dbState.provoEvents.forEach((ev, idx) => {
                 const itemClass = ev.mainOnly ? "main-group" : "junior-group";
-                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-40' : '';
-                const borderClass = ev.isCritical ? "border-rose-500 bg-rose-50/60" : "border-slate-200 bg-slate-50";
+                const isOpac = !ev.mainOnly && activeFilter === 'main' ? 'opacity-40 hidden' : '';
                 
                 const item = document.createElement("div");
-                item.className = `sch-item ${itemClass} ${borderClass} p-3.5 rounded-2xl border-2 relative transition-all ${isOpac}`;
+                item.className = `sch-item ${itemClass} py-4 border-b border-slate-100 relative group ${isOpac}`;
                 
                 item.innerHTML = `
-                    <div class="flex items-center justify-between mb-1">
-                        <p class="text-xs font-black text-rose-600">${ev.date} — ${ev.time}</p>
-                        <div class="flex items-center space-x-1.5">
-                            ${ev.isCritical ? '<span class="text-[8px] bg-rose-600 text-white px-2 py-0.5 rounded-md font-black uppercase shadow-xs">Dress Rehearsal</span>' : ''}
-                            <button onclick="openEventEditor('provo', ${idx})" class="admin-only hidden text-blue-600 hover:text-blue-850 text-xs p-1" title="Edit Event"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteEvent('provo', ${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-xs p-1" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
+                    <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4 mb-1">
+                        <p class="text-sm font-black w-40 shrink-0 text-slate-900">${ev.date}</p>
+                        <div class="flex-1">
+                            <p class="text-base font-bold text-slate-800 flex items-center gap-3">
+                                ${ev.desc} 
+                                ${ev.isCritical ? '<span class="text-[10px] text-rose-600 font-black uppercase tracking-widest"><i class="fa-solid fa-star mr-1"></i> Dress Rehearsal</span>' : ''}
+                            </p>
                         </div>
+                        <p class="text-sm font-medium text-slate-500 w-32 shrink-0 md:text-right">${ev.time}</p>
                     </div>
-                    <p class="text-[11px] font-extrabold text-slate-800 mt-1">${ev.desc}</p>
-                    ${ev.details ? `<p class="text-[10px] text-slate-500 mt-0.5 font-medium leading-relaxed">${ev.details}</p>` : ''}
+                    ${ev.details ? `<p class="text-sm text-slate-500 md:ml-44">${ev.details}</p>` : ''}
+                    
+                    <div class="absolute right-0 top-4 admin-only hidden flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity bg-white pl-4">
+                        <button onclick="openEventEditor('provo', ${idx})" class="text-blue-600 hover:text-blue-850 text-sm font-bold" title="Edit Event">Edit</button>
+                        <button onclick="deleteEvent('provo', ${idx})" class="text-red-500 hover:text-red-700 text-sm font-bold" title="Delete Event">Delete</button>
+                    </div>
                 `;
                 provoContainer.appendChild(item);
             });
@@ -1322,33 +1325,31 @@
             listContainer.innerHTML = "";
 
             if (!dbState.newsletters || dbState.newsletters.length === 0) {
-                listContainer.innerHTML = `<p class="text-slate-400 text-xs text-center py-2">No documents available.</p>`;
+                listContainer.innerHTML = `<p class="text-slate-400 text-sm py-2">No documents available.</p>`;
                 return;
             }
 
             dbState.newsletters.forEach((doc, idx) => {
                 const docCard = document.createElement("div");
-                docCard.className = "bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between shadow-xs hover:bg-slate-100/80 transition-colors";
+                docCard.className = "flex items-center justify-between py-3 border-b border-slate-100 group";
                 
                 const isPDF = doc.type === 'pdf';
-                const iconClass = isPDF ? 'fa-solid fa-file-pdf text-rose-600' : 'fa-solid fa-file-lines text-blue-500';
+                const iconClass = isPDF ? 'fa-solid fa-file-pdf text-rose-500' : 'fa-solid fa-file-lines text-blue-500';
 
                 docCard.innerHTML = `
-                    <div class="flex items-center space-x-2.5 min-w-0">
-                        <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
-                            <i class="${iconClass} text-sm"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <h4 class="text-xs font-black text-slate-850 truncate">${doc.title}</h4>
-                            <p class="text-[9px] text-slate-400 font-bold">${doc.date}</p>
+                    <div class="flex items-center gap-3">
+                        <i class="${iconClass} text-slate-400 text-lg w-5 text-center"></i>
+                        <div>
+                            <button onclick="viewDocument(${idx})" class="text-base font-bold text-slate-900 hover:text-blue-600 transition-colors text-left">${doc.title}</button>
+                            <p class="text-xs text-slate-400 font-medium">${doc.date}</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-1 shrink-0">
-                        <button onclick="viewDocument(${idx})" class="px-2.5 py-1.5 bg-white border border-slate-250 text-slate-700 hover:bg-rose-50 hover:text-rose-600 rounded-lg text-[10px] font-black transition-all">
-                            View
+                    <div class="flex items-center space-x-4 shrink-0">
+                        <button onclick="viewDocument(${idx})" class="text-sm font-bold text-blue-600 hover:underline">
+                            Open
                         </button>
-                        <button onclick="deleteDocument(${idx})" class="admin-only hidden text-red-500 hover:text-red-700 p-1.5 text-xs" title="Delete File">
-                            <i class="fa-solid fa-trash-can"></i>
+                        <button onclick="deleteDocument(${idx})" class="admin-only hidden text-red-500 hover:text-red-700 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity" title="Delete File">
+                            Delete
                         </button>
                     </div>
                 `;
@@ -1639,7 +1640,7 @@
             navButtons.forEach(btn => btn.className = 'flex flex-col items-center justify-center text-slate-500 space-y-1 relative');
 
             const deskNavButtons = document.querySelectorAll('[id^="desk-nav-"]');
-            deskNavButtons.forEach(btn => btn.className = 'px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all text-slate-600 hover:bg-slate-100');
+            deskNavButtons.forEach(btn => btn.className = 'px-3.5 py-2 rounded-lg text-xs font-black transition-all text-slate-600 hover:bg-slate-100');
 
             document.getElementById(`tab-${tabId}`).classList.add('active');
             
@@ -1650,7 +1651,7 @@
 
             const activeDeskBtn = document.getElementById(`desk-nav-${tabId}`);
             if (activeDeskBtn) {
-                activeDeskBtn.className = 'px-4 py-2.5 rounded-xl text-xs font-black tracking-wide uppercase transition-all bg-rose-600 text-white shadow-sm';
+                activeDeskBtn.className = 'px-3.5 py-2 rounded-lg text-xs font-black transition-all bg-rose-50 text-rose-600';
             }
         }
 
@@ -1662,28 +1663,22 @@
             const filterMainBtn = document.getElementById('filter-main');
 
             if (group === 'main') {
-                filterMainBtn.className = 'text-xs font-black px-4 py-2 rounded-xl bg-rose-600 text-white shadow-xs transition-colors';
-                filterAllBtn.className = 'text-xs font-black px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
+                filterMainBtn.className = 'text-sm font-bold text-rose-600 border-b-2 border-rose-600 transition-colors pb-1';
+                filterAllBtn.className = 'text-sm font-bold text-slate-400 hover:text-slate-800 transition-colors pb-1 border-b-2 border-transparent';
                 
                 allItems.forEach(item => {
                     if (item.classList.contains('main-group')) {
                         item.classList.remove('hidden');
-                        item.classList.remove('opacity-40');
                     } else {
                         item.classList.add('hidden');
                     }
                 });
             } else {
-                filterAllBtn.className = 'text-xs font-black px-4 py-2 rounded-xl bg-rose-600 text-white shadow-xs transition-colors';
-                filterMainBtn.className = 'text-xs font-black px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors';
+                filterAllBtn.className = 'text-sm font-bold text-rose-600 border-b-2 border-rose-600 transition-colors pb-1';
+                filterMainBtn.className = 'text-sm font-bold text-slate-400 hover:text-slate-800 transition-colors pb-1 border-b-2 border-transparent';
                 
                 allItems.forEach(item => {
                     item.classList.remove('hidden');
-                    if (!item.classList.contains('main-group')) {
-                        item.classList.add('opacity-40');
-                    } else {
-                        item.classList.remove('opacity-40');
-                    }
                 });
             }
         }
@@ -1850,14 +1845,14 @@
                 }
             });
 
-            // Calculate SVG Circle Dash offsets (radius = 20, circumference = 125.6)
+            // Calculate SVG Circle Dash offsets (radius = 24, circumference = 150.7)
             const circle = document.getElementById('progress-circle');
             const percentText = document.getElementById('progress-percent');
             const fractionText = document.getElementById('progress-fraction');
 
             const total = checkboxes.length;
             const percentage = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
-            const strokeOffset = 125.6 - (125.6 * percentage) / 100;
+            const strokeOffset = 150.7 - (150.7 * percentage) / 100;
 
             if (circle) {
                 circle.style.strokeDashoffset = strokeOffset;
